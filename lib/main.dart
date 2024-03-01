@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: false,
           fontFamily: 'Poppins'),
       darkTheme: ThemeData(),
-      home: LoginScreen(),
+      home: HomeScreen(),
     );
   }
 }
