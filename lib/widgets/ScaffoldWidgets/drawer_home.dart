@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -56,9 +57,10 @@ class HomeDrawer extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: Icon(
-                        Icons.settings_outlined,
+                      leading: SvgPicture.asset(
+                        'assets/svgs/settings.svg',
                         color: Colors.white,
+                        height: 24,
                       ),
                       title: Text('Configurações',
                           style: Styles.titleMedium
@@ -68,10 +70,10 @@ class HomeDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.account_circle_outlined,
+                      leading: SvgPicture.asset(
+                        'assets/svgs/account_circle.svg',
                         color: Colors.white,
-                        size: 24,
+                        height: 24,
                       ),
                       title: Text('Perfil',
                           style: Styles.titleMedium
@@ -81,11 +83,8 @@ class HomeDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.data_exploration_outlined,
-                        color: Colors.white,
-                        size: 24,
-                      ),
+                      leading: SvgPicture.asset('assets/svgs/chart_data.svg',
+                          height: 24, color: Colors.white),
                       title: Text('Atividades',
                           style: Styles.titleMedium
                               .merge(TextStyle(color: TextColors.text6))),
@@ -94,11 +93,8 @@ class HomeDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.change_circle_outlined,
-                        color: Colors.white,
-                        size: 24,
-                      ),
+                      leading: SvgPicture.asset('assets/svgs/rule_settings.svg',
+                          height: 24, color: Colors.white),
                       title: Text('Trocar usuário',
                           style: Styles.titleMedium
                               .merge(TextStyle(color: TextColors.text6))),
@@ -107,11 +103,8 @@ class HomeDrawer extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
-                        Icons.mail_outline_rounded,
-                        color: Colors.white,
-                        size: 24,
-                      ),
+                      leading: SvgPicture.asset('assets/svgs/mail.svg',
+                          height: 22, color: Colors.white),
                       title: Text(
                         'Contato RH',
                         style: Styles.titleMedium
@@ -132,11 +125,8 @@ class HomeDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
               },
-              leading: Icon(
-                Icons.logout_outlined,
-                color: Colors.white,
-                size: 24,
-              ),
+              leading: SvgPicture.asset('assets/svgs/logout.svg',
+                  height: 24, color: Colors.white),
               title: Text("Sair da conta",
                   style: Styles.titleMedium
                       .merge(TextStyle(color: TextColors.text6))),

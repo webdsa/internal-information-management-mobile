@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 
+// ignore: must_be_immutable
 class LastUpdatesWidget extends StatelessWidget {
   LastUpdatesWidget({super.key});
   List<String> months = [
@@ -35,12 +37,12 @@ class LastUpdatesWidget extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Color(0xFFFFFFFF),
-                    child: Icon(
-                      Icons.holiday_village,
-                      color: OtherColors.otherYellow1,
-                    ),
-                  ),
+                      backgroundColor: Colors.white,
+                      child: SvgPicture.asset(
+                        'assets/svgs/holiday_village.svg',
+                        color: OtherColors.otherYellow1,
+                        height: 14,
+                      )),
                   Padding(
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
@@ -115,12 +117,12 @@ class LastUpdatesWidget extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color(0xFFFFFFFF),
-                          child: Icon(
-                            Icons.assignment_ind_outlined,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
+                            backgroundColor: Colors.white,
+                            child: SvgPicture.asset(
+                              'assets/svgs/assignment_ind.svg',
+                              color: Theme.of(context).primaryColor,
+                              height: 14,
+                            )),
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(
@@ -196,12 +198,12 @@ class LastUpdatesWidget extends StatelessWidget {
                     Row(
                       children: [
                         CircleAvatar(
-                          backgroundColor: Color(0xFFFFFFFF),
-                          child: Icon(
-                            Icons.person_2_sharp,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        ),
+                            backgroundColor: Colors.white,
+                            child: SvgPicture.asset(
+                              'assets/svgs/for_you.svg',
+                              color: Theme.of(context).primaryColor,
+                              height: 14,
+                            )),
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(

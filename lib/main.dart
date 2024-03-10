@@ -3,6 +3,7 @@ import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: false,
           fontFamily: 'Poppins'),
       darkTheme: ThemeData(),
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }

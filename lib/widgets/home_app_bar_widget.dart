@@ -8,7 +8,7 @@ class HomeAppBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: 180,
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -43,7 +43,9 @@ class HomeAppBarWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(right: 16),
                 child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     icon: Icon(
                       Icons.menu,
                       size: 40,

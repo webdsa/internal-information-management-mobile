@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 
 class LastUpdatesButtonsWidgets extends StatefulWidget {
@@ -67,11 +68,12 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               onPressed: () {
                 _setSelectedButton(1);
               },
-              icon: Icon(
-                Icons.assignment_ind_outlined,
+              icon: SvgPicture.asset(
+                'assets/svgs/assignment_ind.svg',
                 color: _selectedButton == 1
                     ? Theme.of(context).primaryColor
                     : Color(0xFFDEDDE4),
+                height: 14,
               ),
               label: Text(
                 "Manual",
@@ -105,11 +107,12 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               onPressed: () {
                 _setSelectedButton(2);
               },
-              icon: Icon(
-                Icons.holiday_village,
+              icon: SvgPicture.asset(
+                'assets/svgs/holiday_village.svg',
                 color: _selectedButton == 2
                     ? Theme.of(context).primaryColor
                     : Color(0xFFDEDDE4),
+                height: 14,
               ),
               label: Text(
                 "Patrimônio",

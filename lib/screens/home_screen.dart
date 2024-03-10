@@ -1,13 +1,12 @@
+import '../util/Palette.dart';
 import 'package:flutter/material.dart';
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
-import 'package:internalinformationmanagement/widgets/ScaffoldWidgets/drawer_home.dart';
 import 'package:internalinformationmanagement/widgets/home_app_bar_widget.dart';
 import 'package:internalinformationmanagement/widgets/home_listview_widget.dart';
-import 'package:internalinformationmanagement/widgets/last_updates_buttons_widget.dart';
 import 'package:internalinformationmanagement/widgets/last_updates_cards_widget.dart';
-import '../util/Palette.dart';
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-import 'package:defer_pointer/defer_pointer.dart';
+import 'package:internalinformationmanagement/widgets/last_updates_buttons_widget.dart';
+import 'package:internalinformationmanagement/widgets/ScaffoldWidgets/drawer_home.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,15 +17,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
-  int _selectedButton = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _setSelectedButton(int index) {
-    setState(() {
-      _selectedButton = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,70 +65,79 @@ class _HomeScreenState extends State<HomeScreen> {
         */
         body: GestureDetector(
           onHorizontalDragUpdate: (details) {
-            if (details.delta.dx > 30) {
-              print("Puxando a tela");
+            if (details.delta.dx > 80) {
               _scaffoldKey.currentState?.openDrawer();
             }
           },
           child: SingleChildScrollView(
-              child: Column(
+              child: Stack(
             children: [
-              /*
-              
-              This section is the actual AppBar.
-              
-              */
-              HomeAppBarWidget(),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: Column(
-                  children: [
-                    HomeListViewWidget(),
-                    /*
-                              
-                    The section below contains 3 buttons that
-                    can change the content of the cards on the section below
-                    this one.
-                              
-                    */
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 14),
-                            child: Text(
-                              "Acompanhe aqui as sua",
-                              style: Styles.bodyText,
-                            ),
+              Column(
+                children: [
+                  /*
+                  
+                  This section is the actual AppBar.
+                  
+                  */
+                  HomeAppBarWidget(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      children: [
+                        /*
+                                  
+                        The section below contains 3 buttons that
+                        can change the content of the cards on the section below
+                        this one.
+                                  
+                        */
+                        Padding(
+                          padding:
+                              EdgeInsets.only(left: 40, right: 40, top: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(top: 14),
+                                child: Text(
+                                  "Acompanhe aqui as sua",
+                                  style: Styles.bodyText,
+                                ),
+                              ),
+                              Text(
+                                "últimas atualizações",
+                                style: Styles.titleSmall.merge(TextStyle(
+                                    color: Theme.of(context).primaryColor)),
+                              ),
+                              Divider(
+                                color: TextColors.text5,
+                                height: 10,
+                                thickness: 2,
+                              ),
+                              LastUpdatesButtonsWidgets(),
+                              /*
+                                  
+                              The section below contains a
+                              Column with cards. The cards shown will be 
+                              static content, and soon their contents will change
+                              turning them dynamic.
+                      
+                              */
+                              LastUpdatesWidget()
+                            ],
                           ),
-                          Text(
-                            "últimas atualizações",
-                            style: Styles.titleSmall.merge(TextStyle(
-                                color: Theme.of(context).primaryColor)),
-                          ),
-                          Divider(
-                            color: TextColors.text5,
-                            height: 10,
-                            thickness: 2,
-                          ),
-                          LastUpdatesButtonsWidgets(),
-                          /*
-                              
-                          The section below contains a
-                          Column with cards. The cards shown will be 
-                          static content, and soon their contents will change
-                          turning them dynamic.
-    
-                          */
-                          LastUpdatesWidget()
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+              Positioned(
+                child: HomeListViewWidget(),
+                left: 0,
+                right: 0,
+                top: 135,
+              )
             ],
           )
 

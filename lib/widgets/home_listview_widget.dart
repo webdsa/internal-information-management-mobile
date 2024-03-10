@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 
@@ -18,19 +19,18 @@ class HomeListViewWidget extends StatelessWidget {
             margin: EdgeInsets.all(4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFFFEAEA)),
+                color: Color(0xFFFFFFFF)),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Color(0xFFFFEAEA),
-                  child: Icon(
-                    Icons.assignment_ind_outlined,
-                    color: StatusColor.statusRed1,
-                    size: 30,
-                  ),
-                ),
+                    radius: 25,
+                    backgroundColor: Color(0xFFFFEAEA),
+                    child: SvgPicture.asset(
+                      'assets/svgs/assignment_ind.svg',
+                      height: 24,
+                      color: StatusColor.statusRed1,
+                    )),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -59,20 +59,19 @@ class HomeListViewWidget extends StatelessWidget {
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xFFFFFBEA),
+              color: Color(0xFFFFFFFF),
             ),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Color(0xFFFFFBEA),
-                  child: Icon(
-                    Icons.holiday_village_outlined,
-                    color: OtherColors.otherYellow1,
-                    size: 30,
-                  ),
-                ),
+                    radius: 25,
+                    backgroundColor: Color(0xFFFFFBEA),
+                    child: SvgPicture.asset(
+                      'assets/svgs/holiday_village.svg',
+                      color: OtherColors.otherYellow1,
+                      height: 24,
+                    )),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
