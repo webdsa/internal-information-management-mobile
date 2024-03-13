@@ -42,15 +42,11 @@ class HomeAppBarWidget extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(right: 16),
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(
-                      Icons.menu,
-                      size: 40,
-                      color: Color(0xFFFFFFFF),
-                    )),
+                child: Icon(
+                  Icons.menu,
+                  size: 40,
+                  color: Color(0xFFFFFFFF),
+                ),
               )
             ]),
             Padding(

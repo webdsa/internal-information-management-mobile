@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
+import 'package:internalinformationmanagement/service/auth_ad_service.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import '../util/Palette.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final AuthService authService;
+  const LoginScreen({super.key, required this.authService});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -98,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           TextStyle(color: TextColors.text4)),
                                     ),
                                     TextFormField(
+                                      controller: _emailController,
                                       validator: (value) {
                                         if (value == null || value.isEmpty) {
                                           return "Por favor, insira um e-mail";
@@ -133,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         TextStyle(color: TextColors.text4)),
                                   ),
                                   TextField(
+                                    controller: _passwordController,
                                     obscureText: true,
                                     decoration: InputDecoration(
                                         constraints:
