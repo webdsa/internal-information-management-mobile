@@ -123,7 +123,7 @@ class HomeDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 30, bottom: 30),
             child: ListTile(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.of(context).pushReplacementNamed('/login');
               },
               leading: SvgPicture.asset('assets/svgs/logout.svg',
                   height: 24, color: Colors.white),

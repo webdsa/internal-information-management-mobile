@@ -23,6 +23,7 @@ dependencies:
   flutter_mobx: ^2.2.0+2
   aad_oauth: ^1.0.1
   flutter_dotenv: ^5.1.0
+  mask_text_input_formatter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
@@ -40,10 +41,8 @@ flutter:
     - assets/svgs/
 
   fonts:
-    - family: Poppins
+    - family: Inter
       fonts:
-        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
-        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
-        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
-        - asset: assets/fonts/Poppins/Poppins-Light.ttf
-
+        - asset: assets/fonts/Inter/Inter-Regular.ttf
+        - asset: assets/fonts/Inter/Inter-Medium.ttf
+        - asset: assets/fonts/Inter/Inter-Bold.ttf

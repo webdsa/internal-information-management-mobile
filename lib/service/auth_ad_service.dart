@@ -1,5 +1,4 @@
 import 'package:aad_oauth/aad_oauth.dart';
-import 'package:flutter/services.dart';
 
 class AuthService {
   final AadOAuth oAuth;
@@ -16,12 +15,12 @@ class AuthService {
     }
   }
 
-  Future<bool> loginn() async {
+  Future<bool> login() async {
     try {
       final result = await oAuth.login();
       // ignore: unnecessary_null_comparison
       return result != null;
-    } on PlatformException catch (e) {
+    } catch (e) {
       print("Error logging in: $e");
       return false;
     }

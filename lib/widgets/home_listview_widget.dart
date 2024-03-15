@@ -25,7 +25,7 @@ class HomeListViewWidget extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 CircleAvatar(
                     radius: 25,
-                    backgroundColor: Color(0xFFFFEAEA),
+                    backgroundColor: StatusColor.statusRed2,
                     child: SvgPicture.asset(
                       'assets/svgs/assignment_ind.svg',
                       height: 24,
@@ -66,7 +66,7 @@ class HomeListViewWidget extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 CircleAvatar(
                     radius: 25,
-                    backgroundColor: Color(0xFFFFFBEA),
+                    backgroundColor: OtherColors.otherYellow2,
                     child: SvgPicture.asset(
                       'assets/svgs/holiday_village.svg',
                       color: OtherColors.otherYellow1,

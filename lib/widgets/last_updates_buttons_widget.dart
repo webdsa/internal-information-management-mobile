@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 
 class LastUpdatesButtonsWidgets extends StatefulWidget {
@@ -46,7 +47,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 0
-                      ? Color(0xFFE6F4FF)
+                      ? StatusColor.statusBlue2
                       : Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
@@ -84,7 +85,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 1
-                      ? Color(0xFFE6F4FF)
+                      ? StatusColor.statusBlue2
                       : Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
@@ -123,7 +124,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 2
-                      ? Color(0xFFE6F4FF)
+                      ? StatusColor.statusBlue2
                       : Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
