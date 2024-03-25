@@ -13,17 +13,20 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  flutter_svg: ^2.0.10+1
-  http: ^1.2.0
+  flutter_svg: ^2.0.9
+  http: ^1.2.1
   mysql1: ^0.20.0
   dot_navigation_bar: ^1.0.2
   email_validator: ^2.1.17
   provider: ^6.1.2
   mobx: ^2.3.0+1
   flutter_mobx: ^2.2.0+2
-  aad_oauth: ^1.0.1
   flutter_dotenv: ^5.1.0
   mask_text_input_formatter: ^2.9.0
+  crypto: ^3.0.3
+  firebase_core: ^2.27.1
+  firebase_auth: ^4.17.9
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

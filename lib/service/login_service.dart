@@ -16,19 +16,20 @@ class LoginService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       _token = data['token'];
+      print(_token);
       return _token!;
     } else {
       throw Exception('Falha ao realizar login');
     }
   }
 
-  Future<void> login(
+  Future<String> login(
       BuildContext context, String email, String password) async {
     try {
       final token = await authenticate(email, password);
       _token = token;
-
-      Navigator.of(context).pushReplacementNamed('/home');
+      return _token!;
+      //Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
       print("Erro ao fazer login: $e");
     }
@@ -53,5 +54,9 @@ class LoginService {
   void logout(BuildContext context) {
     _token = null;
     Navigator.of(context).pushReplacementNamed('/login');
+  }
+
+  String hashPassword(String password) {
+    return password;
   }
 }

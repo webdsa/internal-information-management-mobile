@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:internalinformationmanagement/firebase_options.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
-import 'package:internalinformationmanagement/service/auth_ad_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 final _navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp(
     navigatorKey: _navigatorKey,
   ));

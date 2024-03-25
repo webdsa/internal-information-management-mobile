@@ -1,11 +1,10 @@
-import 'package:aad_oauth/aad_oauth.dart';
-import 'package:aad_oauth/model/config.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
-import 'package:internalinformationmanagement/service/auth_ad_service.dart';
+import 'package:internalinformationmanagement/service/login_service.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../util/Palette.dart';
@@ -25,9 +24,7 @@ class _LoginScreenState extends State<LoginScreen>
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  late Config config;
-  late AuthService authService;
+  final LoginService _loginService = LoginService();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -37,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool _isLoading = false;
   bool _isRegistering = false;
   bool _isChecked = false;
+  bool _isHidingPassword = true;
 
   @override
   void initState() {
@@ -47,17 +45,6 @@ class _LoginScreenState extends State<LoginScreen>
             begin: !_isRegistering ? 166 : 84, end: !_isRegistering ? 84 : 166)
         .animate(CurvedAnimation(
             parent: _animationController, curve: Curves.easeInOutCubic));
-
-    config = Config(
-        customDomainUrlWithTenantId:
-            'https://login.microsoftonline.com/common/${dotenv.env['AAD_TENANT_ID']}',
-        clientId: '${dotenv.env['AAD_CLIENT_ID']}',
-        tenant: '${dotenv.env['AAD_TENANT_ID']}',
-        scope: 'user.read openid profile offline_access',
-        redirectUri: '${dotenv.env['AAD_REDIRECT_URI']}',
-        navigatorKey: widget.navigatorKey);
-
-    authService = AuthService(oAuth: AadOAuth(config));
   }
 
   @override
@@ -66,42 +53,60 @@ class _LoginScreenState extends State<LoginScreen>
     super.dispose();
   }
 
-  void _login() {
-    setState(() {
-      _isLoading = true; // Ativa a animação
-    });
+  void _login() async {
+    try {
+      final token = await _loginService.login(
+          context, _emailController.text, _passwordController.text);
 
-    // Simula um tempo de espera antes de navegar para a próxima tela
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
-      ).then((value) {
+      if (token != "") {
         setState(() {
-          _isLoading = false;
+          _isLoading = true; // Ativa a animação
         });
-      });
-    });
+
+        // Simula um tempo de espera antes de navegar para a próxima tela
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          ).then((value) {
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void _loginAd() async {
-    final result = await authService.login();
-    if (result) {
-      //String? token = await authService.getAccessToken();
-      //if (token != null) {
-      setState(() {
-        _isLoading = true; // Ativa a animação
-      });
+    try {
+      final microsoftProvider = OAuthProvider('microsoft.com');
+      final credential =
+          await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
 
-      // Simula um tempo de espera antes de navegar para a próxima tela
-      Future.delayed(Duration(seconds: 2), () {
-        widget.navigatorKey.currentState?.pushNamed('/home').then((value) {
-          setState(() {
-            _isLoading = false;
+      var token = await credential.user?.getIdToken(true);
+
+      if (token != null) {
+        setState(() {
+          _isLoading = true; // Ativa a animação
+        });
+
+        // Simula um tempo de espera antes de navegar para a próxima tela
+        Future.delayed(Duration(seconds: 2), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+          ).then((value) {
+            setState(() {
+              _isLoading = false;
+            });
           });
         });
-      });
-      //}
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 
@@ -339,12 +344,19 @@ class _LoginScreenState extends State<LoginScreen>
               children: [
                 TextFormField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: _isHidingPassword,
                   decoration: InputDecoration(
                       suffixIcon: Padding(
                         padding: EdgeInsets.only(left: 12, right: 16.0),
-                        child: SvgPicture.asset(
-                          'assets/svgs/eye.svg',
+                        child: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _isHidingPassword = !_isHidingPassword;
+                            });
+                          },
+                          icon: SvgPicture.asset(
+                            'assets/svgs/eye.svg',
+                          ),
                         ),
                       ),
                       label: Text("Senha"),
