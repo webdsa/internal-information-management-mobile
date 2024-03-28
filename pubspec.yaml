@@ -27,12 +27,44 @@ dependencies:
   firebase_core: ^2.27.1
   firebase_auth: ^4.17.9
   shared_preferences: ^2.2.2
+  flutter_flavorizr: ^2.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flavorizr:
+  app:
+    android:
+      flavorDimensions: "flavor-type"
+    ios:
+      flavorDimensions: "flavor-type"
+  flavors:
+    dev:
+      app:
+        name: "G.I. DSA Dev"
+      android:
+        applicationId: "dev.adventistas.org.internalinformationmanagement"
+      ios:
+        bundleId: "dev.adventistas.org.internalinformationmanagement"
+    hom:
+      app:
+        name: "G.I. DSA hom"
+      android:
+        applicationId: "hom.adventistas.org.internalinformationmanagement"
+      ios:
+        bundleId: "hom.adventistas.org.internalinformationmanagement"
+    prod:
+      app:
+        name: "G.I. DSA Prod"
+      android:
+        applicationId: "adventistas.org.internalinformationmanagement"
+      ios:
+        bundleId: "adventistas.org.internalinformationmanagement"
+
   flutter_lints: ^3.0.1
+
+
 
 flutter:
 

@@ -7,8 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:internalinformationmanagement/main.dart';
+import 'package:internalinformationmanagement/app.dart';
 
 final _navigatorKey = GlobalKey<NavigatorState>();
 

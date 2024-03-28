@@ -1,7 +1,7 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_print
 
 import 'package:flutter/material.dart';
-
+import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/widgets/LoginScreenWidgets/login_screen_widget.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,6 +16,10 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: LoginScreenWidget());
+    return Scaffold(
+        body: Banner(
+            message: F.env,
+            location: BannerLocation.bottomEnd,
+            child: LoginScreenWidget()));
   }
 }
