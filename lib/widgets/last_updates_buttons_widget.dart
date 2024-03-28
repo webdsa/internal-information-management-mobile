@@ -23,7 +23,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 5),
+      padding: const EdgeInsets.only(top: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -38,24 +38,24 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               onPressed: () {
                 _setSelectedButton(0);
               },
-              child: Text(
-                "Todos",
-                style: Styles.bodySmall.merge(TextStyle(
-                    color: _selectedButton == 0
-                        ? Theme.of(context).primaryColor
-                        : Color(0xFFDEDDE4))),
-              ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 0
                       ? StatusColor.statusBlue2
-                      : Color(0xFFFFFFFF),
+                      : const Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
                           width: 1,
                           color: _selectedButton == 0
                               ? Theme.of(context).primaryColor
-                              : Color(0xFFDEDDE4)))),
+                              : const Color(0xFFDEDDE4)))),
+              child: Text(
+                "Todos",
+                style: Styles.bodySmall.merge(TextStyle(
+                    color: _selectedButton == 0
+                        ? Theme.of(context).primaryColor
+                        : const Color(0xFFDEDDE4))),
+              ),
             ),
           ),
           /*
@@ -73,7 +73,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                 'assets/svgs/assignment_ind.svg',
                 color: _selectedButton == 1
                     ? Theme.of(context).primaryColor
-                    : Color(0xFFDEDDE4),
+                    : const Color(0xFFDEDDE4),
                 height: 14,
               ),
               label: Text(
@@ -81,19 +81,19 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                 style: Styles.bodySmall.merge(TextStyle(
                     color: _selectedButton == 1
                         ? Theme.of(context).primaryColor
-                        : Color(0xFFDEDDE4))),
+                        : const Color(0xFFDEDDE4))),
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 1
                       ? StatusColor.statusBlue2
-                      : Color(0xFFFFFFFF),
+                      : const Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
                           width: 1,
                           color: _selectedButton == 1
                               ? Theme.of(context).primaryColor
-                              : Color(0xFFDEDDE4)))),
+                              : const Color(0xFFDEDDE4)))),
             ),
           ),
           /*
@@ -112,7 +112,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                 'assets/svgs/holiday_village.svg',
                 color: _selectedButton == 2
                     ? Theme.of(context).primaryColor
-                    : Color(0xFFDEDDE4),
+                    : const Color(0xFFDEDDE4),
                 height: 14,
               ),
               label: Text(
@@ -120,19 +120,19 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                 style: Styles.bodySmall.merge(TextStyle(
                     color: _selectedButton == 2
                         ? Theme.of(context).primaryColor
-                        : Color(0xFFDEDDE4))),
+                        : const Color(0xFFDEDDE4))),
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 2
                       ? StatusColor.statusBlue2
-                      : Color(0xFFFFFFFF),
+                      : const Color(0xFFFFFFFF),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
                           width: 1,
                           color: _selectedButton == 2
                               ? Theme.of(context).primaryColor
-                              : Color(0xFFDEDDE4)))),
+                              : const Color(0xFFDEDDE4)))),
             ),
           ),
         ],

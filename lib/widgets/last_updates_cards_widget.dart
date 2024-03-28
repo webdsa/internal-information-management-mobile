@@ -24,7 +24,7 @@ class LastUpdatesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(children: [
         Container(
           color: Colors.transparent,
@@ -44,11 +44,11 @@ class LastUpdatesWidget extends StatelessWidget {
                         height: 14,
                       )),
                   Padding(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
                       style: Styles.bodySmall
-                          .merge(TextStyle(color: TextColors.text4)),
+                          .merge(const TextStyle(color: TextColors.text4)),
                     ),
                   )
                 ],
@@ -81,14 +81,14 @@ class LastUpdatesWidget extends StatelessWidget {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: StatusColor.statusOrange1,
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)))),
                             onPressed: () {},
                             child: Text(
                               "Agendar",
-                              style: Styles.bodySmall
-                                  .merge(TextStyle(color: TextColors.text7)),
+                              style: Styles.bodySmall.merge(
+                                  const TextStyle(color: TextColors.text7)),
                             )),
                       ),
                     )
@@ -104,7 +104,7 @@ class LastUpdatesWidget extends StatelessWidget {
 
                               */
         Padding(
-          padding: EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: 12),
           child: Container(
             color: Colors.transparent,
             width: double.infinity,
@@ -124,11 +124,11 @@ class LastUpdatesWidget extends StatelessWidget {
                               height: 14,
                             )),
                         Padding(
-                          padding: EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 10),
                           child: Text(
                             "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
-                            style: Styles.bodySmall
-                                .merge(TextStyle(color: TextColors.text4)),
+                            style: Styles.bodySmall.merge(
+                                const TextStyle(color: TextColors.text4)),
                           ),
                         )
                       ],
@@ -161,14 +161,15 @@ class LastUpdatesWidget extends StatelessWidget {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: StatusColor.statusGreen1,
-                                      shape: RoundedRectangleBorder(
+                                      shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
                                   onPressed: () {},
                                   child: Text(
                                     "Conferir",
                                     style: Styles.bodySmall.merge(
-                                        TextStyle(color: TextColors.text7)),
+                                        const TextStyle(
+                                            color: TextColors.text7)),
                                   )),
                             ),
                           )
@@ -185,7 +186,7 @@ class LastUpdatesWidget extends StatelessWidget {
 
                               */
         Padding(
-          padding: EdgeInsets.only(top: 12),
+          padding: const EdgeInsets.only(top: 12),
           child: Container(
             color: Colors.transparent,
             width: double.infinity,
@@ -208,8 +209,8 @@ class LastUpdatesWidget extends StatelessWidget {
                           padding: EdgeInsets.only(left: 10),
                           child: Text(
                             "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
-                            style: Styles.bodySmall
-                                .merge(TextStyle(color: TextColors.text4)),
+                            style: Styles.bodySmall.merge(
+                                const TextStyle(color: TextColors.text4)),
                           ),
                         )
                       ],
@@ -243,14 +244,15 @@ class LastUpdatesWidget extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
-                                      shape: RoundedRectangleBorder(
+                                      shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
                                   onPressed: () {},
                                   child: Text(
                                     "Ver painel",
                                     style: Styles.bodySmall.merge(
-                                        TextStyle(color: TextColors.text7)),
+                                        const TextStyle(
+                                            color: TextColors.text7)),
                                   )),
                             ),
                           )

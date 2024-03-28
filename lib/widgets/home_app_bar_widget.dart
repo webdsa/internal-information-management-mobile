@@ -12,35 +12,35 @@ class HomeAppBarWidget extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
       ),
       child: SafeArea(
           child: Padding(
-        padding: EdgeInsets.only(top: 16),
+        padding: const EdgeInsets.only(top: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Padding(
-                padding: EdgeInsets.only(top: 14, left: 40),
+                padding: const EdgeInsets.only(top: 14, left: 40),
                 child: Text.rich(TextSpan(children: [
                   TextSpan(
                       text: "Olá ",
                       style: Styles.headline3
-                          .merge(TextStyle(color: Color(0xFFFFFFFF)))),
+                          .merge(const TextStyle(color: Color(0xFFFFFFFF)))),
                   TextSpan(
                       text: "Amanda",
-                      style: Styles.headline3
-                          .merge(TextStyle(color: OtherColors.otherYellow1))),
+                      style: Styles.headline3.merge(
+                          const TextStyle(color: OtherColors.otherYellow1))),
                   TextSpan(
                       text: ",",
                       style: Styles.headline3
-                          .merge(TextStyle(color: Color(0xFFFFFFFF))))
+                          .merge(const TextStyle(color: Color(0xFFFFFFFF))))
                 ])),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(right: 16),
                 child: Icon(
                   Icons.menu,
@@ -50,11 +50,11 @@ class HomeAppBarWidget extends StatelessWidget {
               )
             ]),
             Padding(
-              padding: EdgeInsets.only(left: 40),
+              padding: const EdgeInsets.only(left: 40),
               child: Text(
                 "O que deseja ver hoje?",
                 style: Styles.titleSmall
-                    .merge(TextStyle(color: Color(0xFFFFFFFF))),
+                    .merge(const TextStyle(color: Color(0xFFFFFFFF))),
               ),
             )
           ],

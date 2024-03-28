@@ -23,12 +23,15 @@ class LoginService {
     }
   }
 
-  Future<String> login(
+  Future<String?> login(
       BuildContext context, String email, String password) async {
     try {
       final token = await authenticate(email, password);
       _token = token;
-      return _token!;
+      if (token.isEmpty) {
+        return '';
+      }
+      return token;
       //Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
       print("Erro ao fazer login: $e");

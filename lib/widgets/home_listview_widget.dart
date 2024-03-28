@@ -11,12 +11,12 @@ class HomeListViewWidget extends StatelessWidget {
     return Container(
       height: 90,
       child: ListView(
-        padding: EdgeInsets.only(left: 30, right: 10),
+        padding: const EdgeInsets.only(left: 30, right: 10),
         scrollDirection: Axis.horizontal,
         children: [
           Container(
             width: 200,
-            margin: EdgeInsets.all(4),
+            margin: const EdgeInsets.all(4),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: Color(0xFFFFFFFF)),
@@ -37,13 +37,13 @@ class HomeListViewWidget extends StatelessWidget {
                     Text(
                       "Manual de",
                       style: Styles.bodyText
-                          .merge(TextStyle(color: TextColors.text4)),
+                          .merge(const TextStyle(color: TextColors.text4)),
                       textAlign: TextAlign.left,
                     ),
                     Text(
                       "Orientações".toUpperCase(),
-                      style: Styles.headline4
-                          .merge(TextStyle(color: StatusColor.statusRed1)),
+                      style: Styles.headline4.merge(
+                          const TextStyle(color: StatusColor.statusRed1)),
                       textAlign: TextAlign.left,
                     )
                   ],
@@ -52,14 +52,14 @@ class HomeListViewWidget extends StatelessWidget {
             ]),
             // Seu primeiro container
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Container(
             width: 200,
-            margin: EdgeInsets.all(4),
+            margin: const EdgeInsets.all(4),
 
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: Color(0xFFFFFFFF),
+              color: const Color(0xFFFFFFFF),
             ),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -78,13 +78,13 @@ class HomeListViewWidget extends StatelessWidget {
                     Text(
                       "Sobre meu",
                       style: Styles.bodyText
-                          .merge(TextStyle(color: TextColors.text4)),
+                          .merge(const TextStyle(color: TextColors.text4)),
                       textAlign: TextAlign.left,
                     ),
                     Text(
                       "Patrimônio".toUpperCase(),
-                      style: Styles.headline4
-                          .merge(TextStyle(color: OtherColors.otherYellow1)),
+                      style: Styles.headline4.merge(
+                          const TextStyle(color: OtherColors.otherYellow1)),
                       textAlign: TextAlign.left,
                     )
                   ],
