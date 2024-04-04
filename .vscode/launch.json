@@ -5,9 +5,22 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "iatech",
+            "name": "Dev",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": ["-t", "lib/main_dev.dart", "--flavor", "dev"]
+        },
+        {
+            "name": "Hom",
+            "request": "launch",
+            "type": "dart",
+            "args": ["-t", "lib/main_hom.dart", "--flavor", "hom"]
+        },
+        {
+            "name": "Prod",
+            "request": "launch",
+            "type": "dart",
+            "args": ["-t", "lib/main_prod.dart", "--flavor", "prod"]
         },
         {
             "name": "iatech (profile mode)",
@@ -15,11 +28,5 @@
             "type": "dart",
             "flutterMode": "profile"
         },
-        {
-            "name": "iatech (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
     ]
 }

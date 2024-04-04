@@ -44,16 +44,16 @@ flavorizr:
       app:
         name: "G.I. DSA Dev"
       android:
-        applicationId: "dev.adventistas.org.internalinformationmanagement"
+        applicationId: "adventistas.org.internalinformationmanagement"
       ios:
-        bundleId: "dev.adventistas.org.internalinformationmanagement"
+        bundleId: "adventistas.org.internalinformationmanagement"
     hom:
       app:
         name: "G.I. DSA hom"
       android:
-        applicationId: "hom.adventistas.org.internalinformationmanagement"
+        applicationId: "adventistas.org.internalinformationmanagement"
       ios:
-        bundleId: "hom.adventistas.org.internalinformationmanagement"
+        bundleId: "adventistas.org.internalinformationmanagement"
     prod:
       app:
         name: "G.I. DSA Prod"
@@ -71,7 +71,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - .env
     - assets/imgs/
     - assets/svgs/
 

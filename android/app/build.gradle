@@ -30,12 +30,12 @@ android {
     productFlavors {
         dev {
             dimension "flavor-type"
-            applicationId "dev.adventistas.org.internalinformationmanagement"
+            applicationId "adventistas.org.internalinformationmanagement"
             resValue "string", "app_name", "G.I. DSA Dev"
         }
         hom {
             dimension "flavor-type"
-            applicationId "hom.adventistas.org.internalinformationmanagement"
+            applicationId "adventistas.org.internalinformationmanagement"
             resValue "string", "app_name", "G.I. DSA hom"
         }
         prod {

@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
         body: Banner(
             message: F.env,
-            location: BannerLocation.bottomEnd,
+            location: BannerLocation.topEnd,
             child: LoginScreenWidget()));
   }
 }
