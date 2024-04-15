@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
+import 'package:internalinformationmanagement/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'flavors.dart';
 
 class MyApp extends StatelessWidget {
@@ -19,13 +22,7 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: '/login',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Color(0xFF0C55F3),
-          colorScheme:
-              ColorScheme.fromSwatch().copyWith(secondary: Color(0xFFF5645E)),
-          scaffoldBackgroundColor: Color(0xFFEFF4FF),
-          useMaterial3: false,
-          fontFamily: 'Inter'),
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
 }

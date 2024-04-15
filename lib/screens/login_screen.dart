@@ -17,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
         body: Banner(
             message: F.env,
             location: BannerLocation.topEnd,
