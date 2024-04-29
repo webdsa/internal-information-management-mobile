@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:internalinformationmanagement/theme/theme.dart';
+import 'package:internalinformationmanagement/theme/theme_provider.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 class HomeDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -13,7 +16,7 @@ class HomeDrawer extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Provider.of<ThemeProvider>(context).themeData == darkMode ? MainColors.primary03 : MainColors.primary02,
       key: scaffoldKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -41,11 +44,11 @@ class HomeDrawer extends StatelessWidget {
                       children: [
                         Text("Amanda Gonçalves",
                             style: Styles.titleSmall
-                                .merge(TextStyle(color: Colors.white))),
+                                .merge(TextStyle(color: MainColors.primary03))),
                         Text(
                           "Cargo",
                           style: Styles.bodyText
-                              .merge(TextStyle(color: Colors.white)),
+                              .merge(TextStyle(color: MainColors.primary03)),
                         ),
                       ],
                     ),
@@ -64,7 +67,7 @@ class HomeDrawer extends StatelessWidget {
                       ),
                       title: Text('Configurações',
                           style: Styles.titleMedium
-                              .merge(TextStyle(color: TextColors.text6))),
+                              .merge(TextStyle(color: MainColors.primary03))),
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -77,7 +80,7 @@ class HomeDrawer extends StatelessWidget {
                       ),
                       title: Text('Perfil',
                           style: Styles.titleMedium
-                              .merge(TextStyle(color: TextColors.text6))),
+                              .merge(TextStyle(color: MainColors.primary03))),
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -87,7 +90,7 @@ class HomeDrawer extends StatelessWidget {
                           height: 24, color: Colors.white),
                       title: Text('Atividades',
                           style: Styles.titleMedium
-                              .merge(TextStyle(color: TextColors.text6))),
+                              .merge(TextStyle(color: MainColors.primary03))),
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -97,7 +100,7 @@ class HomeDrawer extends StatelessWidget {
                           height: 24, color: Colors.white),
                       title: Text('Trocar usuário',
                           style: Styles.titleMedium
-                              .merge(TextStyle(color: TextColors.text6))),
+                              .merge(TextStyle(color: MainColors.primary03))),
                       onTap: () {
                         Navigator.pop(context);
                       },
@@ -108,7 +111,7 @@ class HomeDrawer extends StatelessWidget {
                       title: Text(
                         'Contato RH',
                         style: Styles.titleMedium
-                            .merge(TextStyle(color: TextColors.text6)),
+                            .merge(TextStyle(color: MainColors.primary03)),
                       ),
                       onTap: () {
                         Navigator.pop(context);
@@ -129,7 +132,7 @@ class HomeDrawer extends StatelessWidget {
                   height: 24, color: Colors.white),
               title: Text("Sair da conta",
                   style: Styles.titleMedium
-                      .merge(TextStyle(color: TextColors.text6))),
+                      .merge(TextStyle(color: MainColors.primary03))),
             ),
           )
         ],

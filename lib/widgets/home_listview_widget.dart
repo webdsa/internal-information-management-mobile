@@ -8,93 +8,95 @@ class HomeListViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 90,
-      child: ListView(
-        padding: const EdgeInsets.only(left: 30, right: 10),
-        scrollDirection: Axis.horizontal,
-        children: [
-          Container(
-            width: 200,
-            margin: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFFFFFFF)),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 152,
+          padding: EdgeInsets.all(16),
+          margin: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: FoundationColors.foundationPrimaryLightActive,
+          ),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 CircleAvatar(
-                    radius: 25,
-                    backgroundColor: StatusColor.statusRed2,
+                    radius: 26,
+                    backgroundColor: FoundationColors.foundationPrimaryLightHover,
                     child: SvgPicture.asset(
                       'assets/svgs/assignment_ind.svg',
                       height: 24,
-                      color: StatusColor.statusRed1,
+                      color: MainColors.primary01,
                     )),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Manual de",
-                      style: Styles.bodyText
-                          .merge(const TextStyle(color: TextColors.text4)),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Orientações".toUpperCase(),
-                      style: Styles.headline4.merge(
-                          const TextStyle(color: StatusColor.statusRed1)),
-                      textAlign: TextAlign.left,
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Manual de",
+                        style: AppTextStyles.caption1.merge(
+                            const TextStyle(color: MainColors.primary01)),
+                        textAlign: TextAlign.left,
+                      ),
+                      Text(
+                        "Orientações".toUpperCase(),
+                        style: DesktopTextStyles.buttonRegular.merge(const TextStyle(
+                            color: FoundationColors.foundationTertiaryNormal)),
+                        textAlign: TextAlign.left,
+                      )
+                    ],
+                  ),
                 )
-              ])
-            ]),
-            // Seu primeiro container
+              ]),
+          // Seu primeiro container
+        ),
+        const SizedBox(width: 12),
+        Container(
+          width: 152,
+          padding: EdgeInsets.all(16),
+          margin: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: FoundationColors.foundationPrimaryLightActive,
           ),
-          const SizedBox(width: 12),
-          Container(
-            width: 200,
-            margin: const EdgeInsets.all(4),
-
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: const Color(0xFFFFFFFF),
-            ),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 CircleAvatar(
-                    radius: 25,
-                    backgroundColor: OtherColors.otherYellow2,
+                    radius: 26,
+                    backgroundColor: FoundationColors.foundationPrimaryLightHover,
                     child: SvgPicture.asset(
                       'assets/svgs/holiday_village.svg',
-                      color: OtherColors.otherYellow1,
+                      color: MainColors.primary01,
                       height: 24,
                     )),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Sobre meu",
-                      style: Styles.bodyText
-                          .merge(const TextStyle(color: TextColors.text4)),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Patrimônio".toUpperCase(),
-                      style: Styles.headline4.merge(
-                          const TextStyle(color: OtherColors.otherYellow1)),
-                      textAlign: TextAlign.left,
-                    )
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Sobre meu",
+                        style: AppTextStyles.caption1
+                            .merge(TextStyle(color: MainColors.primary01)),
+                      ),
+                      Text(
+                        "Patrimônio".toUpperCase(),
+                        style: DesktopTextStyles.buttonRegular.merge(const TextStyle(
+                            color: TailwindColors.tailwindAmber500)),
+                      )
+                    ],
+                  ),
                 )
-              ])
-            ]),
-            // Seu segundo container
-          ),
-        ],
-      ),
+              ]),
+          // Seu segundo container
+        ),
+      ],
     );
   }
 }

@@ -25,46 +25,48 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           /*
                               
-                                  Todos Button
+          Todos Button
                               
-                                  */
+          */
           Container(
-            height: 30,
+            height: 24,
             child: ElevatedButton(
               onPressed: () {
                 _setSelectedButton(0);
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 0
-                      ? StatusColor.statusBlue2
-                      : const Color(0xFFFFFFFF),
+                      ? MainColors.primary02
+                      : ShadeColors.shadeNormalHover.withOpacity(0.1),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
-                          width: 1,
+                          width: 0.5,
                           color: _selectedButton == 0
                               ? Theme.of(context).primaryColor
-                              : const Color(0xFFDEDDE4)))),
+                              : Colors.white.withOpacity(0.9)))),
               child: Text(
                 "Todos",
-                style: Styles.bodySmall.merge(TextStyle(
+                style: AppTextStyles.caption2.merge(TextStyle(
                     color: _selectedButton == 0
                         ? Theme.of(context).primaryColor
-                        : const Color(0xFFDEDDE4))),
+                        : Colors.white.withOpacity(0.9))),
               ),
             ),
           ),
+          SizedBox(
+            width: 12,
+          ),
           /*
                               
-                                  Manual Button
+          Manual Button
                               
-                                  */
+          */
           Container(
-            height: 30,
+            height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
                 _setSelectedButton(1);
@@ -72,38 +74,41 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               icon: SvgPicture.asset(
                 'assets/svgs/assignment_ind.svg',
                 color: _selectedButton == 1
-                    ? Theme.of(context).primaryColor
-                    : const Color(0xFFDEDDE4),
+                    ? MainColors.primary01
+                    : Colors.white.withOpacity(0.9),
                 height: 14,
               ),
               label: Text(
                 "Manual",
-                style: Styles.bodySmall.merge(TextStyle(
+                style: AppTextStyles.caption2.merge(TextStyle(
                     color: _selectedButton == 1
-                        ? Theme.of(context).primaryColor
-                        : const Color(0xFFDEDDE4))),
+                        ? MainColors.primary01
+                        : Colors.white.withOpacity(0.9))),
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 1
-                      ? StatusColor.statusBlue2
-                      : const Color(0xFFFFFFFF),
+                      ? MainColors.primary02
+                      : ShadeColors.shadeNormalHover.withOpacity(0.1),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
-                          width: 1,
+                          width: 0.5,
                           color: _selectedButton == 1
                               ? Theme.of(context).primaryColor
                               : const Color(0xFFDEDDE4)))),
             ),
           ),
+          SizedBox(
+            width: 12,
+          ),
           /*
                               
                               
-                                  Patrimônio Button
-                              
-                                  */
+          Patrimônio Button
+      
+          */
           Container(
-            height: 30,
+            height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
                 _setSelectedButton(2);
@@ -111,25 +116,25 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
               icon: SvgPicture.asset(
                 'assets/svgs/holiday_village.svg',
                 color: _selectedButton == 2
-                    ? Theme.of(context).primaryColor
-                    : const Color(0xFFDEDDE4),
+                    ? MainColors.primary01
+                    : Colors.white.withOpacity(0.9),
                 height: 14,
               ),
               label: Text(
                 "Patrimônio",
-                style: Styles.bodySmall.merge(TextStyle(
+                style: AppTextStyles.caption2.merge(TextStyle(
                     color: _selectedButton == 2
                         ? Theme.of(context).primaryColor
-                        : const Color(0xFFDEDDE4))),
+                        : Colors.white.withOpacity(0.9))),
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: _selectedButton == 2
-                      ? StatusColor.statusBlue2
-                      : const Color(0xFFFFFFFF),
+                      ? MainColors.primary02
+                      : ShadeColors.shadeNormalHover.withOpacity(0.1),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
                       side: BorderSide(
-                          width: 1,
+                          width: 0.5,
                           color: _selectedButton == 2
                               ? Theme.of(context).primaryColor
                               : const Color(0xFFDEDDE4)))),

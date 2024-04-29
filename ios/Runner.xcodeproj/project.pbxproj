@@ -529,7 +529,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -571,6 +572,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A8B2E73A83825F51CDE5E3F /* Pods-Runner.debug-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-dev";
@@ -579,6 +583,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4CB001429FF91389E3A808F3 /* Pods-Runner.profile-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-dev";
@@ -587,6 +594,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B0785FCB76C776A3DB3E194C /* Pods-Runner.release-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-dev";
@@ -595,6 +605,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 98448CFC2E803DF08154FACC /* Pods-Runner.debug-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-hom";
@@ -603,6 +616,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9774EC0DA8BA424983F2FC68 /* Pods-Runner.profile-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-hom";
@@ -611,6 +627,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 182F4970509B57A621E21A56 /* Pods-Runner.release-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-hom";
@@ -619,6 +638,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 86DE62A5CEBAFAD1E28CEDDE /* Pods-Runner.debug-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-prod";
@@ -627,6 +649,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 37B7D30B7614664DFFDFB91F /* Pods-Runner.profile-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-prod";
@@ -635,6 +660,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B5E4E2FF4B96490737D1CF65 /* Pods-Runner.release-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-prod";
@@ -643,6 +671,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1726D5A4B17068DBB027DC8A /* Pods-RunnerTests.debug-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-dev";
@@ -651,6 +680,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7F76F7B38E8DB8FB53CE86E4 /* Pods-RunnerTests.profile-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-dev";
@@ -659,6 +689,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4288A1C3ACB029D72BC237A4 /* Pods-RunnerTests.release-dev.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-dev";
@@ -667,6 +698,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C31281C4EFAA15A421FB97C3 /* Pods-RunnerTests.debug-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-hom";
@@ -675,6 +707,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A9CB36870A61F543870AF739 /* Pods-RunnerTests.profile-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-hom";
@@ -683,6 +716,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2FFC9D4E69F67F13C2A60999 /* Pods-RunnerTests.release-hom.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-hom";
@@ -691,6 +725,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B4A6FACAFA910B42FA33704D /* Pods-RunnerTests.debug-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Debug-prod";
@@ -699,6 +734,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 872B5F6AF16637D042003E73 /* Pods-RunnerTests.profile-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Profile-prod";
@@ -707,6 +743,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 003967BBAE9FDB4B9E36947E /* Pods-RunnerTests.release-prod.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
 				PRODUCT_NAME = RunnerTests;
 			};
 			name = "Release-prod";
@@ -739,7 +776,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -767,7 +805,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -787,7 +828,7 @@
 			baseConfigurationReference = BFC1E193885C2C70B75FE123 /* Pods-RunnerTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -805,7 +846,7 @@
 			baseConfigurationReference = F842050F61707AEC7CDE21DB /* Pods-RunnerTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -821,7 +862,7 @@
 			baseConfigurationReference = 26E95686E793E2DB87936965 /* Pods-RunnerTests.profile.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
@@ -862,7 +903,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -930,7 +972,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -996,7 +1039,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1051,7 +1095,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1081,7 +1126,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1103,7 +1151,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = 7DS4TW8W86;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1148,7 +1199,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1218,7 +1270,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1291,7 +1344,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1361,7 +1415,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1434,7 +1489,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1507,7 +1563,8 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;

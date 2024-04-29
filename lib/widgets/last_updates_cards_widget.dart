@@ -40,14 +40,14 @@ class LastUpdatesWidget extends StatelessWidget {
                       backgroundColor: Colors.white,
                       child: SvgPicture.asset(
                         'assets/svgs/holiday_village.svg',
-                        color: OtherColors.otherYellow1,
+                        color: MainColors.primary01,
                         height: 14,
                       )),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: Text(
                       "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
-                      style: Styles.bodySmall
+                      style: AppTextStyles.caption2
                           .merge(const TextStyle(color: TextColors.text4)),
                     ),
                   )
@@ -62,14 +62,14 @@ class LastUpdatesWidget extends StatelessWidget {
                     Text(
                       "Agendamento de Serviço".toUpperCase(),
                       textAlign: TextAlign.left,
-                      style: Styles.headline5.merge(
+                      style: DesktopTextStyles.buttonSmall.merge(
                           TextStyle(color: Theme.of(context).primaryColor)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 2.0),
                       child: Text(
                         "Precisa trocar a cortina? Ou dedetização na sua casa? Agende um serviço!",
-                        style: Styles.bodySmall,
+                        style: AppTextStyles.caption2,
                         textAlign: TextAlign.start,
                       ),
                     ),
@@ -87,7 +87,7 @@ class LastUpdatesWidget extends StatelessWidget {
                             onPressed: () {},
                             child: Text(
                               "Agendar",
-                              style: Styles.bodySmall.merge(
+                              style: AppTextStyles.caption2.merge(
                                   const TextStyle(color: TextColors.text7)),
                             )),
                       ),
@@ -120,14 +120,14 @@ class LastUpdatesWidget extends StatelessWidget {
                             backgroundColor: Colors.white,
                             child: SvgPicture.asset(
                               'assets/svgs/assignment_ind.svg',
-                              color: Theme.of(context).primaryColor,
+                              color: MainColors.primary01,
                               height: 14,
                             )),
                         Padding(
                           padding: const EdgeInsets.only(left: 10),
                           child: Text(
                             "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
-                            style: Styles.bodySmall.merge(
+                            style: AppTextStyles.caption2.merge(
                                 const TextStyle(color: TextColors.text4)),
                           ),
                         )
@@ -142,14 +142,14 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Agendamento de Serviço".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: Styles.headline5.merge(TextStyle(
+                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
                                 color: Theme.of(context).primaryColor)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
                               "O relatório tem novas atualizações, que tal conferir o que mudou?",
-                              style: Styles.bodySmall,
+                              style: AppTextStyles.caption2,
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -167,7 +167,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                   onPressed: () {},
                                   child: Text(
                                     "Conferir",
-                                    style: Styles.bodySmall.merge(
+                                    style: AppTextStyles.caption2.merge(
                                         const TextStyle(
                                             color: TextColors.text7)),
                                   )),
@@ -202,14 +202,14 @@ class LastUpdatesWidget extends StatelessWidget {
                             backgroundColor: Colors.white,
                             child: SvgPicture.asset(
                               'assets/svgs/for_you.svg',
-                              color: Theme.of(context).primaryColor,
+                              color: MainColors.primary01,
                               height: 14,
                             )),
                         Padding(
                           padding: EdgeInsets.only(left: 10),
                           child: Text(
                             "Hoje - ${DateTime.now().day} de ${months[DateTime.now().month - 1]}",
-                            style: Styles.bodySmall.merge(
+                            style: AppTextStyles.caption2.merge(
                                 const TextStyle(color: TextColors.text4)),
                           ),
                         )
@@ -224,14 +224,14 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Boas-vindas".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: Styles.headline5.merge(TextStyle(
+                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
                                 color: Theme.of(context).primaryColor)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
                             child: Text(
                               "Seja bem-vinda ao nosso aplicativo interno! Com informações atualizadas e disponíveis para você a qualquer momento.",
-                              style: Styles.bodySmall,
+                              style: AppTextStyles.caption2,
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -250,7 +250,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                   onPressed: () {},
                                   child: Text(
                                     "Ver painel",
-                                    style: Styles.bodySmall.merge(
+                                    style: AppTextStyles.caption2.merge(
                                         const TextStyle(
                                             color: TextColors.text7)),
                                   )),
