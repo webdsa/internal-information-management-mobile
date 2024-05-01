@@ -2,6 +2,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
+import 'package:motion_tab_bar/MotionTabBar.dart';
+import 'package:motion_tab_bar/MotionTabBarController.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
 
@@ -21,32 +23,39 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final TextEditingController _searchContentController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  MotionTabBarController? _motionTabBarController;
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _motionTabBarController = MotionTabBarController(
+      length: 3,
+      initialIndex: selectedIndex, 
+      vsync: this
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: SlidingClippedNavBar(
-        iconSize: 40,
-        inactiveColor: MainColors.primary04,
-        backgroundColor: MainColors.primary02,
-        barItems: [
-          BarItem(title: 'Home', icon: Icons.home_rounded),
-          BarItem(title: 'Search', icon: Icons.search),
-          BarItem(title: 'Profile', icon: Icons.person),
-        ], 
-        selectedIndex: selectedIndex, 
-        onButtonPressed: (index) {
-          setState(() {
-            selectedIndex = index;
-          });
-        }, 
-        activeColor: TailwindColors.tailwindEmerald900
-        ),
-        /*
+      bottomNavigationBar: MotionTabBar(
+        initialSelectedTab: "Início", 
+        labels: ["Início", "Pesquisar", "Perfil"],
+        icons: [Icons.home, Icons.search, Icons.person],
+        controller: _motionTabBarController,
+        tabIconColor: MainColors.primary04,
+        tabBarColor: MainColors.primary02,
+        tabIconSize: 28,
+        onTabItemSelected: (index) => setState(() => selectedIndex = index),
+        tabSelectedColor: MainColors.primary01,
+        tabIconSelectedSize: 30,
+        textStyle: TextStyle(color: MainColors.primary01, fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      /*
       
       SECTION - Drawer
       
@@ -106,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.search),
                                 filled: true,
-                                fillColor: Color(0xFFBAC7D5),
+                                fillColor: ShadeColors.shadeLight.withOpacity(0.05),
                                 label: Text("Pesquise por um conteudo..."),
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide.none,

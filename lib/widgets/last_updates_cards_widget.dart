@@ -63,7 +63,7 @@ class LastUpdatesWidget extends StatelessWidget {
                       "Agendamento de Serviço".toUpperCase(),
                       textAlign: TextAlign.left,
                       style: DesktopTextStyles.buttonSmall.merge(
-                          TextStyle(color: Theme.of(context).primaryColor)),
+                          TextStyle(color: MainColors.primary01)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 2.0),
@@ -143,7 +143,7 @@ class LastUpdatesWidget extends StatelessWidget {
                             "Agendamento de Serviço".toUpperCase(),
                             textAlign: TextAlign.left,
                             style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: Theme.of(context).primaryColor)),
+                                color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
@@ -225,7 +225,7 @@ class LastUpdatesWidget extends StatelessWidget {
                             "Boas-vindas".toUpperCase(),
                             textAlign: TextAlign.left,
                             style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: Theme.of(context).primaryColor)),
+                                color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),

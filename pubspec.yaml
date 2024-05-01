@@ -29,6 +29,7 @@ dependencies:
   shared_preferences: ^2.2.2
   flutter_flavorizr: ^2.2.2
   sliding_clipped_nav_bar: ^3.1.1
+  motion_tab_bar: ^2.0.4
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/
     - assets/imgs/
     - assets/svgs/
 
