@@ -37,4 +37,13 @@ class F {
         return 'title';
     }
   }
+
+  static String get apiUrl {
+    switch (appFlavor) {
+      case Flavor.dev:
+        return "http://10.0.2.2:5171";
+      default:
+        return "";
+    }
+  }
 }

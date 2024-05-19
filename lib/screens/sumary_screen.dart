@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:internalinformationmanagement/service/APIService.dart';
 import 'dart:convert';
 
 import 'package:internalinformationmanagement/util/Palette.dart';
+import 'package:internalinformationmanagement/util/Styles.dart';
 
 class SummaryScreen extends StatefulWidget {
   @override
@@ -10,23 +11,8 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  Map<String, dynamic> summaryData = {};
-  int summaryLength = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    loadJsonData();
-  }
-
-  Future<void> loadJsonData() async {
-    String jsonData = await rootBundle.loadString('assets/sumario.json');
-    Map<String, dynamic>data = json.decode(jsonData);
-    setState(() {
-      summaryData = data;
-      summaryLength = summaryData['summary'].length;
-    });
-  }
+  final APIService apiService = APIService();
+  late Map<String, dynamic> sessionData;
 
   @override
   Widget build(BuildContext context) {
@@ -35,48 +21,64 @@ class _SummaryScreenState extends State<SummaryScreen> {
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.white, MainColors.primary02]
-          ),
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, MainColors.primary02]),
         ),
         child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              children: [
-                SafeArea(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50, left: 20),
-                      child: IconButton(
-                        icon: Icon(Icons.close_rounded, size: 20, color: MainColors.primary04),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ),
+            child: Column(children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50, left: 20),
+                  child: IconButton(
+                    icon: Icon(Icons.close_rounded,
+                        size: 20, color: MainColors.primary04),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                   ),
                 ),
-                ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: summaryLength,
-                  itemBuilder: (context, index) {
-                    return ExpansionTile(
-                      title: Text(summaryData['summary'][index]['sectionTitle']),
-                      children: [
-                        for (var item in summaryData['summary'][index]['items'])
-                          ListTile(
-                            title: Text(item),
-                          ),
-                        ],
+              ),
+              FutureBuilder(
+                  future: apiService.fetchTopics(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
                       );
-                    },
-                ),
-              ]
-            ),
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapshot.data['data'].length,
+                        itemBuilder: (context, index) {
+                          return ExpansionTile(
+                            title: Text(
+                              "${snapshot.data['data'][index]['name']}",
+                              style: AppTextStyles.boldHeadline,
+                            ),
+                            children: [
+                              for (var item in snapshot.data['data'][index]
+                                  ['subTopics'])
+                                ListTile(
+                                  title: Text(
+                                    "${item['name']}",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                )
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  })
+            ]),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/screens/sumary_screen.dart';
+import 'package:internalinformationmanagement/service/APIService.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
@@ -11,6 +12,8 @@ import 'package:provider/provider.dart';
 class FeedScreen extends StatelessWidget {
   final TextEditingController _searchContentController =
       TextEditingController();
+
+  final APIService apiService = APIService();
 
   @override
   Widget build(BuildContext context) {
@@ -136,77 +139,106 @@ class FeedScreen extends StatelessWidget {
                               )
                             ]),
                       )),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 38.0),
-                    child: Text(
-                      "Pagamentos e Orçamentos",
-                      style: AppTextStyles.boldTitle2
-                          .merge(TextStyle(color: MainColors.primary04)),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24.0),
-                    child: Container(
-                      height: 200,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Card(
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(12)),
-                              ),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    Color(0xFF328FFB).withOpacity(0.2),
-                                    Colors.white.withOpacity(0.7)
-                                  ],
-                                )),
-                                width: 300.0,
-                                padding: EdgeInsets.all(16.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Orçamento Financeiro dos Departamentos',
-                                        style: AppTextStyles.boldSubhead.merge(
-                                            TextStyle(
-                                                color: MainColors.primary04)),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: Text(
-                                          "O orçamento financeiro disponibilizado aos departamentos tem sua origem e é de responsabilidade da tesouraria.",
-                                          style: AppTextStyles.footnote.merge(
-                                              TextStyle(
-                                                  color: MainColors.primary04)),
-                                          maxLines: 4,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                  FutureBuilder(
+                      future: apiService.fetchTopics(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
                           );
-                        },
-                      ),
-                    ),
-                  ),
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data['data'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 38),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${snapshot.data['data'][index]['name']}",
+                                      style: AppTextStyles.boldTitle2.merge(
+                                          TextStyle(
+                                              color: MainColors.primary04)),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Container(
+                                      height: 200,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount: snapshot
+                                            .data['data'][index]['subTopics']
+                                            .length,
+                                        itemBuilder: (context, i) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Card(
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                              ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Color(0xFF328FFB)
+                                                        .withOpacity(0.2),
+                                                    Colors.white
+                                                        .withOpacity(0.7)
+                                                  ],
+                                                )),
+                                                width: 300.0,
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        '${snapshot.data['data'][index]['subTopics'][i]['name']}',
+                                                        style: AppTextStyles
+                                                            .boldSubhead
+                                                            .merge(TextStyle(
+                                                                color: MainColors
+                                                                    .primary04)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return Text("null");
+                      }),
                 ],
               ),
             ),

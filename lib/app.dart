@@ -20,11 +20,12 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       routes: {
         '/summary': (context) => SummaryScreen(),
-        '/feed' : (context) => FeedScreen(),
+        '/feed': (context) => FeedScreen(),
         '/login': (context) => LoginScreen(navigatorKey: navigatorKey),
         '/home': (context) => HomeScreen()
       },
-      initialRoute: '/login',
+      //initialRoute: '/login',
+      home: FeedScreen(),
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
