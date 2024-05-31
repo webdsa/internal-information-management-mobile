@@ -27,7 +27,6 @@ class LoginService {
       BuildContext context, String email, String password) async {
     try {
       final token = await authenticate(email, password);
-      _token = token;
       if (token.isEmpty) {
         return '';
       }

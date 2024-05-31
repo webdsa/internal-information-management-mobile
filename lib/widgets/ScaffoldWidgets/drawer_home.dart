@@ -5,10 +5,17 @@ import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
   const HomeDrawer({super.key, required this.scaffoldKey});
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwt_token', '');
+    Navigator.of(context).pushReplacementNamed('/login');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,9 @@ class HomeDrawer extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20), bottomRight: Radius.circular(20))),
-      backgroundColor: Provider.of<ThemeProvider>(context).themeData == darkMode ? MainColors.primary03 : MainColors.primary02,
+      backgroundColor: Provider.of<ThemeProvider>(context).themeData == darkMode
+          ? MainColors.primary03
+          : MainColors.primary02,
       key: scaffoldKey,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,7 +135,7 @@ class HomeDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 30, bottom: 30),
             child: ListTile(
               onTap: () {
-                Navigator.of(context).pushReplacementNamed('/login');
+                _logout(context);
               },
               leading: SvgPicture.asset('assets/svgs/logout.svg',
                   height: 24, color: Colors.white),

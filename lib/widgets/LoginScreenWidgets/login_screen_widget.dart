@@ -7,6 +7,7 @@ import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreenWidget extends StatefulWidget {
   const LoginScreenWidget({super.key});
@@ -28,6 +29,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
   late AnimationController _animationController;
   late Animation<double> _animation;
+  late SharedPreferences prefs;
 
   bool _isLoading = false;
   bool _isRegistering = false;
@@ -38,12 +40,18 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   @override
   void initState() {
     super.initState();
+
     _animationController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
     _animation = Tween<double>(
             begin: !_isRegistering ? 166 : 84, end: !_isRegistering ? 84 : 166)
         .animate(CurvedAnimation(
             parent: _animationController, curve: Curves.easeInOutCubic));
+  }
+
+  Future<void> _setJwt(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwt_token', token);
   }
 
   @override
@@ -87,6 +95,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
       var token = await credential.user?.getIdToken(true);
 
+      await _setJwt(token!);
+
       if (token != null) {
         setState(() {
           _isLoading = true; // Ativa a animação
@@ -113,7 +123,14 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [MainColors.primary03, FoundationColors.foundationSecondaryDarkest])),
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+            MainColors.primary03,
+            FoundationColors.foundationSecondaryDarkest
+          ])),
       child: SafeArea(
         child: Column(
           children: <Widget>[
@@ -469,7 +486,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                                 children: [
                                   Text(
                                     'Conecte-se com SSO',
-                                    style: Styles.buttonSmall.merge(TextStyle(color: TextColors.text1)),
+                                    style: Styles.buttonSmall.merge(
+                                        TextStyle(color: TextColors.text1)),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 8.0),
@@ -782,7 +800,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 children: [
                   Text(
                     'Conecte-se com SSO',
-                    style: Styles.buttonSmall.merge(TextStyle(color: TextColors.text1)),
+                    style: Styles.buttonSmall
+                        .merge(TextStyle(color: TextColors.text1)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
