@@ -2,6 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+/*
+
+This class is for the conventional 
+
+*/
 class LoginService {
   String? _token;
 
@@ -16,7 +21,6 @@ class LoginService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(response.body);
       _token = data['token'];
-      print(_token);
       return _token!;
     } else {
       throw Exception('Falha ao realizar login');
@@ -34,22 +38,6 @@ class LoginService {
       //Navigator.of(context).pushReplacementNamed('/home');
     } catch (e) {
       print("Erro ao fazer login: $e");
-    }
-  }
-
-  Future<List<String>> fetchData() async {
-    final response = await http.get(Uri.parse("uri"), headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $_token'
-    });
-
-    if (response.statusCode == 200) {
-      final List<dynamic> rawData = jsonDecode(response.body);
-      final List<String> processedData =
-          rawData.map((data) => data.toString()).toList();
-      return processedData;
-    } else {
-      throw Exception("Falha ao obter dados");
     }
   }
 

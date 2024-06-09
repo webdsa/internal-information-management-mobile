@@ -11,9 +11,15 @@ class APIService {
   late Map<String, String> headers;
 
   APIService() {
-    _initHeader() ;
+    _initHeader();
   }
 
+  /*
+
+  This function initialize the APIService class, calling the JWT_token
+  saved in the shared preferences (local app save).
+
+  */
   Future<void> _initHeader() async {
     final prefs = await SharedPreferences.getInstance();
     final String? bearerToken = prefs.getString("jwt_token");
@@ -29,6 +35,12 @@ class APIService {
     }
   }
 
+  /*
+
+  This function is responsible to fetch the topics from summary/feed screen.
+  It will return a json to summary/feed screens.
+
+  */
   Future<dynamic> fetchTopics() async {
     try {
       final response =

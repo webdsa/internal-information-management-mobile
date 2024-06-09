@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Olá, ",
+                                            "Olá,",
                                             style: AppTextStyles.largeTitle
                                                 .merge(TextStyle(
                                                     color: TailwindColors

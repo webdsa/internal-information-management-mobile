@@ -44,21 +44,21 @@ flavorizr:
   flavors:
     dev:
       app:
-        name: "G.I. DSA Dev"
+        name: "DSA - Informações DEV"
       android:
         applicationId: "adventistas.org.internalinformationmanagement"
       ios:
         bundleId: "adventistas.org.internalinformationmanagement"
     hom:
       app:
-        name: "G.I. DSA hom"
+        name: "DSA - Informações HOM"
       android:
         applicationId: "adventistas.org.internalinformationmanagement"
       ios:
         bundleId: "adventistas.org.internalinformationmanagement"
     prod:
       app:
-        name: "G.I. DSA Prod"
+        name: "DSA - Informações"
       android:
         applicationId: "adventistas.org.internalinformationmanagement"
       ios:
