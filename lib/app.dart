@@ -35,9 +35,13 @@ class _MyAppState extends State<MyApp> {
     print(_jwt);
   }
 
+  Future<bool> _isLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey("jwt_token") && (prefs.getString("jwt_token") != "");
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (_jwt == null || _jwt == "") {
       return MaterialApp(
         title: F.title,
         navigatorKey: widget.navigatorKey,
@@ -47,26 +51,22 @@ class _MyAppState extends State<MyApp> {
           '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
           '/home': (context) => HomeScreen()
         },
-        //initialRoute: '/login',
-        initialRoute: '/login',
+        home: FutureBuilder<bool>(
+          future: _isLoggedIn(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            else if (snapshot.hasData && snapshot.data!) {
+              return HomeScreen();
+            }
+            else{
+              return LoginScreen(navigatorKey: widget.navigatorKey);
+            }
+          },
+        ),
         debugShowCheckedModeBanner: false,
         theme: Provider.of<ThemeProvider>(context).themeData,
       );
-    } else {
-      return MaterialApp(
-        title: F.title,
-        navigatorKey: widget.navigatorKey,
-        routes: {
-          '/summary': (context) => SummaryScreen(),
-          '/feed': (context) => FeedScreen(),
-          '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
-          '/home': (context) => HomeScreen()
-        },
-        //initialRoute: '/login',
-        initialRoute: '/home',
-        debugShowCheckedModeBanner: false,
-        theme: Provider.of<ThemeProvider>(context).themeData,
-      );
-    }
   }
 }

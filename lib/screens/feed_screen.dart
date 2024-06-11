@@ -139,6 +139,119 @@ class FeedScreen extends StatelessWidget {
                               )
                             ]),
                       )),
+                      Container(
+                        height: 200,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                        Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8.0),
+                                              child: Card(
+                                                elevation: 2,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(12)),
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Color(0xFF328FFB)
+                                                          .withOpacity(0.2),
+                                                      Colors.white
+                                                          .withOpacity(0.7)
+                                                    ],
+                                                  )),
+                                                  width: 300.0,
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 10),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          'Pagamentos e Orçamentos',
+                                                          style: AppTextStyles
+                                                              .boldSubhead
+                                                              .merge(TextStyle(
+                                                                  color: MainColors
+                                                                      .primary04)),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 8.0),
+                                              child: Card(
+                                                elevation: 2,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(12)),
+                                                ),
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                    colors: [
+                                                      Color(0xFF328FFB)
+                                                          .withOpacity(0.2),
+                                                      Colors.white
+                                                          .withOpacity(0.7)
+                                                    ],
+                                                  )),
+                                                  width: 300.0,
+                                                  padding: EdgeInsets.all(16.0),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 16,
+                                                        vertical: 10),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Text(
+                                                          'Viagens',
+                                                          style: AppTextStyles
+                                                              .boldSubhead
+                                                              .merge(TextStyle(
+                                                                  color: MainColors
+                                                                      .primary04)),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                            ],
+                          )
+                          ,
+                        ),
+                      )
+                      
+                      /*
                   FutureBuilder(
                       future: apiService.fetchTopics(),
                       builder: (context, snapshot) {
@@ -238,7 +351,7 @@ class FeedScreen extends StatelessWidget {
                           );
                         }
                         return Text("null");
-                      }),
+                      }),*/
                 ],
               ),
             ),

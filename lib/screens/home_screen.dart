@@ -51,6 +51,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
   }
 
+  String getName() {
+    if (_userData['name'].contains("DSA") || _userData['name'].contains("IATec")) {
+      return _userData['name'].split(" ")[2];
+    } else {
+      return _userData['name'].split(" ")[0];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,8 +121,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             IconButton(
-                              onPressed: () =>
-                                  _scaffoldKey.currentState?.openDrawer(),
+                              onPressed: () {
+                                _scaffoldKey.currentState?.openDrawer();
+                              },
                               icon: Icon(Icons.menu),
                               iconSize: 35,
                             )
@@ -133,25 +142,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Olá,",
-                                            style: AppTextStyles.largeTitle
-                                                .merge(TextStyle(
-                                                    color: TailwindColors
-                                                        .tailwindBlack)),
-                                          ),
-                                          Text(
-                                            "${_userData['name'].split(" ")[0]}",
-                                            style: DesktopTextStyles.headlineH4
-                                                .merge(TextStyle(
-                                                    color: TailwindColors
-                                                        .tailwindBlack)),
-                                          ),
-                                        ],
+                                      Text(
+                                        "Olá, ",
+                                        style: AppTextStyles.largeTitle
+                                            .merge(TextStyle(
+                                                color: TailwindColors
+                                                    .tailwindBlack)),
+                                      ),
+                                      Text(
+                                        "${getName()}",
+                                        style: DesktopTextStyles.headlineH4
+                                            .merge(TextStyle(
+                                                color: TailwindColors
+                                                    .tailwindBlack)),
                                       ),
                                     ],
                                   ),

@@ -102,6 +102,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           _isLoading = true; // Ativa a animação
         });
 
+        // IATec - Mikaela Pereira
+        // DSA - Miakela Pereira
         // Simula um tempo de espera antes de navegar para a próxima tela
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(

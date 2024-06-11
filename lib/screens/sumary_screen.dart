@@ -43,6 +43,77 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ),
               ),
+              ExpansionTile(
+                            title: Text(
+                              "Pagamentos e orçamentos",
+                              style: AppTextStyles.boldHeadline,
+                            ),
+                            children: [
+                                ListTile(
+                                  title: Text(
+                                    "Pagamento 1",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Pagamento 2",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Pagamento 3",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Orçamento 1",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Orçamento 2",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Orçamento 3",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                )
+                            ],
+                          ),
+                          ExpansionTile(
+                            title: Text(
+                              "Viagens",
+                              style: AppTextStyles.boldHeadline,
+                            ),
+                            children: [
+                                ListTile(
+                                  title: Text(
+                                    "Viagem 1",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Viagem 2",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                                ListTile(
+                                  title: Text(
+                                    "Viagem 3",
+                                    style: AppTextStyles.footnote,
+                                  ),
+                                ),
+                            ],
+                          )
+              /*
               FutureBuilder(
                   future: apiService.fetchTopics(),
                   builder: (context, snapshot) {
@@ -77,7 +148,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         },
                       );
                     }
-                  })
+                  })*/
             ]),
           ),
         ),

@@ -12,11 +12,11 @@ class F {
   static String get title {
     switch (appFlavor) {
       case Flavor.dev:
-        return 'G.I. DSA Dev';
+        return 'DSA - Informações Dev';
       case Flavor.hom:
-        return 'G.I. DSA hom';
+        return 'DSA - Informações Hom';
       case Flavor.prod:
-        return 'G.I. DSA Prod';
+        return 'DSA - Informações';
       default:
         return 'title';
     }
