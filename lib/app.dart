@@ -37,36 +37,35 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey("jwt_token") && (prefs.getString("jwt_token") != "");
+    return prefs.containsKey("jwt_token") &&
+        (prefs.getString("jwt_token") != "");
   }
 
   @override
   Widget build(BuildContext context) {
-      return MaterialApp(
-        title: F.title,
-        navigatorKey: widget.navigatorKey,
-        routes: {
-          '/summary': (context) => SummaryScreen(),
-          '/feed': (context) => FeedScreen(),
-          '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
-          '/home': (context) => HomeScreen()
+    return MaterialApp(
+      title: F.title,
+      navigatorKey: widget.navigatorKey,
+      routes: {
+        '/summary': (context) => SummaryScreen(),
+        '/feed': (context) => FeedScreen(),
+        '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
+        '/home': (context) => HomeScreen()
+      },
+      home: FutureBuilder<bool>(
+        future: _isLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else if (snapshot.hasData && snapshot.data!) {
+            return HomeScreen();
+          } else {
+            return LoginScreen(navigatorKey: widget.navigatorKey);
+          }
         },
-        home: FutureBuilder<bool>(
-          future: _isLoggedIn(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
-            }
-            else if (snapshot.hasData && snapshot.data!) {
-              return HomeScreen();
-            }
-            else{
-              return LoginScreen(navigatorKey: widget.navigatorKey);
-            }
-          },
-        ),
-        debugShowCheckedModeBanner: false,
-        theme: Provider.of<ThemeProvider>(context).themeData,
-      );
+      ),
+      debugShowCheckedModeBanner: false,
+      theme: Provider.of<ThemeProvider>(context).themeData,
+    );
   }
 }

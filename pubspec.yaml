@@ -53,9 +53,9 @@ flavorizr:
       app:
         name: "DSA - Informações HOM"
       android:
-        applicationId: "adventistas.org.internalinformationmanagement"
+        applicationId: "adventistas.org.internalinformationmanagement.hom"
       ios:
-        bundleId: "adventistas.org.internalinformationmanagement"
+        bundleId: "adventistas.org.internalinformationmanagement.hom"
     prod:
       app:
         name: "DSA - Informações"
