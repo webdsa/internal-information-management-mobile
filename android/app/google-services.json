@@ -23,6 +23,25 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044529716444:android:3aab023d1d24ec3dbd6819",
+        "android_client_info": {
+          "package_name": "adventistas.org.internalinformationmanagement.hom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ--79OAO9FKv0v7YIGiXRvH9e5KNyz_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
