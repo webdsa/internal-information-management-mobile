@@ -94,9 +94,7 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
   final List<Widget> _pages = [
     HomeScreen(),
     SearchScreen(),
-    Center(
-      child: Text("Profile"),
-    )
+    HomeScreen()
   ];
 
   @override

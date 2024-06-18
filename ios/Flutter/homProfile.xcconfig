@@ -2,5 +2,5 @@
 
 FLUTTER_TARGET=lib/main_hom.dart
 ASSET_PREFIX=hom
-BUNDLE_NAME=G.I. DSA hom
-BUNDLE_DISPLAY_NAME=G.I. DSA hom
+BUNDLE_NAME=DSA - Informações Hom
+BUNDLE_DISPLAY_NAME=DSA - Informações Hom

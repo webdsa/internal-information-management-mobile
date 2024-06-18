@@ -3,7 +3,7 @@ description: "System for IATECH"
 
 publish_to: 'none'
 
-version: 1.0.2+1
+version: 1.0.3+1
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
@@ -73,6 +73,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/topics.json
     - assets/imgs/
     - assets/svgs/
 

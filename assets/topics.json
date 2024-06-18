@@ -1,0 +1,234 @@
+{
+    "succeeded": true,
+    "error": {
+      "key": "string",
+      "values": {
+        "additionalProp1": "string",
+        "additionalProp2": "string",
+        "additionalProp3": "string"
+      }
+    },
+    "data": [
+      {
+        "id": 1,
+        "name": "Pagamentos e Orçamentos",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 1,
+            "name": "Orçamento Financeiro dos Departamentos",
+            "description": "Description of SubTopic 1.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Pagamentos e Orçamentos",
+            "topicId": 1
+          },
+          {
+            "id": 2,
+            "name": "Tipos de Departamentos",
+            "description": "Description of SubTopic 1.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Pagamentos e Orçamentos",
+            "topicId": 1
+          },
+          {
+            "id": 3,
+            "name": "Gastos do Departamento",
+            "description": "Description of SubTopic 1.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Pagamentos e Orçamentos",
+            "topicId": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Telefonia Móvel",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 4,
+            "name": "Telefonia Móvel",
+            "description": "Description of SubTopic 2.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Telefonia Móvel",
+            "topicId": 2
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Viagens",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 5,
+            "name": "Viagens Autorizadas",
+            "description": "Description of SubTopic 3.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Viagens",
+            "topicId": 3
+          },
+          {
+            "id": 6,
+            "name": "Viagem de Carro",
+            "description": "Description of SubTopic 3.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Viagens",
+            "topicId": 3
+          },
+          {
+            "id": 7,
+            "name": "Viagem Autorizada - Família",
+            "description": "Description of SubTopic 3.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Viagens",
+            "topicId": 3
+          },
+          {
+            "id": 8,
+            "name": "Relatório de Viagem",
+            "description": "Description of SubTopic 3.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Viagens",
+            "topicId": 3
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "name": "Auxílios e Relatório de Despesas",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 9,
+            "name": "Auxílio Equipamento Profissional",
+            "description": "Description of SubTopic 4.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Auxílios e Relatório de Despesas",
+            "topicId": 4
+          },
+          {
+            "id": 10,
+            "name": "Indenização de Despesas Veículo Autorizado - Pacote Fixo Mensal",
+            "description": "Description of SubTopic 4.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Auxílios e Relatório de Despesas",
+            "topicId": 4
+          },
+          {
+            "id": 11,
+            "name": "Despesas Médicas",
+            "description": "Description of SubTopic 4.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Auxílios e Relatório de Despesas",
+            "topicId": 4
+          },
+          {
+            "id": 12,
+            "name": "Auxílio Educacional",
+            "description": "Description of SubTopic 4.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Auxílios e Relatório de Despesas",
+            "topicId": 4
+          },
+          {
+            "id": 13,
+            "name": "Entrega do Relatório Mensal",
+            "description": "Description of SubTopic 4.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Auxílios e Relatório de Despesas",
+            "topicId": 4
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "name": "Pagamento de Salário e Manutenção Mensal",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 15,
+            "name": "Salários e Manutenção Mensal",
+            "description": "Description of SubTopic 5.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Pagamento de Salário e Manutenção Mensal",
+            "topicId": 5
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "name": "Seguros",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 16,
+            "name": "Seguros",
+            "description": "Description of SubTopic 6.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Seguros",
+            "topicId": 6
+          },
+          {
+            "id": 17,
+            "name": "Ocorrências",
+            "description": "Description of SubTopic 6.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Seguros",
+            "topicId": 6
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "name": "Recursos Humanos",
+        "isActive": true,
+        "subTopics": [
+          {
+            "id": 18,
+            "name": "Férias",
+            "description": "Description of SubTopic 7.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Recursos Humanos",
+            "topicId": 7
+          },
+          {
+            "id": 19,
+            "name": "Atestados Médicos",
+            "description": "Description of SubTopic 7.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Recursos Humanos",
+            "topicId": 7
+          },
+          {
+            "id": 20,
+            "name": "Outros Tipos de Licenças",
+            "description": "Description of SubTopic 7.1",
+            "isActive": true,
+            "content": [],
+            "topic": "Recursos Humanos",
+            "topicId": 7
+          }
+        ]
+      }
+    ]
+  }
+  

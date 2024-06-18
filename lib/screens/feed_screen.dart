@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/screens/sumary_screen.dart';
@@ -9,11 +12,33 @@ import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:provider/provider.dart';
 
-class FeedScreen extends StatelessWidget {
+class FeedScreen extends StatefulWidget {
+  @override
+  State<FeedScreen> createState() => _FeedScreenState();
+}
+
+class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController _searchContentController =
       TextEditingController();
+    
+    late Map<String, dynamic> sessionData;
+  late Future<List<dynamic>> futureData;
 
   final APIService apiService = APIService();
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = _fetchData();
+  }
+
+  Future<List<dynamic>> _fetchData() async {
+    final String response = await rootBundle.loadString('assets/topics.json');
+    sessionData = json.decode(response);
+    return sessionData['data'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +164,106 @@ class FeedScreen extends StatelessWidget {
                               )
                             ]),
                       )),
-                      Container(
+                                        FutureBuilder(
+                      future: _fetchData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: sessionData['data'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.only(top: 38),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${sessionData['data'][index]['name']}",
+                                      style: AppTextStyles.boldTitle2.merge(
+                                          TextStyle(
+                                              color: MainColors.primary04)),
+                                    ),
+                                    SizedBox(
+                                      height: 12,
+                                    ),
+                                    Container(
+                                      height: 200,
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        itemCount: sessionData['data'][index]['subTopics']
+                                            .length,
+                                        itemBuilder: (context, i) {
+                                          return Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Card(
+                                              elevation: 0,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(12)),
+                                              ),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    gradient: LinearGradient(
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                  colors: [
+                                                    Color(0xFF328FFB)
+                                                        .withOpacity(0.2),
+                                                    Colors.white
+                                                        .withOpacity(0.7)
+                                                  ],
+                                                )),
+                                                width: 300.0,
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Text(
+                                                        '${sessionData['data'][index]['subTopics'][i]['name']}',
+                                                        style: AppTextStyles
+                                                            .boldSubhead
+                                                            .merge(TextStyle(
+                                                                color: MainColors
+                                                                    .primary04)),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        }
+                        return Text("null");
+                      }),
+                      /*Container(
                         height: 200,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -249,7 +373,7 @@ class FeedScreen extends StatelessWidget {
                           )
                           ,
                         ),
-                      )
+                      )*/
                       
                       /*
                   FutureBuilder(
