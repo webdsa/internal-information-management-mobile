@@ -49,15 +49,16 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
             parent: _animationController, curve: Curves.easeInOutCubic));
   }
 
-  Future<void> _setJwt(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwt_token', token);
-  }
-
   @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _setJwt(String token, bool auto_login) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwt_token', token);
+    await prefs.setBool("auto_login", auto_login);
   }
 
   void _login() async {
@@ -95,16 +96,13 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
       var token = await credential.user?.getIdToken(true);
 
-      await _setJwt(token!);
+      await _setJwt(token!, _isChecked);
 
       if (token != null) {
         setState(() {
           _isLoading = true; // Ativa a animação
         });
 
-        // IATec - Mikaela Pereira
-        // DSA - Miakela Pereira
-        // Simula um tempo de espera antes de navegar para a próxima tela
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(
             context,

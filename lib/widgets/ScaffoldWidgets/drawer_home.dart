@@ -9,7 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeDrawer extends StatelessWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  const HomeDrawer({super.key, required this.scaffoldKey});
+  final String fullName;
+  const HomeDrawer(
+      {super.key, required this.scaffoldKey, required this.fullName});
 
   Future<void> _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -36,13 +38,11 @@ class HomeDrawer extends StatelessWidget {
                   child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      'assets/imgs/image.png',
-                      width: 56,
-                      height: 56,
-                      fit: BoxFit.cover,
+                  CircleAvatar(
+                    radius: 28,
+                    child: Text(
+                      "B",
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Padding(
@@ -51,14 +51,9 @@ class HomeDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Amanda Gonçalves",
+                        Text("$fullName",
                             style: Styles.titleSmall
                                 .merge(TextStyle(color: MainColors.primary03))),
-                        Text(
-                          "Cargo",
-                          style: Styles.bodyText
-                              .merge(TextStyle(color: MainColors.primary03)),
-                        ),
                       ],
                     ),
                   )

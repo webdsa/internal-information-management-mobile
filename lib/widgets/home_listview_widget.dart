@@ -41,6 +41,15 @@ class HomeListViewWidget extends StatelessWidget {
                 ),
               ),
             ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "FECHAR",
+                  style: TextStyle(color: MainColors.primary03),
+                ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
           );
         });
   }

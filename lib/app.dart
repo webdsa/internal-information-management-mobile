@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:internalinformationmanagement/screens/search_screen.dart';
+import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/screens/feed_screen.dart';
 import 'package:internalinformationmanagement/screens/sumary_screen.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
+import 'package:motion_tab_bar/MotionTabBar.dart';
+import 'package:motion_tab_bar/MotionTabBarController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
@@ -21,7 +25,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _jwt;
+  bool? _isAutoLogged;
 
   @override
   void initState() {
@@ -31,14 +35,13 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _checkJWT() async {
     final prefs = await SharedPreferences.getInstance();
-    _jwt = prefs.getString('jwt_token');
-    print(_jwt);
+    _isAutoLogged = prefs.getBool('auto_login');
   }
 
   Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey("jwt_token") &&
-        (prefs.getString("jwt_token") != "");
+    return prefs.containsKey("auto_login") &&
+        prefs.getBool("auto_login") == true;
   }
 
   @override
@@ -58,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           } else if (snapshot.hasData && snapshot.data!) {
-            return HomeScreen();
+            return AppScreens();
           } else {
             return LoginScreen(navigatorKey: widget.navigatorKey);
           }
@@ -66,6 +69,59 @@ class _MyAppState extends State<MyApp> {
       ),
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
+    );
+  }
+}
+
+class AppScreens extends StatefulWidget {
+  const AppScreens({super.key});
+
+  @override
+  State<AppScreens> createState() => _AppScreensState();
+}
+
+class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
+  int _selectedIndex = 0;
+  MotionTabBarController? _motionTabBarController;
+
+  @override
+  void initState() {
+    super.initState();
+    _motionTabBarController = MotionTabBarController(
+        length: 3, initialIndex: _selectedIndex, vsync: this);
+  }
+
+  final List<Widget> _pages = [
+    HomeScreen(),
+    SearchScreen(),
+    Center(
+      child: Text("Profile"),
+    )
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: MotionTabBar(
+        initialSelectedTab: "Início",
+        labels: ["Início", "Pesquisar", "Perfil"],
+        icons: [Icons.home, Icons.search, Icons.person],
+        controller: _motionTabBarController,
+        tabIconColor: MainColors.primary04,
+        tabBarColor: MainColors.primary02,
+        tabIconSize: 28,
+        onTabItemSelected: (index) => setState(() => _selectedIndex = index),
+        tabSelectedColor: MainColors.primary01,
+        tabIconSelectedSize: 30,
+        textStyle: TextStyle(
+            color: MainColors.primary01,
+            fontSize: 16,
+            fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

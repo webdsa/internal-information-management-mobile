@@ -4,8 +4,14 @@ import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 
 // ignore: must_be_immutable
-class LastUpdatesWidget extends StatelessWidget {
+class LastUpdatesWidget extends StatefulWidget {
   LastUpdatesWidget({super.key});
+
+  @override
+  State<LastUpdatesWidget> createState() => _LastUpdatesWidgetState();
+}
+
+class _LastUpdatesWidgetState extends State<LastUpdatesWidget> {
   List<String> months = [
     'Janeiro',
     'Fevereiro',
@@ -20,6 +26,52 @@ class LastUpdatesWidget extends StatelessWidget {
     'Novembro',
     'Dezembro'
   ];
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              "Ops!",
+              textAlign: TextAlign.center,
+              style: AppTextStyles.boldTitle3
+                  .merge(TextStyle(color: MainColors.primary03)),
+            ),
+            content: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                height: 150,
+                width: MediaQuery.of(context).size.width * 0.6,
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset("assets/svgs/workingOn.svg"),
+                      Text(
+                        "Ainda estamos trabalhando nisso... Em breve estará disponível para você!",
+                        textAlign: TextAlign.center,
+                        style: AppTextStyles.caption2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "FECHAR",
+                  style: TextStyle(color: MainColors.primary03),
+                ),
+                onPressed: () => Navigator.pop(context),
+              )
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +114,8 @@ class LastUpdatesWidget extends StatelessWidget {
                     Text(
                       "Agendamento de Serviço".toUpperCase(),
                       textAlign: TextAlign.left,
-                      style: DesktopTextStyles.buttonSmall.merge(
-                          TextStyle(color: MainColors.primary01)),
+                      style: DesktopTextStyles.buttonSmall
+                          .merge(TextStyle(color: MainColors.primary01)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 2.0),
@@ -84,7 +136,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)))),
-                            onPressed: () {},
+                            onPressed: () => _showAlertDialog(context),
                             child: Text(
                               "Agendar",
                               style: AppTextStyles.caption2.merge(
@@ -142,8 +194,8 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Agendamento de Serviço".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: MainColors.primary01)),
+                            style: DesktopTextStyles.buttonSmall
+                                .merge(TextStyle(color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
@@ -164,7 +216,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
-                                  onPressed: () {},
+                                  onPressed: () => _showAlertDialog(context),
                                   child: Text(
                                     "Conferir",
                                     style: AppTextStyles.caption2.merge(
@@ -182,9 +234,9 @@ class LastUpdatesWidget extends StatelessWidget {
         ),
         /*
 
-                              Card 3
+        Card 3
 
-                              */
+        */
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Container(
@@ -224,8 +276,8 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Boas-vindas".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: MainColors.primary01)),
+                            style: DesktopTextStyles.buttonSmall
+                                .merge(TextStyle(color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
@@ -247,7 +299,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
-                                  onPressed: () {},
+                                  onPressed: () => _showAlertDialog(context),
                                   child: Text(
                                     "Ver painel",
                                     style: AppTextStyles.caption2.merge(
