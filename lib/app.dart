@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:internalinformationmanagement/screens/search_screen.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
-import 'package:jwt_decode/jwt_decode.dart';
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/screens/feed_screen.dart';
 import 'package:internalinformationmanagement/screens/sumary_screen.dart';
-import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:motion_tab_bar/MotionTabBar.dart';
 import 'package:motion_tab_bar/MotionTabBarController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -94,16 +91,12 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
   final List<Widget> _pages = [
     HomeScreen(),
     SearchScreen(),
-    HomeScreen()
+    Center(child: Text("Profile"),)
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _pages,
-      ),
       bottomNavigationBar: MotionTabBar(
         initialSelectedTab: "Início",
         labels: ["Início", "Pesquisar", "Perfil"],
@@ -119,6 +112,10 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
             color: MainColors.primary01,
             fontSize: 16,
             fontWeight: FontWeight.bold),
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
       ),
     );
   }

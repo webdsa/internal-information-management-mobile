@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 
 class HomeListViewWidget extends StatelessWidget {
   const HomeListViewWidget({super.key});
@@ -12,45 +13,7 @@ class HomeListViewWidget extends StatelessWidget {
     showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "Ops!",
-              textAlign: TextAlign.center,
-              style: AppTextStyles.boldTitle3
-                  .merge(TextStyle(color: MainColors.primary03)),
-            ),
-            content: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                height: 150,
-                width: MediaQuery.of(context).size.width * 0.6,
-                decoration:
-                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset("assets/svgs/workingOn.svg"),
-                      Text(
-                        "Ainda estamos trabalhando nisso... Em breve estará disponível para você!",
-                        textAlign: TextAlign.center,
-                        style: AppTextStyles.caption2,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: Text(
-                  "FECHAR",
-                  style: TextStyle(color: MainColors.primary03),
-                ),
-                onPressed: () => Navigator.pop(context),
-              )
-            ],
-          );
+          return CustomModal();
         });
   }
 

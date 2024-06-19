@@ -1,4 +1,5 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/Palette.dart';
@@ -33,6 +34,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     _fullNameFuture = _loadUserData();
+  }
+
+    void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomModal();
+        });
   }
 
   Future<String> _loadUserData() async {
@@ -144,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           color: MainColors.primary03))),
                                   onTap: () {
                                     Navigator.pop(context);
+                                    _showAlertDialog(context);
                                   },
                                 ),
                                 ListTile(
@@ -157,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           color: MainColors.primary03))),
                                   onTap: () {
                                     Navigator.pop(context);
+                                    _showAlertDialog(context);
                                   },
                                 ),
                                 ListTile(
@@ -169,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           color: MainColors.primary03))),
                                   onTap: () {
                                     Navigator.pop(context);
+                                    _showAlertDialog(context);
                                   },
                                 ),
                                 ListTile(
@@ -181,6 +193,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           color: MainColors.primary03))),
                                   onTap: () {
                                     Navigator.pop(context);
+                                    _showAlertDialog(context);
                                   },
                                 ),
                                 ListTile(
@@ -195,6 +208,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                   onTap: () {
                                     Navigator.pop(context);
+                                    _showAlertDialog(context);
                                   },
                                 ),
                               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 
 class LastUpdatesButtonsWidgets extends StatefulWidget {
   const LastUpdatesButtonsWidgets({super.key});
@@ -18,6 +19,14 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
     setState(() {
       _selectedButton = index;
     });
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomModal();
+        });
   }
 
   @override

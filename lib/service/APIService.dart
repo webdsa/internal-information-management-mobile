@@ -47,6 +47,7 @@ class APIService {
           await http.get(Uri.parse("${apiURL}/guide/topic"), headers: headers);
 
       if (response.statusCode == 200) {
+        print(json.decode(response.body));
         return json.decode(response.body);
       } else {
         print(response.body);

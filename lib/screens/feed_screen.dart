@@ -1,16 +1,19 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:internalinformationmanagement/flavors.dart';
+import 'package:internalinformationmanagement/screens/content_screen.dart';
 import 'package:internalinformationmanagement/screens/sumary_screen.dart';
 import 'package:internalinformationmanagement/service/APIService.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FeedScreen extends StatefulWidget {
   @override
@@ -20,18 +23,32 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController _searchContentController =
       TextEditingController();
-    
-    late Map<String, dynamic> sessionData;
+
+  late Map<String, dynamic> sessionData;
   late Future<List<dynamic>> futureData;
 
   final APIService apiService = APIService();
-
-
 
   @override
   void initState() {
     super.initState();
     futureData = _fetchData();
+  }
+
+      void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomModal();
+        });
+  }
+
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('jwt_token', '');
+    await prefs.setBool('auto_login', false);
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   Future<List<dynamic>> _fetchData() async {
@@ -42,441 +59,346 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Banner(
-        message: F.env,
-        location: BannerLocation.topEnd,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient:
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        drawer: Drawer(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomRight: Radius.circular(20))),
+              backgroundColor:
                   Provider.of<ThemeProvider>(context).themeData == darkMode
-                      ? LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                              MainColors.primary03,
-                              FoundationColors.foundationSecondaryDarkest
-                            ])
-                      : LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.white, MainColors.primary02])),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 8),
+                      ? MainColors.primary03
+                      : MainColors.primary02,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SafeArea(
-                      child: Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                        onPressed: () {}, icon: Icon(Icons.menu), iconSize: 35),
-                  )),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 28.0),
-                    child: TextField(
-                      controller: _searchContentController,
-                      decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          filled: true,
-                          fillColor: ShadeColors.shadeLight.withOpacity(0.05),
-                          label: Text("Pesquise por um conteudo..."),
-                          border: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Seja bem vindo ao ',
-                        style: DesktopTextStyles.headlineH3
-                            .merge(TextStyle(color: Color(0xFF081B28))),
-                        children: [
-                          TextSpan(
-                              text: 'manual',
-                              style: TextStyle(color: MainColors.primary01)),
-                          TextSpan(
-                              text: ' de orientações da ',
-                              style: TextStyle(color: Color(0xFF081B28))),
-                          TextSpan(
-                            text: 'DSA',
-                            style: TextStyle(color: MainColors.primary01),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 24.0),
-                  Container(
-                      width: 140,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Color(0xFF5BFCFC).withOpacity(0.2),
-                            Color(0xFF328FFB).withOpacity(0.04)
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return SlideTransition(
-                                  position: Tween<Offset>(
-                                    begin: Offset(0, 1),
-                                    end: Offset.zero,
-                                  ).animate(animation),
-                                  child: SummaryScreen(),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Sumário',
-                                  style: DesktopTextStyles.buttonLarge.merge(
-                                      TextStyle(color: Color(0xFF081B28)))),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Color(0xFF081B28),
-                              )
-                            ]),
-                      )),
-                                        FutureBuilder(
-                      future: _fetchData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: sessionData['data'].length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 38),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${sessionData['data'][index]['name']}",
-                                      style: AppTextStyles.boldTitle2.merge(
-                                          TextStyle(
-                                              color: MainColors.primary04)),
-                                    ),
-                                    SizedBox(
-                                      height: 12,
-                                    ),
-                                    Container(
-                                      height: 200,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: sessionData['data'][index]['subTopics']
-                                            .length,
-                                        itemBuilder: (context, i) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Card(
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                  colors: [
-                                                    Color(0xFF328FFB)
-                                                        .withOpacity(0.2),
-                                                    Colors.white
-                                                        .withOpacity(0.7)
-                                                  ],
-                                                )),
-                                                width: 300.0,
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        '${sessionData['data'][index]['subTopics'][i]['name']}',
-                                                        style: AppTextStyles
-                                                            .boldSubhead
-                                                            .merge(TextStyle(
-                                                                color: MainColors
-                                                                    .primary04)),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
-                          );
-                        }
-                        return Text("null");
-                      }),
-                      /*Container(
-                        height: 200,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Card(
-                                                elevation: 2,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(12)),
-                                                ),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                      Color(0xFF328FFB)
-                                                          .withOpacity(0.2),
-                                                      Colors.white
-                                                          .withOpacity(0.7)
-                                                    ],
-                                                  )),
-                                                  width: 300.0,
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16,
-                                                        vertical: 10),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'Pagamentos e Orçamentos',
-                                                          style: AppTextStyles
-                                                              .boldSubhead
-                                                              .merge(TextStyle(
-                                                                  color: MainColors
-                                                                      .primary04)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0),
-                                              child: Card(
-                                                elevation: 2,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(12)),
-                                                ),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                      gradient: LinearGradient(
-                                                    begin: Alignment.topLeft,
-                                                    end: Alignment.bottomRight,
-                                                    colors: [
-                                                      Color(0xFF328FFB)
-                                                          .withOpacity(0.2),
-                                                      Colors.white
-                                                          .withOpacity(0.7)
-                                                    ],
-                                                  )),
-                                                  width: 300.0,
-                                                  padding: EdgeInsets.all(16.0),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16,
-                                                        vertical: 10),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Text(
-                                                          'Viagens',
-                                                          style: AppTextStyles
-                                                              .boldSubhead
-                                                              .merge(TextStyle(
-                                                                  color: MainColors
-                                                                      .primary04)),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                            ],
-                          )
-                          ,
-                        ),
-                      )*/
-                      
-                      /*
-                  FutureBuilder(
-                      future: apiService.fetchTopics(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data['data'].length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 38),
+                          padding: const EdgeInsets.only(top: 64.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 30, top: 10),
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "${snapshot.data['data'][index]['name']}",
-                                      style: AppTextStyles.boldTitle2.merge(
-                                          TextStyle(
-                                              color: MainColors.primary04)),
-                                    ),
-                                    SizedBox(
-                                      height: 12,
-                                    ),
-                                    Container(
-                                      height: 200,
-                                      child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: snapshot
-                                            .data['data'][index]['subTopics']
-                                            .length,
-                                        itemBuilder: (context, i) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 8.0),
-                                            child: Card(
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(12)),
-                                              ),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                  colors: [
-                                                    Color(0xFF328FFB)
-                                                        .withOpacity(0.2),
-                                                    Colors.white
-                                                        .withOpacity(0.7)
-                                                  ],
-                                                )),
-                                                width: 300.0,
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 16,
-                                                      vertical: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        '${snapshot.data['data'][index]['subTopics'][i]['name']}',
-                                                        style: AppTextStyles
-                                                            .boldSubhead
-                                                            .merge(TextStyle(
-                                                                color: MainColors
-                                                                    .primary04)),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
+                                    ListTile(
+                                      leading: SvgPicture.asset(
+                                        'assets/svgs/settings.svg',
+                                        color: Colors.white,
+                                        height: 24,
                                       ),
-                                    )
+                                      title: Text('Configurações',
+                                          style: Styles.titleMedium.merge(TextStyle(
+                                              color: MainColors.primary03))),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        _showAlertDialog(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: SvgPicture.asset(
+                                        'assets/svgs/account_circle.svg',
+                                        color: Colors.white,
+                                        height: 24,
+                                      ),
+                                      title: Text('Perfil',
+                                          style: Styles.titleMedium.merge(TextStyle(
+                                              color: MainColors.primary03))),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        _showAlertDialog(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: SvgPicture.asset(
+                                          'assets/svgs/chart_data.svg',
+                                          height: 24,
+                                          color: Colors.white),
+                                      title: Text('Atividades',
+                                          style: Styles.titleMedium.merge(TextStyle(
+                                              color: MainColors.primary03))),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        _showAlertDialog(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: SvgPicture.asset(
+                                          'assets/svgs/rule_settings.svg',
+                                          height: 24,
+                                          color: Colors.white),
+                                      title: Text('Trocar usuário',
+                                          style: Styles.titleMedium.merge(TextStyle(
+                                              color: MainColors.primary03))),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        _showAlertDialog(context);
+                                      },
+                                    ),
+                                    ListTile(
+                                      leading: SvgPicture.asset(
+                                          'assets/svgs/mail.svg',
+                                          height: 22,
+                                          color: Colors.white),
+                                      title: Text(
+                                        'Contato RH',
+                                        style: Styles.titleMedium.merge(
+                                            TextStyle(color: MainColors.primary03)),
+                                      ),
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                        _showAlertDialog(context);
+                                      },
+                                    ),
                                   ],
                                 ),
-                              );
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30, bottom: 30),
+                          child: ListTile(
+                            onTap: () {
+                              _logout(context);
                             },
-                          );
-                        }
-                        return Text("null");
-                      }),*/
-                ],
+                            leading: SvgPicture.asset('assets/svgs/logout.svg',
+                                height: 24, color: Colors.white),
+                            title: Text("Sair da conta",
+                                style: Styles.titleMedium.merge(
+                                    TextStyle(color: MainColors.primary03))),
+                          ),
+                        )
+                      ],
+                    )
+              ),
+        body: Banner(
+          message: F.env,
+          location: BannerLocation.topEnd,
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                gradient:
+                    Provider.of<ThemeProvider>(context).themeData == darkMode
+                        ? LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                                MainColors.primary03,
+                                FoundationColors.foundationSecondaryDarkest
+                              ])
+                        : LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.white, MainColors.primary02])),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SafeArea(child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close), iconSize: 35,),
+                        Builder(
+                          builder: (context) {
+                            return IconButton(onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            }, icon: Icon(Icons.menu), iconSize: 35,);
+                          }
+                        ),
+                      ],
+                    )),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28.0),
+                      child: TextField(
+                        controller: _searchContentController,
+                        decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            filled: true,
+                            fillColor: ShadeColors.shadeLight.withOpacity(0.05),
+                            label: Text("Pesquise por um conteudo..."),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50.0),
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Seja bem vindo ao ',
+                          style: DesktopTextStyles.headlineH3
+                              .merge(TextStyle(color: Color(0xFF081B28))),
+                          children: [
+                            TextSpan(
+                                text: 'manual',
+                                style: TextStyle(color: MainColors.primary01)),
+                            TextSpan(
+                                text: ' de orientações da ',
+                                style: TextStyle(color: Color(0xFF081B28))),
+                            TextSpan(
+                              text: 'DSA',
+                              style: TextStyle(color: MainColors.primary01),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24.0),
+                    Container(
+                        width: 140,
+                        height: 64,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF5BFCFC).withOpacity(0.2),
+                              Color(0xFF328FFB).withOpacity(0.04)
+                            ],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) {
+                                  return SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: Offset(0, 1),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: SummaryScreen(),
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Sumário',
+                                    style: DesktopTextStyles.buttonLarge.merge(
+                                        TextStyle(color: Color(0xFF081B28)))),
+                                SizedBox(
+                                  width: 2,
+                                ),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: Color(0xFF081B28),
+                                )
+                              ]),
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 28.0),
+                      child: FutureBuilder(
+                          future: apiService.fetchTopics(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              return Column(
+                                children: [
+                                  for (var session in snapshot.data!)
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${session['name']}",
+                                          style: AppTextStyles.boldTitle2.merge(
+                                            TextStyle(color: MainColors.primary04),
+                                          ),
+                                        ),
+                                        SizedBox(height: 12),
+                                        Container(
+                                          height: 200,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: [
+                                                for (var subTopic in session['subTopics'])
+                                                  Padding(
+                                                    padding: const EdgeInsets.only(right: 8.0),
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ContentScreen(title: session['name'], description: subTopic['name'], text: subTopic['content'])));
+                                                      },
+                                                      child: Card(
+                                                        elevation: 0,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                                                        ),
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                            gradient: LinearGradient(
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                              colors: [
+                                                                Color(0xFF328FFB).withOpacity(0.2),
+                                                                Colors.white.withOpacity(0.7)
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          width: 300.0,
+                                                          padding: EdgeInsets.all(16.0),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.symmetric(
+                                                              horizontal: 16,
+                                                              vertical: 10,
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              children: [
+                                                                Text(
+                                                                  '${subTopic['name']}',
+                                                                  style: AppTextStyles.boldSubhead.merge(
+                                                                    TextStyle(color: MainColors.primary04),
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  '${subTopic['description']}',
+                                                                  style: AppTextStyles.footnote,
+                                                                  overflow: TextOverflow.ellipsis,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 38),
+                                      ],
+                                    ),
+                                ],
+                              );
+                            }
+                          }),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:internalinformationmanagement/screens/content_screen.dart';
 import 'package:internalinformationmanagement/service/APIService.dart';
 import 'dart:convert';
 
@@ -51,15 +52,15 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   padding: const EdgeInsets.only(top: 50, left: 20),
                   child: IconButton(
                     icon: Icon(Icons.close_rounded,
-                        size: 20, color: MainColors.primary04),
+                        size: 35, color: MainColors.primary04),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                   ),
                 ),
               ),
-              FutureBuilder<List<dynamic>>(
-                  future: _fetchData(),
+              FutureBuilder(
+                  future: apiService.fetchTopics(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -71,8 +72,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       return ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: sessionData['data'].length,
+                        itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
+                          sessionData = snapshot.data;
                           return ExpansionTile(
                             title: Text(
                               "${sessionData['data'][index]['name']}",
@@ -82,6 +84,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
                               for (var item in sessionData['data'][index]
                                   ['subTopics'])
                                 ListTile(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => ContentScreen(title: sessionData['data'][index]['name'], description: item['name'], text: item['content'],))
+                                  ),
                                   title: Text(
                                     "${item['name']}",
                                     style: AppTextStyles.footnote,
