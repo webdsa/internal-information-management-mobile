@@ -24,25 +24,20 @@ class _FeedScreenState extends State<FeedScreen> {
   final TextEditingController _searchContentController =
       TextEditingController();
 
-  late Map<String, dynamic> sessionData;
-  late Future<List<dynamic>> futureData;
-
   final APIService apiService = APIService();
 
   @override
   void initState() {
     super.initState();
-    futureData = _fetchData();
   }
 
-      void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return CustomModal();
         });
   }
-
 
   Future<void> _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -51,128 +46,119 @@ class _FeedScreenState extends State<FeedScreen> {
     Navigator.of(context).pushReplacementNamed('/login');
   }
 
-  Future<List<dynamic>> _fetchData() async {
-    final String response = await rootBundle.loadString('assets/topics.json');
-    sessionData = json.decode(response);
-    return sessionData['data'];
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       child: Scaffold(
         drawer: Drawer(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      bottomRight: Radius.circular(20))),
-              backgroundColor:
-                  Provider.of<ThemeProvider>(context).themeData == darkMode
-                      ? MainColors.primary03
-                      : MainColors.primary02,
-              child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 64.0),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30, top: 10),
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      leading: SvgPicture.asset(
-                                        'assets/svgs/settings.svg',
-                                        color: Colors.white,
-                                        height: 24,
-                                      ),
-                                      title: Text('Configurações',
-                                          style: Styles.titleMedium.merge(TextStyle(
-                                              color: MainColors.primary03))),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _showAlertDialog(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: SvgPicture.asset(
-                                        'assets/svgs/account_circle.svg',
-                                        color: Colors.white,
-                                        height: 24,
-                                      ),
-                                      title: Text('Perfil',
-                                          style: Styles.titleMedium.merge(TextStyle(
-                                              color: MainColors.primary03))),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _showAlertDialog(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: SvgPicture.asset(
-                                          'assets/svgs/chart_data.svg',
-                                          height: 24,
-                                          color: Colors.white),
-                                      title: Text('Atividades',
-                                          style: Styles.titleMedium.merge(TextStyle(
-                                              color: MainColors.primary03))),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _showAlertDialog(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: SvgPicture.asset(
-                                          'assets/svgs/rule_settings.svg',
-                                          height: 24,
-                                          color: Colors.white),
-                                      title: Text('Trocar usuário',
-                                          style: Styles.titleMedium.merge(TextStyle(
-                                              color: MainColors.primary03))),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _showAlertDialog(context);
-                                      },
-                                    ),
-                                    ListTile(
-                                      leading: SvgPicture.asset(
-                                          'assets/svgs/mail.svg',
-                                          height: 22,
-                                          color: Colors.white),
-                                      title: Text(
-                                        'Contato RH',
-                                        style: Styles.titleMedium.merge(
-                                            TextStyle(color: MainColors.primary03)),
-                                      ),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        _showAlertDialog(context);
-                                      },
-                                    ),
-                                  ],
-                                ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(20),
+                    bottomRight: Radius.circular(20))),
+            backgroundColor:
+                Provider.of<ThemeProvider>(context).themeData == darkMode
+                    ? MainColors.primary03
+                    : MainColors.primary02,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 64.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30, top: 10),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                'assets/svgs/settings.svg',
+                                color: Colors.white,
+                                height: 24,
                               ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30, bottom: 30),
-                          child: ListTile(
-                            onTap: () {
-                              _logout(context);
-                            },
-                            leading: SvgPicture.asset('assets/svgs/logout.svg',
-                                height: 24, color: Colors.white),
-                            title: Text("Sair da conta",
+                              title: Text('Configurações',
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _showAlertDialog(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                'assets/svgs/account_circle.svg',
+                                color: Colors.white,
+                                height: 24,
+                              ),
+                              title: Text('Perfil',
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _showAlertDialog(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                  'assets/svgs/chart_data.svg',
+                                  height: 24,
+                                  color: Colors.white),
+                              title: Text('Atividades',
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _showAlertDialog(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset(
+                                  'assets/svgs/rule_settings.svg',
+                                  height: 24,
+                                  color: Colors.white),
+                              title: Text('Trocar usuário',
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _showAlertDialog(context);
+                              },
+                            ),
+                            ListTile(
+                              leading: SvgPicture.asset('assets/svgs/mail.svg',
+                                  height: 22, color: Colors.white),
+                              title: Text(
+                                'Contato RH',
                                 style: Styles.titleMedium.merge(
-                                    TextStyle(color: MainColors.primary03))),
-                          ),
-                        )
-                      ],
-                    )
-              ),
+                                    TextStyle(color: MainColors.primary03)),
+                              ),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _showAlertDialog(context);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30, bottom: 30),
+                  child: ListTile(
+                    onTap: () {
+                      _logout(context);
+                    },
+                    leading: SvgPicture.asset('assets/svgs/logout.svg',
+                        height: 24, color: Colors.white),
+                    title: Text("Sair da conta",
+                        style: Styles.titleMedium
+                            .merge(TextStyle(color: MainColors.primary03))),
+                  ),
+                )
+              ],
+            )),
         body: Banner(
           message: F.env,
           location: BannerLocation.topEnd,
@@ -194,21 +180,29 @@ class _FeedScreenState extends State<FeedScreen> {
                             colors: [Colors.white, MainColors.primary02])),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 26, vertical: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SafeArea(child: Row(
+                    SafeArea(
+                        child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close), iconSize: 35,),
-                        Builder(
-                          builder: (context) {
-                            return IconButton(onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            }, icon: Icon(Icons.menu), iconSize: 35,);
-                          }
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: Icon(Icons.close),
+                          iconSize: 35,
                         ),
+                        Builder(builder: (context) {
+                          return IconButton(
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            icon: Icon(Icons.menu),
+                            iconSize: 35,
+                          );
+                        }),
                       ],
                     )),
                     Padding(
@@ -316,14 +310,16 @@ class _FeedScreenState extends State<FeedScreen> {
                             } else {
                               return Column(
                                 children: [
-                                  for (var session in snapshot.data!)
+                                  for (var session in snapshot.data['data'])
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           "${session['name']}",
                                           style: AppTextStyles.boldTitle2.merge(
-                                            TextStyle(color: MainColors.primary04),
+                                            TextStyle(
+                                                color: MainColors.primary04),
                                           ),
                                         ),
                                         SizedBox(height: 12),
@@ -333,50 +329,91 @@ class _FeedScreenState extends State<FeedScreen> {
                                             scrollDirection: Axis.horizontal,
                                             child: Row(
                                               children: [
-                                                for (var subTopic in session['subTopics'])
+                                                for (var subTopic
+                                                    in session['subTopics'])
                                                   Padding(
-                                                    padding: const EdgeInsets.only(right: 8.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 8.0),
                                                     child: GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(context, MaterialPageRoute(builder: (context) => ContentScreen(title: session['name'], description: subTopic['name'], text: subTopic['content'])));
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) => ContentScreen(
+                                                                    title: session[
+                                                                        'name'],
+                                                                    description:
+                                                                        subTopic[
+                                                                            'name'],
+                                                                    text: subTopic[
+                                                                        'content'])));
                                                       },
                                                       child: Card(
-                                                        elevation: 0,
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.all(Radius.circular(12)),
-                                                        ),
+                                                        elevation: 4,
+                                                        /*shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          12)),
+                                                        ),*/
                                                         child: Container(
-                                                          decoration: BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                              begin: Alignment.topLeft,
-                                                              end: Alignment.bottomRight,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            gradient:
+                                                                LinearGradient(
+                                                              begin: Alignment
+                                                                  .topLeft,
+                                                              end: Alignment
+                                                                  .bottomRight,
                                                               colors: [
-                                                                Color(0xFF328FFB).withOpacity(0.2),
-                                                                Colors.white.withOpacity(0.7)
+                                                                Color(0xFF328FFB)
+                                                                    .withOpacity(
+                                                                        0.2),
+                                                                Colors.white
+                                                                    .withOpacity(
+                                                                        0.7)
                                                               ],
                                                             ),
                                                           ),
                                                           width: 300.0,
-                                                          padding: EdgeInsets.all(16.0),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  16.0),
                                                           child: Padding(
-                                                            padding: const EdgeInsets.symmetric(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
                                                               horizontal: 16,
                                                               vertical: 10,
                                                             ),
                                                             child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
                                                               children: [
                                                                 Text(
                                                                   '${subTopic['name']}',
-                                                                  style: AppTextStyles.boldSubhead.merge(
-                                                                    TextStyle(color: MainColors.primary04),
+                                                                  style: AppTextStyles
+                                                                      .boldSubhead
+                                                                      .merge(
+                                                                    TextStyle(
+                                                                        color: MainColors
+                                                                            .primary04),
                                                                   ),
                                                                 ),
                                                                 Text(
                                                                   '${subTopic['description']}',
-                                                                  style: AppTextStyles.footnote,
-                                                                  overflow: TextOverflow.ellipsis,
+                                                                  style: AppTextStyles
+                                                                      .footnote,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                 ),
                                                               ],
                                                             ),
