@@ -15,12 +15,6 @@ class LastUpdatesButtonsWidgets extends StatefulWidget {
 class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
   int _selectedButton = 0;
 
-  void _setSelectedButton(int index) {
-    setState(() {
-      _selectedButton = index;
-    });
-  }
-
   void _showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -28,6 +22,13 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
           return CustomModal();
         });
   }
+
+  void _setSelectedButton(int index) {
+    setState(() {
+      _selectedButton = index;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,8 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
             height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
-                _setSelectedButton(1);
+                _showAlertDialog(context);
+                //_setSelectedButton(1);
               },
               icon: SvgPicture.asset(
                 'assets/svgs/assignment_ind.svg',
@@ -120,7 +122,8 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
             height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
-                _setSelectedButton(2);
+                _showAlertDialog(context);
+                //_setSelectedButton(2);
               },
               icon: SvgPicture.asset(
                 'assets/svgs/holiday_village.svg',

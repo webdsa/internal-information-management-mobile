@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     _fullNameFuture = _loadUserData();
   }
 
-    void _showAlertDialog(BuildContext context) {
+  void _showAlertDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (BuildContext context) {
