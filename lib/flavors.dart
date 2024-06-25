@@ -43,7 +43,7 @@ class F {
       case Flavor.dev:
         return "http://10.0.2.2:5171";
       case Flavor.hom:
-        return "https://d286-187-75-79-100.ngrok-free.app";
+        return "https://a240-179-89-244-234.ngrok-free.app";
       default:
         return "";
     }

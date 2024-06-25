@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
@@ -76,11 +77,7 @@ class ContentScreen extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 22),
-                    child: Text(
-                      "${text}",
-                      style: AppTextStyles.footnote,
-                      textAlign: TextAlign.justify,
-                    ),
+                    child: Html(data: "${text}",)
                   )
                 ],
               ),

@@ -118,6 +118,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
           Patrimônio Button
       
           */
+          /*
           Container(
             height: 24,
             child: ElevatedButton.icon(
@@ -151,7 +152,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                               ? Theme.of(context).primaryColor
                               : const Color(0xFFDEDDE4)))),
             ),
-          ),
+          ),*/
         ],
       ),
     );

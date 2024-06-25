@@ -15,19 +15,11 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final APIService apiService = APIService();
   late Map<String, dynamic> sessionData;
-  late Future<List<dynamic>> futureData;
 
 
   @override
   void initState() {
     super.initState();
-    futureData = _fetchData();
-  }
-
-  Future<List<dynamic>> _fetchData() async {
-    final String response = await rootBundle.loadString('assets/topics.json');
-    sessionData = json.decode(response);
-    return sessionData['data'];
   }
 
   @override

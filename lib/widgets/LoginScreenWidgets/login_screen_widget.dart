@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internalinformationmanagement/app.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/service/login_service.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -75,7 +76,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const AppScreens()),
           ).then((value) {
             setState(() {
               _isLoading = false;
@@ -106,7 +107,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const AppScreens()),
           ).then((value) {
             setState(() {
               _isLoading = false;
@@ -696,7 +697,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("Lembrar minha senha",
+                              child: Text("Lembrar minha conta",
                                   style: Styles.caption),
                             ),
                           ],

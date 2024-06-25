@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
         '/summary': (context) => SummaryScreen(),
         '/feed': (context) => FeedScreen(),
         '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
-        '/home': (context) => HomeScreen()
       },
       home: FutureBuilder<bool>(
         future: _isLoggedIn(),
@@ -80,32 +79,47 @@ class AppScreens extends StatefulWidget {
 class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
   int _selectedIndex = 0;
   MotionTabBarController? _motionTabBarController;
+  late List<IconData> _tabIcons;
+  late List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
     _motionTabBarController = MotionTabBarController(
-        length: 3, initialIndex: _selectedIndex, vsync: this);
+        length: 2, initialIndex: _selectedIndex, vsync: this);
+
+    _pages = [
+      HomeScreen(updateValue: _updateValue),
+      SearchScreen(wasPreviousScreenFeed: false,),
+    ];
+
+    _tabIcons = [
+      Icons.home, // Ícone para "Início"
+      Icons.search, // Ícone para "Pesquisar"
+    ];
   }
 
-  final List<Widget> _pages = [
-    HomeScreen(),
-    SearchScreen(),
-    Center(child: Text("Profile"),)
-  ];
+  void _updateValue(int newValue) {
+    setState(() {
+      _selectedIndex = newValue;
+      _motionTabBarController?.animateTo(newValue);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: MotionTabBar(
         initialSelectedTab: "Início",
-        labels: ["Início", "Pesquisar", "Perfil"],
-        icons: [Icons.home, Icons.search, Icons.person],
+        labels: ["Início", "Pesquisar"],
+        icons: _tabIcons,
         controller: _motionTabBarController,
-        tabIconColor: MainColors.primary04,
+        tabIconColor: const Color.fromARGB(255, 31, 101, 148),
         tabBarColor: MainColors.primary02,
         tabIconSize: 28,
-        onTabItemSelected: (index) => setState(() => _selectedIndex = index),
+        onTabItemSelected: (index) {
+          _updateValue(index);
+        },
         tabSelectedColor: MainColors.primary01,
         tabIconSelectedSize: 30,
         textStyle: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter_svg/svg.dart';
+import 'package:internalinformationmanagement/screens/search_screen.dart';
 import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,21 +15,21 @@ import 'package:internalinformationmanagement/widgets/last_updates_cards_widget.
 import 'package:internalinformationmanagement/widgets/last_updates_buttons_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Function(int) updateValue;
+  const HomeScreen({super.key, required this.updateValue});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  final TextEditingController _searchContentController =
-      TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 0;
   Map<String, dynamic> _userData = {};
   String fullName = "";
   late Future<String> _fullNameFuture;
   String? _jwt;
+
 
   @override
   void initState() {
@@ -142,6 +143,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             padding: const EdgeInsets.only(left: 30, top: 10),
                             child: Column(
                               children: [
+                                /*
                                 ListTile(
                                   leading: SvgPicture.asset(
                                     'assets/svgs/settings.svg',
@@ -169,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     Navigator.pop(context);
                                     _showAlertDialog(context);
                                   },
-                                ),
+                                ),*//*
                                 ListTile(
                                   leading: SvgPicture.asset(
                                       'assets/svgs/chart_data.svg',
@@ -210,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     Navigator.pop(context);
                                     _showAlertDialog(context);
                                   },
-                                ),
+                                ),*/
                               ],
                             ),
                           ),
@@ -322,17 +324,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               })),
                           Padding(
                             padding: const EdgeInsets.only(top: 28.0),
-                            child: TextField(
-                              controller: _searchContentController,
-                              decoration: InputDecoration(
-                                  prefixIcon: Icon(Icons.search),
-                                  filled: true,
-                                  fillColor:
-                                      ShadeColors.shadeLight.withOpacity(0.05),
-                                  label: Text("Pesquise por um conteudo..."),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(10))),
+                            child: GestureDetector(
+                              onTap: () {
+                                widget.updateValue(1);
+                                //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                              },
+                              child: Container(
+                              padding: EdgeInsets.all(10),
+                              width: double.infinity,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                color: ShadeColors.shadeLight.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.search),
+                                  Padding(padding: EdgeInsets.only(left: 12), child: Text("Pesquise por um conteudo..."),)
+                                ],
+                              ),
+                                                        ),
                             ),
                           ),
                           /*
@@ -342,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               this one.
                                         
                               */
+
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -349,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 padding: const EdgeInsets.only(top: 33.0),
                                 child: HomeListViewWidget(),
                               ),
+                              /*
                               Padding(
                                 padding: EdgeInsets.only(top: 33),
                                 child: Text(
@@ -378,7 +392,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   turning them dynamic.
                                                         
                                   */
-                              LastUpdatesWidget()
+                              LastUpdatesWidget()*/
                             ],
                           ),
                         ],
