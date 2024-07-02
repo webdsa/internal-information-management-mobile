@@ -332,17 +332,17 @@ class _FeedScreenState extends State<FeedScreen> {
                                 return Text('Error: ${snapshot.error}');
                               } else {
                                 return Column(
-                                  children: [ 
-                                    for (var session in snapshot.data['data'])
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                  children: [
+                                    ...snapshot.data['data'].asMap().entries.map((entry) {
+                                      var index = entry.key;
+                                      var session = entry.value;
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             "${session['name']}",
                                             style: AppTextStyles.boldTitle2.merge(
-                                              TextStyle(
-                                                  color: MainColors.primary04),
+                                              TextStyle(color: MainColors.primary04),
                                             ),
                                           ),
                                           SizedBox(height: 12),
@@ -352,102 +352,83 @@ class _FeedScreenState extends State<FeedScreen> {
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
                                                 children: [
-                                                  for (var subTopic
-                                                      in session['subTopics'])
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 8.0),
+                                                  ...session['subTopics'].map<Widget>((subTopic) {
+                                                    return Padding(
+                                                      padding: const EdgeInsets.only(right: 8.0),
                                                       child: GestureDetector(
                                                         onTap: () {
                                                           Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder: (context) => ContentScreen(
-                                                                      title: session[
-                                                                          'name'],
-                                                                      description:
-                                                                          subTopic[
-                                                                              'name'],
-                                                                      text: subTopic[
-                                                                          'content'])));
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => ContentScreen(
+                                                                title: session['name'],
+                                                                description: subTopic['name'],
+                                                                text: subTopic['content'],
+                                                                sessionIndex: index,
+                                                                subTopicIndex: session['subTopics'].indexOf(subTopic),
+                                                              ),
+                                                            ),
+                                                          );
                                                         },
                                                         child: Card(
                                                           elevation: 4,
-                                                          /*shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            12)),
-                                                          ),*/
                                                           child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              gradient:
-                                                                  LinearGradient(
-                                                                begin: Alignment
-                                                                    .topLeft,
-                                                                end: Alignment
-                                                                    .bottomRight,
+                                                            decoration: BoxDecoration(
+                                                              gradient: LinearGradient(
+                                                                begin: Alignment.topLeft,
+                                                                end: Alignment.bottomRight,
                                                                 colors: [
-                                                                  Color(0xFF328FFB)
-                                                                      .withOpacity(
-                                                                          0.2),
-                                                                  Colors.white
-                                                                      .withOpacity(
-                                                                          0.7)
+                                                                  Color(0xFF328FFB).withOpacity(0.2),
+                                                                  Colors.white.withOpacity(0.7)
                                                                 ],
                                                               ),
                                                             ),
                                                             width: 300.0,
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    16.0),
+                                                            padding: EdgeInsets.all(16.0),
                                                             child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .symmetric(
+                                                              padding: const EdgeInsets.symmetric(
                                                                 horizontal: 16,
                                                                 vertical: 10,
                                                               ),
                                                               child: Column(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .start,
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                                 children: [
                                                                   Text(
                                                                     '${subTopic['name']}',
-                                                                    style: AppTextStyles
-                                                                        .boldSubhead
-                                                                        .merge(
-                                                                      TextStyle(
-                                                                          color: MainColors
-                                                                              .primary04),
+                                                                    style: AppTextStyles.boldSubhead.merge(
+                                                                      TextStyle(color: MainColors.primary04),
                                                                     ),
                                                                   ),
                                                                   Text(
                                                                     '${subTopic['description']}',
-                                                                    style: AppTextStyles
-                                                                        .footnote,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    style: AppTextStyles.footnote,
+                                                                    overflow: TextOverflow.ellipsis,
                                                                   ),
                                                                   Padding(
                                                                     padding: const EdgeInsets.only(top: 12.0),
                                                                     child: Row(
-                                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment.end,
                                                                       children: [
-                                                                      Padding(
-                                                                        padding: const EdgeInsets.only(right: 6.0),
-                                                                        child: Text("Ver Mais", style: AppTextStyles.footnote.merge(TextStyle(color: MainColors.primary03)),),
-                                                                      ), Icon(Icons.arrow_forward_rounded, size: 18, color: Color(0xff3391FF),)
-                                                                    ],),
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              right: 6.0),
+                                                                          child: Text(
+                                                                            "Ver Mais",
+                                                                            style: AppTextStyles.footnote.merge(
+                                                                              TextStyle(
+                                                                                  color: MainColors.primary03),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                        Icon(
+                                                                          Icons.arrow_forward_rounded,
+                                                                          size: 18,
+                                                                          color: Color(0xff3391FF),
+                                                                        )
+                                                                      ],
+                                                                    ),
                                                                   )
                                                                 ],
                                                               ),
@@ -455,14 +436,16 @@ class _FeedScreenState extends State<FeedScreen> {
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    );
+                                                  }).toList(),
                                                 ],
                                               ),
                                             ),
                                           ),
                                           SizedBox(height: 38),
                                         ],
-                                      ),
+                                      );
+                                    }).toList(),
                                   ],
                                 );
                               }

@@ -52,45 +52,53 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 ),
               ),
               FutureBuilder(
-                  future: apiService.fetchTopics(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: snapshot.data['data'].length,
-                        itemBuilder: (context, index) {
-                          sessionData = snapshot.data;
-                          return ExpansionTile(
-                            title: Text(
-                              "${sessionData['data'][index]['name']}",
-                              style: AppTextStyles.boldHeadline,
-                            ),
-                            children: [
-                              for (var item in sessionData['data'][index]
-                                  ['subTopics'])
-                                ListTile(
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => ContentScreen(title: sessionData['data'][index]['name'], description: item['name'], text: item['content'],))
+                future: apiService.fetchTopics(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: snapshot.data['data'].length,
+                      itemBuilder: (context, index) {
+                        sessionData = snapshot.data;
+                        return ExpansionTile(
+                          title: Text(
+                            "${sessionData['data'][index]['name']}",
+                            style: AppTextStyles.boldHeadline,
+                          ),
+                          children: [
+                            for (var item in sessionData['data'][index]['subTopics'])
+                              ListTile(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ContentScreen(
+                                      title: sessionData['data'][index]['name'],
+                                      description: item['name'],
+                                      text: item['content'],
+                                      sessionIndex: index,
+                                      subTopicIndex: sessionData['data'][index]['subTopics'].indexOf(item),
+                                    ),
                                   ),
-                                  title: Text(
-                                    "${item['name']}",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                )
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  })
+                                ),
+                                title: Text(
+                                  "${item['name']}",
+                                  style: AppTextStyles.footnote,
+                                ),
+                              )
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              )
               /*ExpansionTile(
                             title: Text(
                               "Pagamentos e orçamentos",

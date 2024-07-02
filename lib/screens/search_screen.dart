@@ -97,8 +97,27 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemCount: _filteredSubTopics.length,
                 itemBuilder: (context, index) {
                   var subTopic = _filteredSubTopics[index];
+            
+                  // Verificando se sessionIndex e subTopicIndex são nulos
+                  int sessionIndex = subTopic['sessionIndex'] ?? -1;
+                  int subTopicIndex = subTopic['subTopicIndex'] ?? -1;
+            
+                  // Verifique se os índices são válidos (não são -1)
+                  if (sessionIndex == -1 || subTopicIndex == -1) {
+                    return ListTile(
+                      title: Text(
+                        subTopic['name'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text('Índice inválido'),
+                    );
+                  }
+            
                   return ListTile(
-                    title: Text(subTopic['name'], style: TextStyle(fontWeight: FontWeight.bold),),
+                    title: Text(
+                      subTopic['name'],
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     subtitle: Text(subTopic['topicName'] ?? ''),
                     onTap: () {
                       // Navegar para uma tela de detalhes ou conteúdo do subtópico
@@ -109,6 +128,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: subTopic['topicName'],
                             description: subTopic['name'],
                             text: subTopic['content'],
+                            sessionIndex: sessionIndex,
+                            subTopicIndex: subTopicIndex,
                           ),
                         ),
                       );

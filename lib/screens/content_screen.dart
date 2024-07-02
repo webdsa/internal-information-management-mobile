@@ -12,11 +12,13 @@ class ContentScreen extends StatelessWidget {
       {super.key,
       required this.title,
       required this.description,
-      required this.text});
+      required this.text, required this.sessionIndex, required this.subTopicIndex});
 
   final String title;
   final String description;
   final String text;
+  final int sessionIndex;
+  final int subTopicIndex;
 
   @override
   Widget build(BuildContext context) {
