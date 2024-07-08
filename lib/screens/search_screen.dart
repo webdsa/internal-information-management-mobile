@@ -20,7 +20,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   final APIService apiService = APIService();
-   List<dynamic> _allSubTopics = [];
+  List<dynamic> _allSubTopics = [];
   List<dynamic> _filteredSubTopics = [];
 
   @override
@@ -63,6 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
           .toList();
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,25 +72,32 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             if (widget.wasPreviousScreenFeed)
-              SafeArea(child: Row(
-                children: [IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.close, size: 35,))],
-              ),),
+              SafeArea(
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close, size: 35),
+                    )
+                  ],
+                ),
+              ),
             if (widget.wasPreviousScreenFeed == false)
               SafeArea(child: SizedBox()),
             Padding(
               padding: const EdgeInsets.only(top: 24.0),
               child: TextField(
                 controller: _searchController,
-                decoration:
-                  InputDecoration(
-                                  prefixIcon: Icon(Icons.search),
-                                  filled: true,
-                                  fillColor:
-                                      ShadeColors.shadeLight.withOpacity(0.05),
-                                  label: Text("Pesquise por um conteudo..."),
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(10))),
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  filled: true,
+                  fillColor: ShadeColors.shadeLight.withOpacity(0.05),
+                  label: Text("Pesquise por um conteudo..."),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -97,22 +105,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 itemCount: _filteredSubTopics.length,
                 itemBuilder: (context, index) {
                   var subTopic = _filteredSubTopics[index];
-            
-                  // Verificando se sessionIndex e subTopicIndex são nulos
-                  int sessionIndex = subTopic['sessionIndex'] ?? -1;
-                  int subTopicIndex = subTopic['subTopicIndex'] ?? -1;
-            
-                  // Verifique se os índices são válidos (não são -1)
-                  if (sessionIndex == -1 || subTopicIndex == -1) {
-                    return ListTile(
-                      title: Text(
-                        subTopic['name'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text('Índice inválido'),
-                    );
-                  }
-            
                   return ListTile(
                     title: Text(
                       subTopic['name'],
@@ -120,7 +112,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                     subtitle: Text(subTopic['topicName'] ?? ''),
                     onTap: () {
-                      // Navegar para uma tela de detalhes ou conteúdo do subtópico
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -128,8 +119,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             title: subTopic['topicName'],
                             description: subTopic['name'],
                             text: subTopic['content'],
-                            sessionIndex: sessionIndex,
-                            subTopicIndex: subTopicIndex,
                           ),
                         ),
                       );

@@ -43,8 +43,9 @@ class F {
       case Flavor.dev:
         return "http://10.0.2.2:5171";
       case Flavor.hom:
-        return 'https://81a5-179-89-243-241.ngrok-free.app';
-        //return "https://mgn.dsa.org.br";
+        return "https://mgn.dsa.org.br";
+      case Flavor.prod:
+        return "https://mgn.dsa.org.br";
       default:
         return "";
     }

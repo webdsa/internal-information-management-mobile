@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
@@ -7,19 +8,22 @@ import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:provider/provider.dart';
 
-class ContentScreen extends StatelessWidget {
+class ContentScreen extends StatefulWidget {
   const ContentScreen(
       {super.key,
       required this.title,
       required this.description,
-      required this.text, required this.sessionIndex, required this.subTopicIndex});
+      required this.text});
 
   final String title;
   final String description;
   final String text;
-  final int sessionIndex;
-  final int subTopicIndex;
 
+  @override
+  State<ContentScreen> createState() => _ContentScreenState();
+}
+
+class _ContentScreenState extends State<ContentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +53,7 @@ class ContentScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 26.0, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SafeArea(
                       child: Row(
@@ -64,7 +69,7 @@ class ContentScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 36),
                     child: Text(
-                      "${title}",
+                      "${widget.title}",
                       style: DesktopTextStyles.headlineH4,
                       textAlign: TextAlign.start,
                     ),
@@ -72,15 +77,15 @@ class ContentScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(top: 42),
                     child: Text(
-                      "${description}",
+                      "${widget.description}",
                       style: DesktopTextStyles.subtitle,
                       textAlign: TextAlign.start,
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 22),
-                    child: Html(data: "${text}",)
-                  )
+                    child: Html(data: "${widget.text}",)
+                  ),
                 ],
               ),
             ),

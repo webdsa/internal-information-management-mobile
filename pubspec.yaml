@@ -69,9 +69,9 @@ flavorizr:
       app:
         name: "DSA - Informações"
       android:
-        applicationId: "adventistas.org.internalinformationmanagement"
+        applicationId: "adventistas.org.internalinformationmanagement.prod"
       ios:
-        bundleId: "adventistas.org.internalinformationmanagement"
+        bundleId: "adventistas.org.internalinformationmanagement.prod"
 
   flutter_lints: ^3.0.1
 
@@ -82,7 +82,6 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/topics.json
     - assets/imgs/
     - assets/svgs/
 

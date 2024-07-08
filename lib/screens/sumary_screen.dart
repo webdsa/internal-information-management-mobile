@@ -82,8 +82,6 @@ class _SummaryScreenState extends State<SummaryScreen> {
                                       title: sessionData['data'][index]['name'],
                                       description: item['name'],
                                       text: item['content'],
-                                      sessionIndex: index,
-                                      subTopicIndex: sessionData['data'][index]['subTopics'].indexOf(item),
                                     ),
                                   ),
                                 ),

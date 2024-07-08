@@ -35,7 +35,6 @@ class _FeedScreenState extends State<FeedScreen> {
     _topicsFuture = apiService.fetchTopics();
   }
 
-
   Future<void> _refreshFeed() async {
     setState(() {
       _topicsFuture = apiService.fetchTopics();
@@ -50,11 +49,8 @@ class _FeedScreenState extends State<FeedScreen> {
         });
   }
 
-  Future<void> _logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('jwt_token', '');
-    await prefs.setBool('auto_login', false);
-    Navigator.of(context).pushReplacementNamed('/login');
+  void changeContentUp(var topic, var subtopic) {
+    print("${topic.index} -  ${subtopic.index}");
   }
 
   @override
@@ -62,114 +58,6 @@ class _FeedScreenState extends State<FeedScreen> {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        /*drawer: Drawer(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(20))),
-            backgroundColor:
-                Provider.of<ThemeProvider>(context).themeData == darkMode
-                    ? MainColors.primary03
-                    : MainColors.primary02,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 64.0),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30, top: 10),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/svgs/settings.svg',
-                                color: Colors.white,
-                                height: 24,
-                              ),
-                              title: Text('Configurações',
-                                  style: Styles.titleMedium.merge(
-                                      TextStyle(color: MainColors.primary03))),
-                              onTap: () {
-                                Navigator.pop(context);
-                                _showAlertDialog(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                'assets/svgs/account_circle.svg',
-                                color: Colors.white,
-                                height: 24,
-                              ),
-                              title: Text('Perfil',
-                                  style: Styles.titleMedium.merge(
-                                      TextStyle(color: MainColors.primary03))),
-                              onTap: () {
-                                Navigator.pop(context);
-                                _showAlertDialog(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                  'assets/svgs/chart_data.svg',
-                                  height: 24,
-                                  color: Colors.white),
-                              title: Text('Atividades',
-                                  style: Styles.titleMedium.merge(
-                                      TextStyle(color: MainColors.primary03))),
-                              onTap: () {
-                                Navigator.pop(context);
-                                _showAlertDialog(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset(
-                                  'assets/svgs/rule_settings.svg',
-                                  height: 24,
-                                  color: Colors.white),
-                              title: Text('Trocar usuário',
-                                  style: Styles.titleMedium.merge(
-                                      TextStyle(color: MainColors.primary03))),
-                              onTap: () {
-                                Navigator.pop(context);
-                                _showAlertDialog(context);
-                              },
-                            ),
-                            ListTile(
-                              leading: SvgPicture.asset('assets/svgs/mail.svg',
-                                  height: 22, color: Colors.white),
-                              title: Text(
-                                'Contato RH',
-                                style: Styles.titleMedium.merge(
-                                    TextStyle(color: MainColors.primary03)),
-                              ),
-                              onTap: () {
-                                Navigator.pop(context);
-                                _showAlertDialog(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30, bottom: 30),
-                  child: ListTile(
-                    onTap: () {
-                      _logout(context);
-                    },
-                    leading: SvgPicture.asset('assets/svgs/logout.svg',
-                        height: 24, color: Colors.white),
-                    title: Text("Sair da conta",
-                        style: Styles.titleMedium
-                            .merge(TextStyle(color: MainColors.primary03))),
-                  ),
-                )
-              ],
-            )),*/
         body: Banner(
           message: F.env,
           location: BannerLocation.topEnd,
@@ -206,16 +94,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             onPressed: () => Navigator.pop(context),
                             icon: Icon(Icons.close),
                             iconSize: 35,
-                          ),/*
-                          Builder(builder: (context) {
-                            return IconButton(
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              icon: Icon(Icons.menu),
-                              iconSize: 35,
-                            );
-                          }),*/
+                          )
                         ],
                       )),
                       Padding(
@@ -333,10 +212,8 @@ class _FeedScreenState extends State<FeedScreen> {
                               } else {
                                 return Column(
                                   children: [
-                                    ...snapshot.data['data'].asMap().entries.map((entry) {
-                                      var index = entry.key;
-                                      var session = entry.value;
-                                      return Column(
+                                    for (var session in snapshot.data['data'])
+                                      Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
@@ -352,8 +229,8 @@ class _FeedScreenState extends State<FeedScreen> {
                                               scrollDirection: Axis.horizontal,
                                               child: Row(
                                                 children: [
-                                                  ...session['subTopics'].map<Widget>((subTopic) {
-                                                    return Padding(
+                                                  for (var subTopic in session['subTopics'])
+                                                    Padding(
                                                       padding: const EdgeInsets.only(right: 8.0),
                                                       child: GestureDetector(
                                                         onTap: () {
@@ -364,8 +241,6 @@ class _FeedScreenState extends State<FeedScreen> {
                                                                 title: session['name'],
                                                                 description: subTopic['name'],
                                                                 text: subTopic['content'],
-                                                                sessionIndex: index,
-                                                                subTopicIndex: session['subTopics'].indexOf(subTopic),
                                                               ),
                                                             ),
                                                           );
@@ -436,16 +311,15 @@ class _FeedScreenState extends State<FeedScreen> {
                                                           ),
                                                         ),
                                                       ),
-                                                    );
-                                                  }).toList(),
+                                                    )
                                                 ],
                                               ),
                                             ),
                                           ),
                                           SizedBox(height: 38),
                                         ],
-                                      );
-                                    }).toList(),
+                                      )
+                                    
                                   ],
                                 );
                               }
