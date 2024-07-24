@@ -1,6 +1,7 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
 #include "Generated.xcconfig"
 
 FLUTTER_TARGET=lib/main_hom.dart
 ASSET_PREFIX=hom
-BUNDLE_NAME=DSA - Informações Hom
-BUNDLE_DISPLAY_NAME=DSA - Informações Hom
+BUNDLE_NAME=DSA - Informações HOM
+BUNDLE_DISPLAY_NAME=DSA - Informações HOM

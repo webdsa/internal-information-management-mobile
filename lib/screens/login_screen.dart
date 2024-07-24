@@ -18,9 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Banner(
-            message: F.env,
-            location: BannerLocation.topEnd,
-            child: LoginScreenWidget()));
+        body: LoginScreenWidget());
   }
 }

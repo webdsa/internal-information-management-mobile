@@ -59,6 +59,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   Future<void> _setJwt(String token, bool auto_login) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('jwt_token', token);
+    final int currentTime = DateTime.now().millisecondsSinceEpoch;
+    await prefs.setInt('last_login_time', currentTime);
     await prefs.setBool("auto_login", auto_login);
   }
 

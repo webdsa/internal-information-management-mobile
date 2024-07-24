@@ -37,8 +37,21 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> _isLoggedIn() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey("auto_login") &&
-        prefs.getBool("auto_login") == true;
+    final bool isAutoLogged = prefs.getBool("auto_login") ?? false;
+    final int? lastLoginTime = prefs.getInt("last_login_time");
+
+    if (!isAutoLogged || lastLoginTime == null) {
+      return false;
+    }
+
+    final DateTime lastLoginDateTime = DateTime.fromMillisecondsSinceEpoch(lastLoginTime);
+    final DateTime currentDateTime = DateTime.now();
+
+    if (currentDateTime.difference(lastLoginDateTime).inHours >= 1) {
+      return false;
+    }
+
+    return true;
   }
 
   @override
