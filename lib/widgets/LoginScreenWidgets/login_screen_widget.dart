@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/app.dart';
+import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/service/login_service.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -9,6 +10,9 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginScreenWidget extends StatefulWidget {
   const LoginScreenWidget({super.key});
@@ -89,6 +93,38 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  void _handleSignIn(String type) async {
+
+    if (type == "google") {
+          final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+      try {
+        final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+
+        if (googleSignInAccount != null) {
+          final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+          final credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken
+          );
+
+          print(googleSignInAuthentication.accessToken);
+
+          //await FirebaseAuth.instance.signInWithCredential(credential);
+        }
+      
+      } catch (e) {
+        print(e.toString());
+      }
+    } else if (type == "ios") {
+      final appleProvider = AppleAuthProvider();
+      print(appleProvider);
+      await FirebaseAuth.instance.signInWithProvider(appleProvider);
+    }
+
   }
 
   void _loginAd() async {
@@ -567,7 +603,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
     return Form(
       key: _formKey,
-      child: Column(
+      child: /*Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (_isRegistering)
@@ -724,7 +760,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
             ),
           ),
         ],
-      ),
+      ),*/
+      formButtonsWidget()
     );
   }
 
@@ -736,6 +773,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       padding: const EdgeInsets.only(top: 24.0),
       child: Column(
         children: [
+          /*
           Container(
             width: MediaQuery.of(context).size.width,
             height: 44,
@@ -782,7 +820,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           ),
           const SizedBox(
             height: 16,
-          ),
+          ),*/
           Container(
             width: MediaQuery.of(context).size.width,
             height: 44,
@@ -810,6 +848,90 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                     padding: const EdgeInsets.only(left: 8.0),
                     child: SvgPicture.asset('assets/svgs/key.svg'),
                   )
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: 136,
+                child: const Divider(thickness: 1, color: TextColors.text5),
+              ),
+              Text(
+                "ou",
+                style:
+                    Styles.body.merge(const TextStyle(color: TextColors.text4)),
+              ),
+              Container(
+                width: 136,
+                child: const Divider(
+                  thickness: 1,
+                  color: TextColors.text5,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 44,
+            child: ElevatedButton(
+              onPressed: () {
+                _handleSignIn("google");
+              },
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: TextColors.text5),
+                    borderRadius: BorderRadius.circular(10)),
+                backgroundColor: Colors.red,
+                textStyle: Styles.headline4,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login com ',
+                    style: Styles.buttonSmall,
+                  ),
+                  Icon(FontAwesomeIcons.google)
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 44,
+            child: ElevatedButton(
+              onPressed: () {
+                _handleSignIn("ios");
+              },
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    side: BorderSide(width: 1, color: TextColors.text5),
+                    borderRadius: BorderRadius.circular(10)),
+                backgroundColor: Colors.grey,
+                textStyle: Styles.headline4,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Login com ',
+                    style: Styles.buttonSmall,
+                  ),
+                  Icon(FontAwesomeIcons.apple)
                 ],
               ),
             ),
