@@ -300,67 +300,65 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           topRight: Radius.circular(30.0),
         ),
       ),
-      child: Expanded(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              children: [
+                Text(
+                  !_isRegistering ? "Entrar" : "Cadastre-se",
+                  style: Styles.h5,
+                  textAlign: TextAlign.center,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    !_isRegistering
+                        ? "Conecte-se para continuar para sua conta."
+                        : "Cadastre-se para usar o patrimônio",
+                    style: Styles.bodySmall
+                        .merge(const TextStyle(color: TextColors.text4)),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: formTextFields(context)),
+              ],
+            ),
+            /*Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    !_isRegistering ? "Entrar" : "Cadastre-se",
-                    style: Styles.h5,
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
                       !_isRegistering
-                          ? "Conecte-se para continuar para sua conta."
-                          : "Cadastre-se para usar o patrimônio",
-                      style: Styles.bodySmall
-                          .merge(const TextStyle(color: TextColors.text4)),
+                          ? "Não tem uma conta? "
+                          : "Já tem uma conta? ",
+                      style: Styles.bodySmall.merge(
+                          const TextStyle(color: TextColors.text4))),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isRegistering = !_isRegistering;
+                      });
+                      if (_isRegistering) {
+                        _animationController.forward();
+                      } else {
+                        _animationController.reverse();
+                      }
+                    },
+                    child: Text(
+                      !_isRegistering ? "Cadastrar-se" : "Entrar",
+                      style: Styles.bodySmall.merge(TextStyle(
+                          color: Theme.of(context).primaryColor)),
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: formTextFields(context)),
+                  )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                        !_isRegistering
-                            ? "Não tem uma conta? "
-                            : "Já tem uma conta? ",
-                        style: Styles.bodySmall.merge(
-                            const TextStyle(color: TextColors.text4))),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isRegistering = !_isRegistering;
-                        });
-                        if (_isRegistering) {
-                          _animationController.forward();
-                        } else {
-                          _animationController.reverse();
-                        }
-                      },
-                      child: Text(
-                        !_isRegistering ? "Cadastrar-se" : "Entrar",
-                        style: Styles.bodySmall.merge(TextStyle(
-                            color: Theme.of(context).primaryColor)),
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
+            )*/
+          ],
         ),
       ),
     );
