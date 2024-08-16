@@ -28,11 +28,24 @@ class _FeedScreenState extends State<FeedScreen> {
 
   final APIService apiService = APIService();
   Future<dynamic>? _topicsFuture;
+  String? login_type;
 
   @override
   void initState() {
     super.initState();
-    _topicsFuture = apiService.fetchTopics();
+    _getJWT();
+  }
+
+  Future<void> _initialize() async {
+    await _getJWT();  
+    if (login_type!=null && login_type != "gmail") {
+      _topicsFuture = apiService.fetchTopics();
+    }
+  }
+
+  Future<void> _getJWT() async {
+    final prefs = await SharedPreferences.getInstance();
+    login_type = prefs.getString("login_type");
   }
 
   Future<void> _refreshFeed() async {
@@ -194,134 +207,137 @@ class _FeedScreenState extends State<FeedScreen> {
                                 )
                               ]),
                         )),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28.0),
-                      child: FutureBuilder(
-                          future: apiService.fetchTopics(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            } else {
-                              return Column(
-                                children: [
-                                  for (var session in snapshot.data['data'])
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${session['name']}",
-                                          style: AppTextStyles.boldTitle2.merge(
-                                            TextStyle(color: MainColors.primary04),
+                    if (login_type != 'gmail')
+                      Padding(
+                        padding: const EdgeInsets.only(top: 28.0),
+                        child: FutureBuilder(
+                            future: apiService.fetchTopics(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                return Column(
+                                  children: [
+                                    for (var session in snapshot.data['data'])
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${session['name']}",
+                                            style: AppTextStyles.boldTitle2.merge(
+                                              TextStyle(color: MainColors.primary04),
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 12),
-                                        Container(
-                                          height: 150,
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              children: [
-                                                for (var subTopic in session['subTopics'])
-                                                  Padding(
-                                                    padding: const EdgeInsets.only(right: 8.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => ContentScreen(
-                                                              title: session['name'],
-                                                              description: subTopic['name'],
-                                                              text: subTopic['content'],
+                                          SizedBox(height: 12),
+                                          Container(
+                                            height: 200,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  for (var subTopic in session['subTopics'])
+                                                    Padding(
+                                                      padding: const EdgeInsets.only(right: 8.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => ContentScreen(
+                                                                title: session['name'],
+                                                                description: subTopic['name'],
+                                                                text: subTopic['content'],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                      child: Card(
-                                                        elevation: 4,
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                              begin: Alignment.topLeft,
-                                                              end: Alignment.bottomRight,
-                                                              colors: [
-                                                                Color(0xFF328FFB).withOpacity(0.2),
-                                                                Colors.white.withOpacity(0.7)
-                                                              ],
+                                                          );
+                                                        },
+                                                        child: Card(
+                                                          elevation: 4,
+                                                          child: Container(
+                                                            decoration: BoxDecoration(
+                                                              gradient: LinearGradient(
+                                                                begin: Alignment.topLeft,
+                                                                end: Alignment.bottomRight,
+                                                                colors: [
+                                                                  Color(0xFF328FFB).withOpacity(0.2),
+                                                                  Colors.white.withOpacity(0.7)
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                          width: 300.0,
-                                                          padding: EdgeInsets.all(16.0),
-                                                          child: Padding(
-                                                            padding: const EdgeInsets.symmetric(
-                                                              horizontal: 16,
-                                                              vertical: 10,
-                                                            ),
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  '${subTopic['name']}',
-                                                                  style: AppTextStyles.boldSubhead.merge(
-                                                                    TextStyle(color: MainColors.primary04),
+                                                            width: 300.0,
+                                                            padding: EdgeInsets.all(16.0),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.symmetric(
+                                                                horizontal: 16,
+                                                                vertical: 10,
+                                                              ),
+                                                              child: Column(
+                                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  Text(
+                                                                    '${subTopic['name']}',
+                                                                    style: AppTextStyles.boldSubhead.merge(
+                                                                      TextStyle(color: MainColors.primary04),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                Text(
-                                                                  '${subTopic['description']}',
-                                                                  style: AppTextStyles.footnote,
-                                                                  overflow: TextOverflow.ellipsis,
-                                                                ),
-                                                                Padding(
-                                                                  padding: const EdgeInsets.only(top: 12.0),
-                                                                  child: Row(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment.end,
-                                                                    children: [
-                                                                      Padding(
-                                                                        padding: const EdgeInsets.only(
-                                                                            right: 6.0),
-                                                                        child: Text(
-                                                                          "Ver Mais",
-                                                                          style: AppTextStyles.footnote.merge(
-                                                                            TextStyle(
-                                                                                color: MainColors.primary03),
+                                                                  Text(
+                                                                    '${subTopic['description']}',
+                                                                    style: AppTextStyles.footnote,
+                                                                    overflow: TextOverflow.ellipsis,
+                                                                  ),
+                                                                  Padding(
+                                                                    padding: const EdgeInsets.only(top: 12.0),
+                                                                    child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment.end,
+                                                                      children: [
+                                                                        Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                              right: 6.0),
+                                                                          child: Text(
+                                                                            "Ver Mais",
+                                                                            style: AppTextStyles.footnote.merge(
+                                                                              TextStyle(
+                                                                                  color: MainColors.primary03),
+                                                                            ),
                                                                           ),
                                                                         ),
-                                                                      ),
-                                                                      Icon(
-                                                                        Icons.arrow_forward_rounded,
-                                                                        size: 18,
-                                                                        color: Color(0xff3391FF),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                )
-                                                              ],
+                                                                        Icon(
+                                                                          Icons.arrow_forward_rounded,
+                                                                          size: 18,
+                                                                          color: Color(0xff3391FF),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  )
-                                              ],
+                                                    )
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(height: 38),
-                                      ],
-                                    )
-                                  
-                                ],
-                              );
-                            }
-                          }),
-                    ),
+                                          SizedBox(height: 38),
+                                        ],
+                                      )
+
+                                  ],
+                                );
+                              }
+                            }),
+                      ),
+                    if (login_type == 'gmail') 
+                      Center(child: Text("Voce nao pode acessar essa pagina"),)
                   ],
                 ),
               ),

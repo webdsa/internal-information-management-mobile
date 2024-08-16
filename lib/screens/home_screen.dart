@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:internalinformationmanagement/screens/search_screen.dart';
 import 'package:internalinformationmanagement/widgets/custom_modal.dart';
@@ -13,6 +16,7 @@ import 'package:internalinformationmanagement/theme/theme_provider.dart';
 import 'package:internalinformationmanagement/widgets/home_listview_widget.dart';
 import 'package:internalinformationmanagement/widgets/last_updates_cards_widget.dart';
 import 'package:internalinformationmanagement/widgets/last_updates_buttons_widget.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   final Function(int) updateValue;
@@ -48,23 +52,49 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<String> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     final jwt = prefs.getString('jwt_token');
+    final login_type = prefs.getString('login_type');
     if (jwt == null || jwt.isEmpty) {
       Navigator.pushReplacementNamed(context, "/login");
       return "";
     }
 
-    try {
-      _userData = Jwt.parseJwt(jwt);
-      if ((_userData['name'].contains("DSA") ||
-              _userData['name'].contains("IATec")) &&
-          _userData['name'].split(" ").length > 3) {
-        return "${_userData['name'].split(" ")[2]} ${_userData['name'].split(" ")[3]}";
-      } else {
-        return "${_userData['name'].split(" ")[0]} ${_userData['name'].split(" ")[1]}";
-      }
-    } catch (e) {
-      print("Error parsing JWT: $e");
-      return "";
+    if (login_type == "outlook") {
+      try {
+        _userData = Jwt.parseJwt(jwt);
+        if ((_userData['name'].contains("DSA") ||
+                _userData['name'].contains("IATec")) &&
+            _userData['name'].split(" ").length > 3) {
+          return "${_userData['name'].split(" ")[2]} ${_userData['name'].split(" ")[3]}";
+        } else {
+          return "${_userData['name'].split(" ")[0]} ${_userData['name'].split(" ")[1]}";
+        }
+      } catch (e) {
+        print("Error parsing JWT: $e");
+        return "";
+    }} else {
+        final response = await http.get(
+          Uri.parse('https://www.googleapis.com/oauth2/v1/userinfo?alt=json'),
+          headers: {'Authorization': 'Bearer $jwt'},
+        );
+        
+        if (response.statusCode == 200) {
+          try {
+            _userData = json.decode(response.body);
+            if ((_userData['name'].contains("DSA") ||
+            _userData['name'].contains("IATec")) &&
+            _userData['name'].split(" ").length > 3) {
+              return "${_userData['name'].split(" ")[2]} ${_userData['name'].split(" ")[3]}";
+            } else {
+              return "${_userData['name'].split(" ")[0]} ${_userData['name'].split(" ")[1]}";
+            }
+          } catch(e) {
+            print(e);
+          }
+          return "";
+        }
+        else {
+          return "Nome";
+        }
     }
   }
 
@@ -76,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('jwt_token', '');
     await prefs.setBool('auto_login', false);
+    await prefs.setString("login_type", "");
     Navigator.of(context).pushReplacementNamed('/login');
   }
 
@@ -340,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Padding(padding: EdgeInsets.only(left: 12), child: Text("Pesquise por um conteudo..."),)
                               ],
                             ),
-                                                      ),
+                            ),
                           ),
                         ),
                         /*

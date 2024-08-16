@@ -22,10 +22,10 @@ class APIService {
   salvo nas preferências compartilhadas (salvamento local do aplicativo).
   */
   Future<void> _initHeader() async {
-    print('Inicializando header...');
     final prefs = await SharedPreferences.getInstance();
     final String? bearerToken = prefs.getString("jwt_token");
-    if (bearerToken != null) {
+    final String? login_type = prefs.getString("login_type");
+    if (bearerToken != null && login_type != 'gmail') {
       print(bearerToken);
       headers = {
         'Authorization': 'Bearer $bearerToken',
@@ -47,18 +47,24 @@ class APIService {
   */
   Future<dynamic> fetchTopics() async {
     await _headerCompleter.future;
-    try {
-      final response =
-          await http.get(Uri.parse("${apiURL}/guide/topic"), headers: headers);
+    final prefs = await SharedPreferences.getInstance();
+    final String? login_type = prefs.getString("login_type");
+    if (login_type != 'gmail') {
+      try {
+        final response =
+            await http.get(Uri.parse("${apiURL}/guide/topic"), headers: headers);
 
-      if (response.statusCode == 200) {
-        return json.decode(response.body);
-      } else {
-        print(
-            'Erro ao buscar tópicos: ${response.statusCode} - ${response.body}');
+        if (response.statusCode == 200) {
+          return json.decode(response.body);
+        } else {
+          print(
+              'Erro ao buscar tópicos: ${response.statusCode} - ${response.body}');
+        }
+      } catch (e) {
+        print('Erro na requisição: $e');
       }
-    } catch (e) {
-      print('Erro na requisição: $e');
+    } else {
+     return Future.error('Não foi possível recuperar dados'.toString().replaceFirst("Error: ", ""));
     }
   }
 }

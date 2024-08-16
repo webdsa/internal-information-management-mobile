@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SummaryScreen extends StatefulWidget {
   @override
@@ -15,11 +16,21 @@ class SummaryScreen extends StatefulWidget {
 class _SummaryScreenState extends State<SummaryScreen> {
   final APIService apiService = APIService();
   late Map<String, dynamic> sessionData;
-
+  String? login_type;
 
   @override
   void initState() {
     super.initState();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _getJwt();
+  }
+
+  Future<void> _getJwt() async {
+    final prefs = await SharedPreferences.getInstance();
+    login_type = prefs.getString('login_type');
   }
 
   @override
@@ -51,147 +62,43 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                future: apiService.fetchTopics(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: snapshot.data['data'].length,
-                      itemBuilder: (context, index) {
-                        sessionData = snapshot.data;
-                        return ExpansionTile(
-                          title: Text(
-                            "${sessionData['data'][index]['name']}",
-                            style: AppTextStyles.boldHeadline,
-                          ),
-                          children: [
-                            for (var item in sessionData['data'][index]['subTopics'])
-                              ListTile(
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ContentScreen(
-                                      title: sessionData['data'][index]['name'],
-                                      description: item['name'],
-                                      text: item['content'],
-                                    ),
-                                  ),
-                                ),
-                                title: Text(
-                                  "${item['name']}",
-                                  style: AppTextStyles.footnote,
-                                ),
-                              )
-                          ],
-                        );
-                      },
-                    );
-                  }
-                },
-              )
-              /*ExpansionTile(
-                            title: Text(
-                              "Pagamentos e orçamentos",
-                              style: AppTextStyles.boldHeadline,
-                            ),
-                            children: [
-                                ListTile(
-                                  title: Text(
-                                    "Pagamento 1",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Pagamento 2",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Pagamento 3",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Orçamento 1",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Orçamento 2",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Orçamento 3",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                )
-                            ],
-                          ),
-                          ExpansionTile(
-                            title: Text(
-                              "Viagens",
-                              style: AppTextStyles.boldHeadline,
-                            ),
-                            children: [
-                                ListTile(
-                                  title: Text(
-                                    "Viagem 1",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Viagem 2",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                                ListTile(
-                                  title: Text(
-                                    "Viagem 3",
-                                    style: AppTextStyles.footnote,
-                                  ),
-                                ),
-                            ],
-                          )*/
-              /*
-              FutureBuilder(
+                FutureBuilder(
                   future: apiService.fetchTopics(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
+                      print("Entrou no primeiro if");
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.hasError || login_type == 'gmail') {
+                      return Center(
+                        child: Text('Não foi possível recuperar os dados'),
+                      );
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                         itemCount: snapshot.data['data'].length,
                         itemBuilder: (context, index) {
+                          sessionData = snapshot.data;
                           return ExpansionTile(
                             title: Text(
-                              "${snapshot.data['data'][index]['name']}",
+                              "${sessionData['data'][index]['name']}",
                               style: AppTextStyles.boldHeadline,
                             ),
                             children: [
-                              for (var item in snapshot.data['data'][index]
-                                  ['subTopics'])
+                              for (var item in sessionData['data'][index]['subTopics'])
                                 ListTile(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ContentScreen(
+                                        title: sessionData['data'][index]['name'],
+                                        description: item['name'],
+                                        text: item['content'],
+                                      ),
+                                    ),
+                                  ),
                                   title: Text(
                                     "${item['name']}",
                                     style: AppTextStyles.footnote,
@@ -202,7 +109,8 @@ class _SummaryScreenState extends State<SummaryScreen> {
                         },
                       );
                     }
-                  })*/
+                  },
+                ),
             ]),
           ),
         ),
