@@ -17,7 +17,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class LoginScreenWidget extends StatefulWidget {
   const LoginScreenWidget({super.key});
@@ -101,40 +100,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     }
   }
 
-  void appleSignIn() async {
-    try {
-      AuthorizationResult authResult = await TheAppleSignIn.performRequests([AppleIdRequest(requestedScopes: [Scope.email,Scope.fullName])]);
-    
-      switch (authResult.status) {
-        case AuthorizationStatus.authorized:
-          AppleIdCredential? appleCredentials = authResult.credential;
-          OAuthProvider oaprovider = OAuthProvider("apple.com");
-          OAuthCredential oAuthCredential = oaprovider.credential(
-            idToken: String.fromCharCodes(appleCredentials!.identityToken!),
-            accessToken: String.fromCharCodes(appleCredentials.authorizationCode!)
-          );
   
-          UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(oAuthCredential);
-        var token = userCredential.user?.getIdToken(true);
-        print(token);
-          print("Credenciais do usuario: $userCredential");
-          print("authorizer");
-          break;
-        case AuthorizationStatus.cancelled:
-          print("cancelled");
-          break;
-        case AuthorizationStatus.error:
-          print("error");
-          break;
-        default:
-          print("None of the above");
-          break;
-      }
-  } catch (e) {
-    print(e.toString());
-  }
-  }
-
   void _handleSignIn(String type) async {
     if (type == "google") {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -169,10 +135,46 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         print(error);
       }
     } else if (type == "ios") {
-      appleSignIn();
+      _signInWithApple();
     }
   }
 
+  Future<void> _signInWithApple() async {
+    try {
+      final appleIdCredential = await SignInWithApple.getAppleIDCredential(
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: 'adventistas.org.internalinformationmanagement.prod', 
+          redirectUri: Uri.parse('https://iatech-83ac9.firebaseapp.com/__/auth/handler')),
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      final oAuthProvider = OAuthProvider('apple.com');
+      final credential = oAuthProvider.credential(
+        idToken: appleIdCredential.identityToken,
+        accessToken: appleIdCredential.authorizationCode,
+      );
+      final resultCredential = await _loginUserWithCredential(credential);
+      print(resultCredential?.user!.getIdToken(true));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("${e.toString()}"))
+      );
+    }
+  }
+
+  Future<UserCredential?> _loginUserWithCredential(OAuthCredential credential) async {
+    try {
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      return userCredential;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("${e.toString()}"))
+      );
+    }
+    return null;
+  }
   void _loginAd() async {
     try {
       final microsoftProvider = OAuthProvider('microsoft.com');
@@ -180,6 +182,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
 
       var token = await credential.user?.getIdToken(true);
+
+      print(token);
 
       await _setJwt(token!, _isChecked, "outlook");
 
@@ -300,67 +304,34 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           topRight: Radius.circular(30.0),
         ),
       ),
-      child: Expanded(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: [
-                  Text(
-                    !_isRegistering ? "Entrar" : "Cadastre-se",
-                    style: Styles.h5,
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
-                    child: Text(
-                      !_isRegistering
-                          ? "Conecte-se para continuar para sua conta."
-                          : "Cadastre-se para usar o patrimônio",
-                      style: Styles.bodySmall
-                          .merge(const TextStyle(color: TextColors.text4)),
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: formTextFields(context)),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                        !_isRegistering
-                            ? "Não tem uma conta? "
-                            : "Já tem uma conta? ",
-                        style: Styles.bodySmall.merge(
-                            const TextStyle(color: TextColors.text4))),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isRegistering = !_isRegistering;
-                        });
-                        if (_isRegistering) {
-                          _animationController.forward();
-                        } else {
-                          _animationController.reverse();
-                        }
-                      },
-                      child: Text(
-                        !_isRegistering ? "Cadastrar-se" : "Entrar",
-                        style: Styles.bodySmall.merge(TextStyle(
-                            color: Theme.of(context).primaryColor)),
-                      ),
-                    )
-                  ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Column(
+              children: [
+                Text(
+                  !_isRegistering ? "Entrar" : "Cadastre-se",
+                  style: Styles.h5,
+                  textAlign: TextAlign.center,
                 ),
-              )
-            ],
-          ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    !_isRegistering
+                        ? "Conecte-se para continuar para sua conta."
+                        : "Cadastre-se para usar o patrimônio",
+                    style: Styles.bodySmall
+                        .merge(const TextStyle(color: TextColors.text4)),
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: formTextFields(context)),
+              ],
+            ),
+          ],
         ),
       ),
     );
@@ -631,11 +602,11 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   SECTION - FORM TEXT FIELDS
   */
   Widget formTextFields(BuildContext context) {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.selected,
-        MaterialState.focused,
+    Color getColor(Set<WidgetState> states) {
+      const Set<WidgetState> interactiveStates = <WidgetState>{
+        WidgetState.pressed,
+        WidgetState.selected,
+        WidgetState.focused,
       };
       if (states.any(interactiveStates.contains)) {
         return Colors.transparent;
@@ -645,165 +616,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
     return Form(
       key: _formKey,
-      child: /*Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (_isRegistering)
-            TextFormField(
-              controller: _nameController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                  label: const Text("Nome"),
-                  constraints: const BoxConstraints(maxHeight: 42),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(
-                          width: 1.5, color: TextColors.text5))),
-            ),
-          if (_isRegistering)
-            Padding(
-              padding: const EdgeInsets.only(top: 24.0),
-              child: TextFormField(
-                controller: _cpfController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  MaskTextInputFormatter(
-                      mask: '###.###.###-##', filter: {"#": RegExp(r'[0-9]')})
-                ],
-                decoration: InputDecoration(
-                    prefixIcon: Padding(
-                      padding: const EdgeInsets.only(left: 15.0, right: 4),
-                      child: SvgPicture.asset('assets/svgs/cpf_icon.svg'),
-                    ),
-                    prefixIconConstraints: const BoxConstraints(maxHeight: 12),
-                    label: const Text("CPF"),
-                    constraints: const BoxConstraints(maxHeight: 42),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                            width: 1.5, color: TextColors.text5))),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24.0),
-            child: TextFormField(
-              controller: _emailController,
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Por favor, insira um e-mail";
-                }
-                if (!EmailValidator.validate(value)) {
-                  return 'Email inválido';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                label: const Text("E-mail"),
-                constraints: const BoxConstraints(maxHeight: 42),
-                border: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(width: 1.5, color: TextColors.text5),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _isHidingPassword,
-                  decoration: InputDecoration(
-                      suffixIcon: Padding(
-                        padding: const EdgeInsets.only(left: 12, right: 16.0),
-                        child: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _isHidingPassword = !_isHidingPassword;
-                            });
-                          },
-                          icon: SvgPicture.asset(
-                            'assets/svgs/eye.svg',
-                          ),
-                        ),
-                      ),
-                      label: const Text("Senha"),
-                      constraints: const BoxConstraints(maxHeight: 42),
-                      border: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                            width: 1.5, color: TextColors.text5),
-                        borderRadius: BorderRadius.circular(10),
-                      )),
-                ),
-                if (!_isRegistering)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 18,
-                              width: 18,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: _isChecked
-                                        ? Border.all(
-                                            width: 2,
-                                            color:
-                                                Theme.of(context).primaryColor)
-                                        : Border.all(
-                                            width: 2, color: TextColors.text2)),
-                                child: Checkbox(
-                                    fillColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4)),
-                                    checkColor: Theme.of(context).primaryColor,
-                                    value: _isChecked,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        _isChecked = value!;
-                                      });
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("Lembrar minha conta",
-                                  style: Styles.caption),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _forgetPassword = !_forgetPassword;
-                            });
-                          },
-                          child: Text(
-                            "Esqueceu a senha?",
-                            style: Styles.caption.merge(TextStyle(
-                                color: Theme.of(context).primaryColor)),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                formButtonsWidget()
-              ],
-            ),
-          ),
-        ],
-      ),*/
-      formButtonsWidget()
+      child: formButtonsWidget()
     );
   }
 
@@ -828,54 +641,6 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       padding: const EdgeInsets.only(top: 24.0),
       child: Column(
         children: [
-          /*
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 44,
-            child: ElevatedButton(
-              onPressed: () {
-                _login();
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                backgroundColor: Theme.of(context).primaryColor,
-                textStyle: Styles.headline4,
-              ),
-              child: Text(
-                'Entrar',
-                style: Styles.button
-                    .merge(const TextStyle(color: TextColors.text7)),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 136,
-                child: const Divider(thickness: 1, color: TextColors.text5),
-              ),
-              Text(
-                "ou",
-                style:
-                    Styles.body.merge(const TextStyle(color: TextColors.text4)),
-              ),
-              Container(
-                width: 136,
-                child: const Divider(
-                  thickness: 1,
-                  color: TextColors.text5,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 16,
-          ),*/
           Container(
             width: MediaQuery.of(context).size.width,
             height: 44,
@@ -963,76 +728,78 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 ),
               ),
             ),
+          if (Platform.isIOS)
+            Padding(
+              padding: const EdgeInsets.only(top: 12.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 44,
+                child: ElevatedButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    _handleSignIn("ios");
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1, color: TextColors.text5),
+                        borderRadius: BorderRadius.circular(10)),
+                    backgroundColor: Colors.grey[400],
+                    textStyle: Styles.headline4,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Login com ',
+                        style: Styles.buttonSmall.merge(TextStyle(color: Colors.black)),
+                      ),
+                      Icon(FontAwesomeIcons.apple, color: Colors.black,)
+                    ],
+                  ),
+                ),
+              ),
+            ),
           const SizedBox(
             height: 16,
           ),
-Row(
-                          children: [
-                            SizedBox(
-                              height: 18,
-                              width: 18,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    border: _isChecked
-                                        ? Border.all(
-                                            width: 2,
-                                            color:
-                                                Theme.of(context).primaryColor)
-                                        : Border.all(
-                                            width: 2, color: TextColors.text2)),
-                                child: Checkbox(
-                                    fillColor:
-                                        MaterialStateProperty.resolveWith(
-                                            getColor),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4)),
-                                    checkColor: Theme.of(context).primaryColor,
-                                    value: _isChecked,
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        _isChecked = value!;
-                                      });
-                                    }),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("Lembrar minha conta",
-                                  style: Styles.caption),
-                            ),
-                          ],
-                        ),  
-          //if (Platform.isIOS)
-          //  Container(
-          //    width: MediaQuery.of(context).size.width,
-          //    height: 44,
-          //    child: ElevatedButton(
-          //      onPressed: () async {
-          //        print(FirebaseAuth.instance.currentUser);
-          //        _handleSignIn("ios");
-          //        FirebaseAuth.instance.signOut();
-          //      },
-          //      style: ElevatedButton.styleFrom(
-          //        elevation: 0,
-          //        shape: RoundedRectangleBorder(
-          //            side: BorderSide(width: 1, color: TextColors.text5),
-          //            borderRadius: BorderRadius.circular(10)),
-          //        backgroundColor: Colors.grey,
-          //        textStyle: Styles.headline4,
-          //      ),
-          //      child: Row(
-          //        mainAxisAlignment: MainAxisAlignment.center,
-          //        children: [
-          //          Text(
-          //            'Login com ',
-          //            style: Styles.buttonSmall,
-          //          ),
-          //          Icon(FontAwesomeIcons.apple)
-          //        ],
-          //      ),
-          //    ),
-          //  ),
+          Row(
+            children: [
+              SizedBox(
+                height: 18,
+                width: 18,
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      border: _isChecked
+                          ? Border.all(
+                              width: 2,
+                              color:
+                                  Theme.of(context).primaryColor)
+                          : Border.all(
+                              width: 2, color: TextColors.text2)),
+                  child: Checkbox(
+                      fillColor:
+                          MaterialStateProperty.resolveWith(
+                              getColor),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
+                      checkColor: Theme.of(context).primaryColor,
+                      value: _isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _isChecked = value!;
+                        });
+                      }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Text("Lembrar minha conta",
+                    style: Styles.caption),
+              ),
+            ],
+          ),
         ],
       ),
     );

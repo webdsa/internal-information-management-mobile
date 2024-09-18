@@ -63,7 +63,7 @@ class _ContentScreenState extends State<ContentScreen> {
                   ],
                 )),
                 Padding(
-                  padding: EdgeInsets.only(top: 36),
+                  padding: EdgeInsets.only(top: 4),
                   child: Text(
                     "${widget.title}",
                     style: DesktopTextStyles.headlineH4,
@@ -74,7 +74,7 @@ class _ContentScreenState extends State<ContentScreen> {
                   padding: EdgeInsets.only(top: 42),
                   child: Text(
                     "${widget.description}",
-                    style: DesktopTextStyles.subtitle,
+                    style: DesktopTextStyles.subtitle.merge(TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
                     textAlign: TextAlign.start,
                   ),
                 ),
