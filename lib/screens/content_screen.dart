@@ -27,66 +27,62 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Banner(
-        message: F.env,
-        location: BannerLocation.topEnd,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              gradient:
-                  Provider.of<ThemeProvider>(context).themeData == darkMode
-                      ? LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                              MainColors.primary03,
-                              FoundationColors.foundationSecondaryDarkest
-                            ])
-                      : LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.white, MainColors.primary02])),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 26.0, vertical: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SafeArea(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.close),
-                        iconSize: 35,
-                      ),
-                    ],
-                  )),
-                  Padding(
-                    padding: EdgeInsets.only(top: 4),
-                    child: Text(
-                      "${widget.title}",
-                      style: DesktopTextStyles.headlineH4,
-                      textAlign: TextAlign.start,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            gradient:
+                Provider.of<ThemeProvider>(context).themeData == darkMode
+                    ? LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                            MainColors.primary03,
+                            FoundationColors.foundationSecondaryDarkest
+                          ])
+                    : LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.white, MainColors.primary02])),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 26.0, vertical: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SafeArea(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: Icon(Icons.close),
+                      iconSize: 35,
                     ),
+                  ],
+                )),
+                Padding(
+                  padding: EdgeInsets.only(top: 4),
+                  child: Text(
+                    "${widget.title}",
+                    style: DesktopTextStyles.headlineH4,
+                    textAlign: TextAlign.start,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 42),
-                    child: Text(
-                      "${widget.description}",
-                      style: DesktopTextStyles.subtitle.merge(TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
-                      textAlign: TextAlign.start,
-                    ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 42),
+                  child: Text(
+                    "${widget.description}",
+                    style: DesktopTextStyles.subtitle.merge(TextStyle(fontWeight: FontWeight.w600, fontSize: 20)),
+                    textAlign: TextAlign.start,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 22),
-                    child: Html(data: "${widget.text}",)
-                  ),
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 22),
+                  child: Html(data: "${widget.text}",)
+                ),
+              ],
             ),
           ),
         ),

@@ -35,14 +35,14 @@ dependencies:
   google_sign_in: ^6.2.1
   font_awesome_flutter: ^10.7.0
   sign_in_with_apple: ^6.1.1
-  the_apple_sign_in: ^1.1.1
 
 flutter_launcher_icons:
   #  image_path: "assets/images/icon-128x128.png"
-  image_path_android: "assets/imgs/logo-dsa-info.png"
-  image_path_ios: "assets/imgs/logo-dsa-info.png"
+  image_path_android: "assets/imgs/logo.png"
+  image_path_ios: "assets/imgs/logo.png"
   android: true # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  remove_alpha_ios: true
 
 dev_dependencies:
   flutter_test:
