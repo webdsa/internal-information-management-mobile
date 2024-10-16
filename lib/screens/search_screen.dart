@@ -34,7 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   Future<void> _initialize() async {
     await _getJwt();
     
-    if (login_type!= null && login_type!= 'gmail') {
+    if (login_type!= null && (login_type!= 'gmail' && login_type != 'apple')) {
       _fetchSubTopics();
       _searchController.addListener(_onSearchChanged);
     }
@@ -46,7 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Future<void> _fetchSubTopics() async {
-    if (login_type != 'gmail') {
+    if (login_type != 'gmail' && login_type != 'apple') {
       var response = await apiService.fetchTopics();
       List<dynamic> subTopics = [];
       if (response['succeeded']) {
@@ -111,7 +111,7 @@ class _SearchScreenState extends State<SearchScreen> {
               if (widget.wasPreviousScreenFeed == false)
                 SafeArea(child: SizedBox()),
               
-              if (login_type != 'gmail')
+              if (login_type != 'gmail' && login_type != 'apple')
                 Padding(
                   padding: const EdgeInsets.only(top: 24.0),
                   child: TextField(
@@ -128,7 +128,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                 ),
-              if (login_type != 'gmail')
+              if (login_type != 'gmail' && login_type != 'apple')
                 Expanded(
                   child: FutureBuilder(
                     future: apiService.fetchTopics(),
@@ -171,7 +171,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
         
-            if (login_type == 'gmail')
+            if (login_type == 'gmail' && login_type != 'apple')
               Center(child: Text("Voce nao pode acessar essa pagina"),)
             ],
           ),

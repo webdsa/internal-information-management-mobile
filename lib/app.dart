@@ -102,7 +102,7 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
         length: 2, initialIndex: _selectedIndex, vsync: this);
 
     _pages = [
-      HomeScreen(updateValue: _updateValue),
+      HomeScreen(),
       SearchScreen(wasPreviousScreenFeed: false,),
     ];
 

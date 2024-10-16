@@ -102,11 +102,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1044529716444-vs4bgc60oeoamlvb4b9k1ef1gj71bfqu.apps.googleusercontent.com",
+          "client_id": "1044529716444-g7crlk26gtkb3gk6ef7242t0edvnt1bh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "adventistas.org.internalinformationmanagement.prod",
-            "certificate_hash": "51544566eac0378b8fff53725ffa754ae987ce04"
+            "certificate_hash": "2387950369b76d3f903e029c6c812b51ac6aab06"
           }
         },
         {

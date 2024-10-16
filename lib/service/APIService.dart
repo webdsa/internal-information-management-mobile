@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:internalinformationmanagement/flavors.dart';
@@ -25,7 +24,7 @@ class APIService {
     final prefs = await SharedPreferences.getInstance();
     final String? bearerToken = prefs.getString("jwt_token");
     final String? login_type = prefs.getString("login_type");
-    if (bearerToken != null && login_type != 'gmail') {
+    if (bearerToken != null && (login_type != 'gmail' && login_type != 'apple')) {
       print(bearerToken);
       headers = {
         'Authorization': 'Bearer $bearerToken',
@@ -49,7 +48,7 @@ class APIService {
     await _headerCompleter.future;
     final prefs = await SharedPreferences.getInstance();
     final String? login_type = prefs.getString("login_type");
-    if (login_type != 'gmail') {
+    if (login_type != 'gmail' && login_type != 'apple') {
       try {
         final response =
             await http.get(Uri.parse("${apiURL}/guide/topic"), headers: headers);

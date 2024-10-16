@@ -38,7 +38,7 @@ class _FeedScreenState extends State<FeedScreen> {
 
   Future<void> _initialize() async {
     await _getJWT();  
-    if (login_type!=null && login_type != "gmail") {
+    if (login_type!=null && (login_type != "gmail" && login_type != 'apple')) {
       _topicsFuture = apiService.fetchTopics();
     }
   }
@@ -207,7 +207,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                 )
                               ]),
                         )),
-                    if (login_type != 'gmail')
+                    if (login_type != 'gmail' && login_type != 'apple')
                       Padding(
                         padding: const EdgeInsets.only(top: 28.0),
                         child: FutureBuilder(
@@ -340,7 +340,7 @@ class _FeedScreenState extends State<FeedScreen> {
                               }
                             }),
                       ),
-                    if (login_type == 'gmail') 
+                    if (login_type == 'gmail' || login_type == 'apple') 
                       Center(child: Text("Voce nao pode acessar essa pagina"),)
                   ],
                 ),

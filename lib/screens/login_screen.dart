@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/flavors.dart';
-import 'package:internalinformationmanagement/widgets/LoginScreenWidgets/login_screen_widget.dart';
+import 'package:internalinformationmanagement/widgets/Login/login_screen_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:internalinformationmanagement/app.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/service/login_service.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:email_validator/email_validator.dart';
@@ -61,6 +63,10 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   @override
   void dispose() {
     _animationController.dispose();
+    _nameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    _cpfController.dispose();
     super.dispose();
   }
 
@@ -156,7 +162,63 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         accessToken: appleIdCredential.authorizationCode,
       );
       final resultCredential = await _loginUserWithCredential(credential);
-      print(resultCredential?.user!.getIdToken(true));
+      
+      var token = await resultCredential?.user!.getIdToken(true);
+
+      bool? isNewUser = resultCredential?.additionalUserInfo!.isNewUser;
+
+      if (isNewUser! == false) {
+        Map<String, dynamic> userIdMapped = Jwt.parseJwt(token!);
+
+        await _setJwt(token, _isChecked, "apple");
+
+        var documents = await FirebaseFirestore.instance.collection('users').doc(userIdMapped['user_id']).get();
+
+        if (documents.exists) {
+        setState(() {
+          _isLoading = true; // Ativa a animação
+        });
+
+        // Simula um tempo de espera antes de navegar para a próxima tela
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AppScreens()),
+          ).then((value) {
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        });
+        }
+      }
+      else {
+        Map<String, dynamic> userIdMapped = Jwt.parseJwt(token!);
+
+        await _setJwt(token, _isChecked, "apple");
+
+        await FirebaseFirestore.instance.collection('users').doc(userIdMapped['user_id']).set({
+          'user_id': userIdMapped['user_id'],
+          'given_name': appleIdCredential.givenName,
+          'family_name': appleIdCredential.familyName
+        });
+
+        setState(() {
+          _isLoading = true; // Ativa a animação
+        });
+
+        // Simula um tempo de espera antes de navegar para a próxima tela
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AppScreens()),
+          ).then((value) {
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        });
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("${e.toString()}"))
@@ -175,23 +237,24 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     }
     return null;
   }
+  
   void _loginAd() async {
     try {
       final microsoftProvider = OAuthProvider('microsoft.com');
+
       final credential =
           await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
 
       var token = await credential.user?.getIdToken(true);
 
-      print(token);
-
       await _setJwt(token!, _isChecked, "outlook");
 
       if (token != null) {
-        setState(() {
+         setState(() {
           _isLoading = true; // Ativa a animação
         });
 
+        // Simula um tempo de espera antes de navegar para a próxima tela
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.push(
             context,
@@ -204,8 +267,18 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         });
       }
     } catch (e) {
-      print(e.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${e.toString()}'))
+      );
     }
+  }
+
+  /*
+  Essa função vai levar o usuário para a tela fake de login
+  porem como nao existe ainda, está em branco
+  */
+  void _fakeLogin() {
+  
   }
 
   @override
@@ -248,9 +321,9 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               visible: !_isLoading,
               child: Expanded(
                   flex: _isRegistering ? 7 : 6,
-                  child: !_forgetPassword
+                  child: !_isRegistering
                       ? loginAndRegister(context)
-                      : forgetPassword(context)),
+                      : registerAccount(context)),
             ),
 
             /*
@@ -304,43 +377,61 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
           topRight: Radius.circular(30.0),
         ),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Column(
-              children: [
-                Text(
-                  !_isRegistering ? "Entrar" : "Cadastre-se",
-                  style: Styles.h5,
-                  textAlign: TextAlign.center,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Text(
-                    !_isRegistering
-                        ? "Conecte-se para continuar para sua conta."
-                        : "Cadastre-se para usar o patrimônio",
-                    style: Styles.bodySmall
-                        .merge(const TextStyle(color: TextColors.text4)),
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                children: [
+                  Text(
+                    !_isRegistering ? "Entrar" : "Cadastre-se",
+                    style: Styles.h5,
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                Padding(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Text(
+                      !_isRegistering
+                          ? "Conecte-se para continuar para sua conta."
+                          : "Cadastre-se para usar o patrimônio",
+                      style: Styles.bodySmall
+                          .merge(const TextStyle(color: TextColors.text4)),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(top: 30),
-                    child: formTextFields(context)),
-              ],
+                    child: formTextFields(context),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 32.0),
+            child: TextButton(
+              onPressed: () {
+                setState(() {
+                  _isRegistering = !_isRegistering;
+                });
+              },
+              child: Text(
+                !_isRegistering ? "Cadastre-se" : "Entrar",
+                style: Styles.bodySmall.merge(
+                                  const TextStyle(color: MainColors.primary03),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   /*
-  SCREEN - FORGET PASSWORD
+  SCREEN - REGISTER
   */
-  Widget forgetPassword(BuildContext context) {
+  Widget registerAccount(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
       decoration: const BoxDecoration(
@@ -357,14 +448,14 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
             Column(
               children: [
                 Text(
-                  "Esqueceu a senha?",
+                  "Cadastre sua conta!",
                   style: Styles.h5,
                   textAlign: TextAlign.center,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4.0),
                   child: Text(
-                    "Insira o e-mail associado com a sua conta para receber um código de verificação",
+                    "Insira o e-mail e senha para cadastrar sua conta",
                     textAlign: TextAlign.center,
                     style: Styles.bodySmall
                         .merge(const TextStyle(color: TextColors.text4)),
@@ -377,52 +468,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (_isRegistering)
-                            TextFormField(
-                              controller: _nameController,
-                              keyboardType: TextInputType.name,
-                              decoration: InputDecoration(
-                                  label: const Text("Nome"),
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 42),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          width: 1.5,
-                                          color: TextColors.text5))),
-                            ),
-                          if (_isRegistering)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 24.0),
-                              child: TextFormField(
-                                controller: _cpfController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  MaskTextInputFormatter(
-                                      mask: '###.###.###-##',
-                                      filter: {"#": RegExp(r'[0-9]')})
-                                ],
-                                decoration: InputDecoration(
-                                    prefixIcon: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 15.0, right: 4),
-                                      child: SvgPicture.asset(
-                                          'assets/svgs/cpf_icon.svg'),
-                                    ),
-                                    prefixIconConstraints:
-                                        const BoxConstraints(maxHeight: 12),
-                                    label: const Text("CPF"),
-                                    constraints:
-                                        const BoxConstraints(maxHeight: 42),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: const BorderSide(
-                                            width: 1.5,
-                                            color: TextColors.text5))),
-                              ),
-                            ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 24.0),
+                            padding: const EdgeInsets.only(top: 12.0),
                             child: TextFormField(
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
@@ -447,6 +494,54 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               ),
                             ),
                           ),
+
+                          //if (_isRegistering)
+                          //  Padding(
+                          //    padding: const EdgeInsets.only(top: 24.0),
+                          //    child: TextFormField(
+                          //      controller: _cpfController,
+                          //      keyboardType: TextInputType.number,
+                          //      inputFormatters: [
+                          //        MaskTextInputFormatter(
+                          //            mask: '###.###.###-##',
+                          //            filter: {"#": RegExp(r'[0-9]')})
+                          //      ],
+                          //      decoration: InputDecoration(
+                          //          prefixIcon: Padding(
+                          //            padding: const EdgeInsets.only(
+                          //                left: 15.0, right: 4),
+                          //            child: SvgPicture.asset(
+                          //                'assets/svgs/cpf_icon.svg'),
+                          //          ),
+                          //          prefixIconConstraints:
+                          //              const BoxConstraints(maxHeight: 12),
+                          //          label: const Text("CPF"),
+                          //          constraints:
+                          //              const BoxConstraints(maxHeight: 42),
+                          //          border: OutlineInputBorder(
+                          //              borderRadius: BorderRadius.circular(10),
+                          //              borderSide: const BorderSide(
+                          //                  width: 1.5,
+                          //                  color: TextColors.text5))),
+                          //    ),
+                          //  ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 24.0),
+                            child: TextFormField(
+                              controller: _nameController,
+                              keyboardType: TextInputType.name,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  label: const Text("Senha"),
+                                  constraints:
+                                      const BoxConstraints(maxHeight: 42),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          width: 1.5,
+                                          color: TextColors.text5))),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.only(top: 24),
                             child: Container(
@@ -454,7 +549,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               height: 44,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  _login();
+                                  _fakeLogin();
                                 },
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -464,7 +559,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                                   textStyle: Styles.headline4,
                                 ),
                                 child: Text(
-                                  'Solicitar código',
+                                  'Cadastrar',
                                   style: Styles.button.merge(
                                       const TextStyle(color: TextColors.text7)),
                                 ),
@@ -477,76 +572,15 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                _forgetPassword = !_forgetPassword;
+                                _isRegistering = !_isRegistering;
                               });
                             },
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
                                 "Voltar para o login",
-                                style: Styles.caption.merge(TextStyle(
-                                    color: Theme.of(context).primaryColor)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                width: 136,
-                                child: const Divider(
-                                    thickness: 1, color: TextColors.text5),
-                              ),
-                              Text(
-                                "ou",
-                                style: Styles.body.merge(
-                                    const TextStyle(color: TextColors.text4)),
-                              ),
-                              Container(
-                                width: 136,
-                                child: const Divider(
-                                  thickness: 1,
-                                  color: TextColors.text5,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 44,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _loginAd();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        width: 1, color: TextColors.text5),
-                                    borderRadius: BorderRadius.circular(10)),
-                                backgroundColor: Colors.white,
-                                textStyle: Styles.headline4,
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Conecte-se com SSO',
-                                    style: Styles.buttonSmall.merge(
-                                        TextStyle(color: TextColors.text1)),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child:
-                                        SvgPicture.asset('assets/svgs/key.svg'),
-                                  )
-                                ],
+                                style: Styles.bodySmall.merge(
+                                  const TextStyle(color: MainColors.primary03)),
                               ),
                             ),
                           ),
@@ -555,43 +589,6 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                     )),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: Column(
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Não tem uma conta? ",
-                              style: Styles.bodySmall.merge(
-                                  const TextStyle(color: TextColors.text4))),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _forgetPassword = !_forgetPassword;
-                                _isRegistering = !_isRegistering;
-                              });
-                              if (_isRegistering) {
-                                _animationController.forward();
-                              } else {
-                                _animationController.reverse();
-                              }
-                            },
-                            child: Text(
-                              "Cadastrar-se",
-                              style: Styles.bodySmall.merge(TextStyle(
-                                  color: Theme.of(context).primaryColor)),
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
@@ -624,11 +621,11 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   SECTION - FORM BUTTONS WIDGET
   */
   Widget formButtonsWidget() {
-    Color getColor(Set<MaterialState> states) {
-      const Set<MaterialState> interactiveStates = <MaterialState>{
-        MaterialState.pressed,
-        MaterialState.selected,
-        MaterialState.focused,
+    Color getColor(Set<WidgetState> states) {
+      const Set<WidgetState> interactiveStates = <WidgetState>{
+        WidgetState.pressed,
+        WidgetState.selected,
+        WidgetState.focused,
       };
       if (states.any(interactiveStates.contains)) {
         return Colors.transparent;
@@ -660,7 +657,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Conecte-se com SSO',
+                    'Entrar com Microsoft',
                     style: Styles.buttonSmall
                         .merge(TextStyle(color: TextColors.text1)),
                   ),
@@ -780,7 +777,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               width: 2, color: TextColors.text2)),
                   child: Checkbox(
                       fillColor:
-                          MaterialStateProperty.resolveWith(
+                          WidgetStateProperty.resolveWith(
                               getColor),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)),
@@ -805,3 +802,5 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     );
   }
 }
+
+

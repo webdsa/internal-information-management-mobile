@@ -1,26 +1,22 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:internalinformationmanagement/screens/search_screen.dart';
 import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../util/Palette.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/theme/theme.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
 import 'package:internalinformationmanagement/widgets/home_listview_widget.dart';
-import 'package:internalinformationmanagement/widgets/last_updates_cards_widget.dart';
-import 'package:internalinformationmanagement/widgets/last_updates_buttons_widget.dart';
 import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
-  final Function(int) updateValue;
-  const HomeScreen({super.key, required this.updateValue});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -58,7 +54,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       return "";
     }
 
-    if (login_type == "outlook") {
+    if (login_type == 'apple') {
+      _userData = Jwt.parseJwt(jwt);
+      var document = await FirebaseFirestore.instance.collection('users').doc(_userData['user_id']).get();
+
+      Map<String, dynamic>? data = document.data();
+
+      if ((data!['given_name'].contains("DSA") ||
+        data['given_name'].contains("IATec")) &&
+        data['given_name'].split(" ").length > 3) {
+          return "${data['given_name'].split(" ")[2]} ${data['given_name'].split(" ")[3]}";
+        } else {
+          return "${data['given_name'].split(" ")[0]}";
+        }
+    }
+    else if (login_type == "outlook") {
       try {
         _userData = Jwt.parseJwt(jwt);
         if ((_userData['name'].contains("DSA") ||
@@ -93,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           return "";
         }
         else {
-          return "Nome";
+          return "Usuário";
         }
     }
   }
@@ -172,6 +182,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           )),
                         ],
                       ),
+                      Column(
+                        children: [
+                        Padding(padding: const EdgeInsets.only(left: 30,),
+                        child: ListTile(
+                          onTap: () {
+                            showDialog(context: context, builder: (BuildContext build) {
+                              return AlertDialog(
+                                title: const Text('Excluir conta!'),
+                                content: Text("Você tem certeza que quer excluir sua conta?"),
+                                actions: [
+                                  TextButton(onPressed: () {
+                                    _logout(context);
+                                  }, child: Text("Sim")),
+                                  TextButton(onPressed: () {
+                                    Navigator.pop(context);
+                                  }, child: Text("Não")),
+                                ],
+                              );
+                            });
+                          },
+                          leading: Icon(CupertinoIcons.clear_circled_solid, color: Colors.white,),
+                          title: Text("Excluir conta",
+                              style: Styles.titleMedium.merge(
+                                  TextStyle(color: MainColors.primary03))),
+                        ),),
                       Padding(
                         padding: const EdgeInsets.only(left: 30, bottom: 30),
                         child: ListTile(
@@ -184,6 +219,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               style: Styles.titleMedium.merge(
                                   TextStyle(color: MainColors.primary03))),
                         ),
+                      )
+                        ],
                       )
                     ],
                   );
@@ -251,20 +288,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     mainAxisAlignment:
                                         MainAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "Olá, ",
+                                      Text(fullName != "" ? "Olá, " : "Olá!",
                                         style: AppTextStyles.largeTitle.merge(
                                             TextStyle(
                                                 color: TailwindColors
                                                     .tailwindBlack)),
                                       ),
-                                      Text(
-                                        "${fullName.split(" ")[0]}",
-                                        style: DesktopTextStyles.headlineH4
-                                            .merge(TextStyle(
-                                                color: TailwindColors
-                                                    .tailwindBlack)),
-                                      ),
+                                      if (fullName != "")
+                                        Text(
+                                          "${fullName.split(" ")[0]}",
+                                          style: DesktopTextStyles.headlineH4
+                                              .merge(TextStyle(
+                                                  color: TailwindColors
+                                                      .tailwindBlack)),
+                                        ),
                                     ],
                                   ),
                                 );
@@ -276,7 +313,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           padding: const EdgeInsets.only(top: 28.0),
                           child: GestureDetector(
                             onTap: () {
-                              widget.updateValue(1);
                               //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
                             },
                             child: Container(

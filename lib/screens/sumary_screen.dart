@@ -70,7 +70,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       return Center(
                         child: CircularProgressIndicator(),
                       );
-                    } else if (snapshot.hasError || login_type == 'gmail') {
+                    } else if (snapshot.hasError || (login_type == 'gmail' || login_type == 'apple')) {
                       return Center(
                         child: Text('Não foi possível recuperar os dados'),
                       );
