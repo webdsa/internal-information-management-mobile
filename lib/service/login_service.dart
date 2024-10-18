@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -41,8 +42,9 @@ class LoginService {
     }
   }
 
-  void logout(BuildContext context) {
+  void logout(BuildContext context) async {
     _token = null;
+    await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacementNamed('/login');
   }
 

@@ -3,7 +3,7 @@ description: "System for IATECH"
 
 publish_to: 'none'
 
-version: 1.0.1+1
+version: 1.0.0+1
 
 environment:
   sdk: '>=3.2.5 <4.0.0'
@@ -20,6 +20,7 @@ dependencies:
   email_validator: ^2.1.17
   provider: ^6.1.2
   mobx: ^2.3.0+1
+  flutter_html: ^3.0.0-beta.2
   flutter_mobx: ^2.2.0+2
   mask_text_input_formatter: ^2.9.0
   crypto: ^3.0.3
@@ -30,6 +31,19 @@ dependencies:
   sliding_clipped_nav_bar: ^3.1.1
   motion_tab_bar: ^2.0.4
   jwt_decode: ^0.3.1
+  flutter_launcher_icons: ^0.13.1
+  google_sign_in: ^6.2.1
+  font_awesome_flutter: ^10.7.0
+  sign_in_with_apple: ^6.1.1
+  cloud_firestore: ^5.4.2
+
+flutter_launcher_icons:
+  #  image_path: "assets/images/icon-128x128.png"
+  image_path_android: "assets/imgs/logo.png"
+  image_path_ios: "assets/imgs/logo.png"
+  android: true # can specify file name here e.g. "ic_launcher"
+  ios: true # can specify file name here e.g. "My-Launcher-Icon"
+  remove_alpha_ios: true
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +74,9 @@ flavorizr:
       app:
         name: "DSA - Informações"
       android:
-        applicationId: "adventistas.org.internalinformationmanagement"
+        applicationId: "adventistas.org.internalinformationmanagement.prod"
       ios:
-        bundleId: "adventistas.org.internalinformationmanagement"
+        bundleId: "adventistas.org.internalinformationmanagement.prod"
 
   flutter_lints: ^3.0.1
 
