@@ -1,16 +1,16 @@
-import 'package:flutter/foundation.dart';
-import 'package:internalinformationmanagement/screens/search_screen.dart';
-import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/screens/feed_screen.dart';
-import 'package:internalinformationmanagement/screens/sumary_screen.dart';
-import 'package:motion_tab_bar/MotionTabBar.dart';
-import 'package:motion_tab_bar/MotionTabBarController.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
+import 'package:internalinformationmanagement/screens/search_screen.dart';
+import 'package:internalinformationmanagement/screens/sumary_screen.dart';
 import 'package:internalinformationmanagement/theme/theme_provider.dart';
+import 'package:internalinformationmanagement/util/Palette.dart';
+import 'package:motion_tab_bar/MotionTabBar.dart';
+import 'package:motion_tab_bar/MotionTabBarController.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'flavors.dart';
 
 class MyApp extends StatefulWidget {
@@ -98,12 +98,13 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _motionTabBarController = MotionTabBarController(
-        length: 2, initialIndex: _selectedIndex, vsync: this);
+    _motionTabBarController = MotionTabBarController(length: 2, initialIndex: _selectedIndex, vsync: this);
 
     _pages = [
       HomeScreen(),
-      SearchScreen(wasPreviousScreenFeed: false,),
+      SearchScreen(
+        wasPreviousScreenFeed: false,
+      ),
     ];
 
     _tabIcons = [
@@ -135,10 +136,7 @@ class _AppScreensState extends State<AppScreens> with TickerProviderStateMixin {
         },
         tabSelectedColor: MainColors.primary01,
         tabIconSelectedSize: 30,
-        textStyle: TextStyle(
-            color: MainColors.primary01,
-            fontSize: 16,
-            fontWeight: FontWeight.bold),
+        textStyle: TextStyle(color: MainColors.primary01, fontSize: 16, fontWeight: FontWeight.bold),
       ),
       body: IndexedStack(
         index: _selectedIndex,

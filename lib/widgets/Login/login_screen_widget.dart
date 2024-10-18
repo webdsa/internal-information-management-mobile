@@ -1,24 +1,20 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:internalinformationmanagement/app.dart';
-import 'package:internalinformationmanagement/flavors.dart';
-import 'package:internalinformationmanagement/screens/home_screen.dart';
-import 'package:internalinformationmanagement/service/login_service.dart';
-import 'package:jwt_decode/jwt_decode.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:internalinformationmanagement/util/Styles.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:internalinformationmanagement/app.dart';
+import 'package:internalinformationmanagement/screens/blog_screen.dart';
+import 'package:internalinformationmanagement/service/login_service.dart';
+import 'package:internalinformationmanagement/util/Palette.dart';
+import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 class LoginScreenWidget extends StatefulWidget {
   const LoginScreenWidget({super.key});
@@ -27,8 +23,7 @@ class LoginScreenWidget extends StatefulWidget {
   State<LoginScreenWidget> createState() => _LoginScreenWidgetState();
 }
 
-class _LoginScreenWidgetState extends State<LoginScreenWidget>
-    with SingleTickerProviderStateMixin {
+class _LoginScreenWidgetState extends State<LoginScreenWidget> with SingleTickerProviderStateMixin {
   final LoginService _loginService = LoginService();
 
   final TextEditingController _nameController = TextEditingController();
@@ -52,12 +47,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   void initState() {
     super.initState();
 
-    _animationController = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this);
-    _animation = Tween<double>(
-            begin: !_isRegistering ? 166 : 84, end: !_isRegistering ? 84 : 166)
-        .animate(CurvedAnimation(
-            parent: _animationController, curve: Curves.easeInOutCubic));
+    _animationController = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    _animation = Tween<double>(begin: !_isRegistering ? 166 : 84, end: !_isRegistering ? 84 : 166).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOutCubic));
   }
 
   @override
@@ -81,8 +72,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
   void _login() async {
     try {
-      final token = await _loginService.login(
-          context, _emailController.text, _passwordController.text);
+      final token = await _loginService.login(context, _emailController.text, _passwordController.text);
 
       if (token != "") {
         setState(() {
@@ -106,7 +96,6 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     }
   }
 
-  
   void _handleSignIn(String type) async {
     if (type == "google") {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
@@ -116,7 +105,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
 
         if (googleAuth != null) {
           final String? accessToken = googleAuth.accessToken;
- 
+
           await _setJwt(accessToken!, _isChecked, "gmail");
           // Use o token de acesso para obter informações do perfil
           if (accessToken != "") {
@@ -148,9 +137,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   Future<void> _signInWithApple() async {
     try {
       final appleIdCredential = await SignInWithApple.getAppleIDCredential(
-        webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: 'adventistas.org.internalinformationmanagement.prod', 
-          redirectUri: Uri.parse('https://iatech-83ac9.firebaseapp.com/__/auth/handler')),
+        webAuthenticationOptions:
+            WebAuthenticationOptions(clientId: 'adventistas.org.internalinformationmanagement.prod', redirectUri: Uri.parse('https://iatech-83ac9.firebaseapp.com/__/auth/handler')),
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
@@ -162,7 +150,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         accessToken: appleIdCredential.authorizationCode,
       );
       final resultCredential = await _loginUserWithCredential(credential);
-      
+
       var token = await resultCredential?.user!.getIdToken(true);
 
       bool? isNewUser = resultCredential?.additionalUserInfo!.isNewUser;
@@ -175,33 +163,31 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         var documents = await FirebaseFirestore.instance.collection('users').doc(userIdMapped['user_id']).get();
 
         if (documents.exists) {
-        setState(() {
-          _isLoading = true; // Ativa a animação
-        });
+          setState(() {
+            _isLoading = true; // Ativa a animação
+          });
 
-        // Simula um tempo de espera antes de navegar para a próxima tela
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AppScreens()),
-          ).then((value) {
-            setState(() {
-              _isLoading = false;
+          // Simula um tempo de espera antes de navegar para a próxima tela
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AppScreens()),
+            ).then((value) {
+              setState(() {
+                _isLoading = false;
+              });
             });
           });
-        });
         }
-      }
-      else {
+      } else {
         Map<String, dynamic> userIdMapped = Jwt.parseJwt(token!);
 
         await _setJwt(token, _isChecked, "apple");
 
-        await FirebaseFirestore.instance.collection('users').doc(userIdMapped['user_id']).set({
-          'user_id': userIdMapped['user_id'],
-          'given_name': appleIdCredential.givenName,
-          'family_name': appleIdCredential.familyName
-        });
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userIdMapped['user_id'])
+            .set({'user_id': userIdMapped['user_id'], 'given_name': appleIdCredential.givenName, 'family_name': appleIdCredential.familyName});
 
         setState(() {
           _isLoading = true; // Ativa a animação
@@ -220,9 +206,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${e.toString()}"))
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${e.toString()}")));
     }
   }
 
@@ -231,45 +215,38 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       return userCredential;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${e.toString()}"))
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("${e.toString()}")));
     }
     return null;
   }
-  
+
   void _loginAd() async {
     try {
       final microsoftProvider = OAuthProvider('microsoft.com');
 
-      final credential =
-          await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
+      final credential = await FirebaseAuth.instance.signInWithProvider(microsoftProvider);
 
       var token = await credential.user?.getIdToken(true);
 
       await _setJwt(token!, _isChecked, "outlook");
 
-      if (token != null) {
-         setState(() {
-          _isLoading = true; // Ativa a animação
-        });
+      setState(() {
+        _isLoading = true; // Ativa a animação
+      });
 
-        // Simula um tempo de espera antes de navegar para a próxima tela
-        Future.delayed(const Duration(seconds: 2), () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AppScreens()),
-          ).then((value) {
-            setState(() {
-              _isLoading = false;
-            });
+      // Simula um tempo de espera antes de navegar para a próxima tela
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AppScreens()),
+        ).then((value) {
+          setState(() {
+            _isLoading = false;
           });
         });
-      }
+      });
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${e.toString()}'))
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${e.toString()}')));
     }
   }
 
@@ -278,21 +255,14 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
   porem como nao existe ainda, está em branco
   */
   void _fakeLogin() {
-  
+    Navigator.push(context, MaterialPageRoute(builder: (context) => BlogScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-            MainColors.primary03,
-            FoundationColors.foundationSecondaryDarkest
-          ])),
+      decoration: BoxDecoration(gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [MainColors.primary03, FoundationColors.foundationSecondaryDarkest])),
       child: SafeArea(
         child: Column(
           children: <Widget>[
@@ -319,11 +289,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
             ),
             Visibility(
               visible: !_isLoading,
-              child: Expanded(
-                  flex: _isRegistering ? 7 : 6,
-                  child: !_isRegistering
-                      ? loginAndRegister(context)
-                      : registerAccount(context)),
+              child: Expanded(flex: _isRegistering ? 7 : 6, child: !_isRegistering ? loginAndRegister(context) : registerAccount(context)),
             ),
 
             /*
@@ -392,11 +358,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
                     child: Text(
-                      !_isRegistering
-                          ? "Conecte-se para continuar para sua conta."
-                          : "Cadastre-se para usar o patrimônio",
-                      style: Styles.bodySmall
-                          .merge(const TextStyle(color: TextColors.text4)),
+                      !_isRegistering ? "Conecte-se para continuar para sua conta." : "Cadastre-se para usar o patrimônio",
+                      style: Styles.bodySmall.merge(const TextStyle(color: TextColors.text4)),
                     ),
                   ),
                   Padding(
@@ -418,7 +381,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               child: Text(
                 !_isRegistering ? "Cadastre-se" : "Entrar",
                 style: Styles.bodySmall.merge(
-                                  const TextStyle(color: MainColors.primary03),
+                  const TextStyle(color: MainColors.primary03),
                 ),
               ),
             ),
@@ -457,8 +420,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                   child: Text(
                     "Insira o e-mail e senha para cadastrar sua conta",
                     textAlign: TextAlign.center,
-                    style: Styles.bodySmall
-                        .merge(const TextStyle(color: TextColors.text4)),
+                    style: Styles.bodySmall.merge(const TextStyle(color: TextColors.text4)),
                   ),
                 ),
                 Padding(
@@ -484,11 +446,9 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               },
                               decoration: InputDecoration(
                                 label: const Text("E-mail"),
-                                constraints:
-                                    const BoxConstraints(maxHeight: 42),
+                                constraints: const BoxConstraints(maxHeight: 42),
                                 border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      width: 1.5, color: TextColors.text5),
+                                  borderSide: const BorderSide(width: 1.5, color: TextColors.text5),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
@@ -533,13 +493,8 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               obscureText: true,
                               decoration: InputDecoration(
                                   label: const Text("Senha"),
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 42),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          width: 1.5,
-                                          color: TextColors.text5))),
+                                  constraints: const BoxConstraints(maxHeight: 42),
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: const BorderSide(width: 1.5, color: TextColors.text5))),
                             ),
                           ),
                           Padding(
@@ -552,16 +507,13 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                                   _fakeLogin();
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: Theme.of(context).primaryColor,
                                   textStyle: Styles.headline4,
                                 ),
                                 child: Text(
                                   'Cadastrar',
-                                  style: Styles.button.merge(
-                                      const TextStyle(color: TextColors.text7)),
+                                  style: Styles.button.merge(const TextStyle(color: TextColors.text7)),
                                 ),
                               ),
                             ),
@@ -579,8 +531,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                               alignment: Alignment.center,
                               child: Text(
                                 "Voltar para o login",
-                                style: Styles.bodySmall.merge(
-                                  const TextStyle(color: MainColors.primary03)),
+                                style: Styles.bodySmall.merge(const TextStyle(color: MainColors.primary03)),
                               ),
                             ),
                           ),
@@ -611,10 +562,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       return Colors.transparent;
     }
 
-    return Form(
-      key: _formKey,
-      child: formButtonsWidget()
-    );
+    return Form(key: _formKey, child: formButtonsWidget());
   }
 
   /*
@@ -633,7 +581,6 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       return Colors.transparent;
     }
 
-
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
       child: Column(
@@ -647,9 +594,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               },
               style: ElevatedButton.styleFrom(
                 elevation: 0,
-                shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 1, color: TextColors.text5),
-                    borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: TextColors.text5), borderRadius: BorderRadius.circular(10)),
                 backgroundColor: Colors.white,
                 textStyle: Styles.headline4,
               ),
@@ -658,8 +603,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 children: [
                   Text(
                     'Entrar com Microsoft',
-                    style: Styles.buttonSmall
-                        .merge(TextStyle(color: TextColors.text1)),
+                    style: Styles.buttonSmall.merge(TextStyle(color: TextColors.text1)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -681,8 +625,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               ),
               Text(
                 "ou",
-                style:
-                    Styles.body.merge(const TextStyle(color: TextColors.text4)),
+                style: Styles.body.merge(const TextStyle(color: TextColors.text4)),
               ),
               Container(
                 width: 136,
@@ -707,9 +650,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1, color: TextColors.text5),
-                      borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: TextColors.text5), borderRadius: BorderRadius.circular(10)),
                   backgroundColor: Colors.red,
                   textStyle: Styles.headline4,
                 ),
@@ -738,9 +679,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 1, color: TextColors.text5),
-                        borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(side: BorderSide(width: 1, color: TextColors.text5), borderRadius: BorderRadius.circular(10)),
                     backgroundColor: Colors.grey[400],
                     textStyle: Styles.headline4,
                   ),
@@ -751,7 +690,10 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                         'Login com ',
                         style: Styles.buttonSmall.merge(TextStyle(color: Colors.black)),
                       ),
-                      Icon(FontAwesomeIcons.apple, color: Colors.black,)
+                      Icon(
+                        FontAwesomeIcons.apple,
+                        color: Colors.black,
+                      )
                     ],
                   ),
                 ),
@@ -767,20 +709,10 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                 width: 18,
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      border: _isChecked
-                          ? Border.all(
-                              width: 2,
-                              color:
-                                  Theme.of(context).primaryColor)
-                          : Border.all(
-                              width: 2, color: TextColors.text2)),
+                      borderRadius: BorderRadius.circular(4), border: _isChecked ? Border.all(width: 2, color: Theme.of(context).primaryColor) : Border.all(width: 2, color: TextColors.text2)),
                   child: Checkbox(
-                      fillColor:
-                          WidgetStateProperty.resolveWith(
-                              getColor),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4)),
+                      fillColor: WidgetStateProperty.resolveWith(getColor),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                       checkColor: Theme.of(context).primaryColor,
                       value: _isChecked,
                       onChanged: (bool? value) {
@@ -792,8 +724,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text("Lembrar minha conta",
-                    style: Styles.caption),
+                child: Text("Lembrar minha conta", style: Styles.caption),
               ),
             ],
           ),
@@ -802,5 +733,3 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     );
   }
 }
-
-
