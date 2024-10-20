@@ -42,6 +42,10 @@ class F {
     switch (appFlavor) {
       case Flavor.dev:
         return "http://10.0.2.2:5171";
+      case Flavor.hom:
+        return "https://mgn.dsa.org.br";
+      case Flavor.prod:
+        return "https://mgn.dsa.org.br";
       default:
         return "";
     }

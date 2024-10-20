@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 
 // ignore: must_be_immutable
-class LastUpdatesWidget extends StatelessWidget {
+class LastUpdatesWidget extends StatefulWidget {
   LastUpdatesWidget({super.key});
+
+  @override
+  State<LastUpdatesWidget> createState() => _LastUpdatesWidgetState();
+}
+
+class _LastUpdatesWidgetState extends State<LastUpdatesWidget> {
   List<String> months = [
     'Janeiro',
     'Fevereiro',
@@ -20,6 +27,14 @@ class LastUpdatesWidget extends StatelessWidget {
     'Novembro',
     'Dezembro'
   ];
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomModal();
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +77,8 @@ class LastUpdatesWidget extends StatelessWidget {
                     Text(
                       "Agendamento de Serviço".toUpperCase(),
                       textAlign: TextAlign.left,
-                      style: DesktopTextStyles.buttonSmall.merge(
-                          TextStyle(color: MainColors.primary01)),
+                      style: DesktopTextStyles.buttonSmall
+                          .merge(TextStyle(color: MainColors.primary01)),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 2.0),
@@ -84,7 +99,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                 shape: const RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)))),
-                            onPressed: () {},
+                            onPressed: () => _showAlertDialog(context),
                             child: Text(
                               "Agendar",
                               style: AppTextStyles.caption2.merge(
@@ -142,8 +157,8 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Agendamento de Serviço".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: MainColors.primary01)),
+                            style: DesktopTextStyles.buttonSmall
+                                .merge(TextStyle(color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
@@ -164,7 +179,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
-                                  onPressed: () {},
+                                  onPressed: () => _showAlertDialog(context),
                                   child: Text(
                                     "Conferir",
                                     style: AppTextStyles.caption2.merge(
@@ -182,9 +197,9 @@ class LastUpdatesWidget extends StatelessWidget {
         ),
         /*
 
-                              Card 3
+        Card 3
 
-                              */
+        */
         Padding(
           padding: const EdgeInsets.only(top: 12),
           child: Container(
@@ -224,8 +239,8 @@ class LastUpdatesWidget extends StatelessWidget {
                           Text(
                             "Boas-vindas".toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: DesktopTextStyles.buttonSmall.merge(TextStyle(
-                                color: MainColors.primary01)),
+                            style: DesktopTextStyles.buttonSmall
+                                .merge(TextStyle(color: MainColors.primary01)),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 2.0),
@@ -247,7 +262,7 @@ class LastUpdatesWidget extends StatelessWidget {
                                       shape: const RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(5)))),
-                                  onPressed: () {},
+                                  onPressed: () => _showAlertDialog(context),
                                   child: Text(
                                     "Ver painel",
                                     style: AppTextStyles.caption2.merge(

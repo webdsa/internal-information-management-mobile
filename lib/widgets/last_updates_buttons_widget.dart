@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:internalinformationmanagement/util/Palette.dart';
 import 'package:internalinformationmanagement/util/Styles.dart';
+import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 
 class LastUpdatesButtonsWidgets extends StatefulWidget {
   const LastUpdatesButtonsWidgets({super.key});
@@ -14,11 +15,20 @@ class LastUpdatesButtonsWidgets extends StatefulWidget {
 class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
   int _selectedButton = 0;
 
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomModal();
+        });
+  }
+
   void _setSelectedButton(int index) {
     setState(() {
       _selectedButton = index;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,8 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
             height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
-                _setSelectedButton(1);
+                _showAlertDialog(context);
+                //_setSelectedButton(1);
               },
               icon: SvgPicture.asset(
                 'assets/svgs/assignment_ind.svg',
@@ -107,11 +118,13 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
           Patrimônio Button
       
           */
+          /*
           Container(
             height: 24,
             child: ElevatedButton.icon(
               onPressed: () {
-                _setSelectedButton(2);
+                _showAlertDialog(context);
+                //_setSelectedButton(2);
               },
               icon: SvgPicture.asset(
                 'assets/svgs/holiday_village.svg',
@@ -139,7 +152,7 @@ class _LastUpdatesButtonsWidgetsState extends State<LastUpdatesButtonsWidgets> {
                               ? Theme.of(context).primaryColor
                               : const Color(0xFFDEDDE4)))),
             ),
-          ),
+          ),*/
         ],
       ),
     );

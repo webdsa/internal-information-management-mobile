@@ -12,7 +12,20 @@
           "package_name": "adventistas.org.internalinformationmanagement"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1044529716444-e5ukqtn2pqvuma8q440orickkp14snts.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "adventistas.org.internalinformationmanagement",
+            "certificate_hash": "4688f076e998743ce36ce0309d9084e187218f5d"
+          }
+        },
+        {
+          "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBJ--79OAO9FKv0v7YIGiXRvH9e5KNyz_s"
@@ -20,7 +33,107 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1044529716444-0lps5a9qprsqd397sekgjm7fogta30vi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "adventistas.org.internalinformationmanagement.hom"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044529716444:android:3aab023d1d24ec3dbd6819",
+        "android_client_info": {
+          "package_name": "adventistas.org.internalinformationmanagement.hom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044529716444-0nsdb36t2johvvnu27bea3l9udvonr1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "adventistas.org.internalinformationmanagement.hom",
+            "certificate_hash": "4688f076e998743ce36ce0309d9084e187218f5d"
+          }
+        },
+        {
+          "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ--79OAO9FKv0v7YIGiXRvH9e5KNyz_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1044529716444-0lps5a9qprsqd397sekgjm7fogta30vi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "adventistas.org.internalinformationmanagement.hom"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044529716444:android:c23e039f63d1e270bd6819",
+        "android_client_info": {
+          "package_name": "adventistas.org.internalinformationmanagement.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044529716444-g7crlk26gtkb3gk6ef7242t0edvnt1bh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "adventistas.org.internalinformationmanagement.prod",
+            "certificate_hash": "2387950369b76d3f903e029c6c812b51ac6aab06"
+          }
+        },
+        {
+          "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ--79OAO9FKv0v7YIGiXRvH9e5KNyz_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044529716444-4no58paspb0vetfbvdl7n4hinknc6jvp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1044529716444-0lps5a9qprsqd397sekgjm7fogta30vi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "adventistas.org.internalinformationmanagement.hom"
+              }
+            }
+          ]
         }
       }
     }
