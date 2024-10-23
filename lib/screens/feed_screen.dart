@@ -37,8 +37,8 @@ class _FeedScreenState extends State<FeedScreen> {
   }
 
   Future<void> _initialize() async {
-    await _getJWT();  
-    if (login_type!=null && (login_type != "gmail" && login_type != 'apple')) {
+    await _getJWT();
+    if (login_type != null && login_type != "gmail") {
       _topicsFuture = apiService.fetchTopics();
     }
   }
@@ -110,26 +110,32 @@ class _FeedScreenState extends State<FeedScreen> {
                     Padding(
                       padding: const EdgeInsets.only(top: 28.0),
                       child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen(wasPreviousScreenFeed: true,)));
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          width: double.infinity,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: ShadeColors.shadeLight.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Icon(Icons.search),
-                              Padding(padding: EdgeInsets.only(left: 12), child: Text("Pesquise por um conteudo..."),)
-                            ],
-                          ),
-                        )
-                      ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SearchScreen(
+                                          wasPreviousScreenFeed: true,
+                                        )));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: ShadeColors.shadeLight.withOpacity(0.05),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(Icons.search),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 12),
+                                  child: Text("Pesquise por um conteudo..."),
+                                )
+                              ],
+                            ),
+                          )),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50.0),
@@ -224,37 +230,53 @@ class _FeedScreenState extends State<FeedScreen> {
                                 return Align(
                                   alignment: Alignment.centerLeft,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       for (var session in snapshot.data['data'])
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "${session['name']}",
-                                              style: AppTextStyles.boldTitle2.merge(
-                                                TextStyle(color: MainColors.primary04),
+                                              style: AppTextStyles.boldTitle2
+                                                  .merge(
+                                                TextStyle(
+                                                    color:
+                                                        MainColors.primary04),
                                               ),
                                             ),
                                             SizedBox(height: 12),
                                             Container(
                                               height: 175,
                                               child: SingleChildScrollView(
-                                                scrollDirection: Axis.horizontal,
+                                                scrollDirection:
+                                                    Axis.horizontal,
                                                 child: Row(
                                                   children: [
-                                                    for (var subTopic in session['subTopics'])
+                                                    for (var subTopic
+                                                        in session['subTopics'])
                                                       Padding(
-                                                        padding: const EdgeInsets.only(right: 8.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 8.0),
                                                         child: GestureDetector(
                                                           onTap: () {
                                                             Navigator.push(
                                                               context,
                                                               MaterialPageRoute(
-                                                                builder: (context) => ContentScreen(
-                                                                  title: session['name'],
-                                                                  description: subTopic['name'],
-                                                                  text: subTopic['content'],
+                                                                builder:
+                                                                    (context) =>
+                                                                        ContentScreen(
+                                                                  title: session[
+                                                                      'name'],
+                                                                  description:
+                                                                      subTopic[
+                                                                          'name'],
+                                                                  text: subTopic[
+                                                                      'content'],
                                                                 ),
                                                               ),
                                                             );
@@ -262,59 +284,89 @@ class _FeedScreenState extends State<FeedScreen> {
                                                           child: Card(
                                                             elevation: 4,
                                                             child: Container(
-                                                              decoration: BoxDecoration(
-                                                                gradient: LinearGradient(
-                                                                  begin: Alignment.topLeft,
-                                                                  end: Alignment.bottomRight,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  begin: Alignment
+                                                                      .topLeft,
+                                                                  end: Alignment
+                                                                      .bottomRight,
                                                                   colors: [
-                                                                    Color(0xFF328FFB).withOpacity(0.2),
-                                                                    Colors.white.withOpacity(0.7)
+                                                                    Color(0xFF328FFB)
+                                                                        .withOpacity(
+                                                                            0.2),
+                                                                    Colors.white
+                                                                        .withOpacity(
+                                                                            0.7)
                                                                   ],
                                                                 ),
                                                               ),
                                                               width: 300.0,
-                                                              padding: EdgeInsets.all(4.0),
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .all(4.0),
                                                               child: Padding(
-                                                                padding: const EdgeInsets.symmetric(
-                                                                  horizontal: 16,
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .symmetric(
+                                                                  horizontal:
+                                                                      16,
                                                                   vertical: 10,
                                                                 ),
                                                                 child: Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
                                                                   children: [
                                                                     Text(
                                                                       '${subTopic['name']}',
-                                                                      style: AppTextStyles.boldSubhead.merge(
-                                                                        TextStyle(color: MainColors.primary04),
+                                                                      style: AppTextStyles
+                                                                          .boldSubhead
+                                                                          .merge(
+                                                                        TextStyle(
+                                                                            color:
+                                                                                MainColors.primary04),
                                                                       ),
                                                                     ),
                                                                     Text(
                                                                       '${subTopic['description']}',
-                                                                      style: AppTextStyles.footnote,
-                                                                      overflow: TextOverflow.clip,
+                                                                      style: AppTextStyles
+                                                                          .footnote,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .clip,
                                                                     ),
                                                                     Padding(
-                                                                      padding: const EdgeInsets.only(top: 12.0),
-                                                                      child: Row(
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          top:
+                                                                              12.0),
+                                                                      child:
+                                                                          Row(
                                                                         mainAxisAlignment:
                                                                             MainAxisAlignment.end,
                                                                         children: [
                                                                           Padding(
-                                                                            padding: const EdgeInsets.only(
-                                                                                right: 6.0),
-                                                                            child: Text(
+                                                                            padding:
+                                                                                const EdgeInsets.only(right: 6.0),
+                                                                            child:
+                                                                                Text(
                                                                               "Ver Mais",
                                                                               style: AppTextStyles.footnote.merge(
-                                                                                TextStyle(
-                                                                                    color: MainColors.primary03),
+                                                                                TextStyle(color: MainColors.primary03),
                                                                               ),
                                                                             ),
                                                                           ),
                                                                           Icon(
                                                                             Icons.arrow_forward_rounded,
-                                                                            size: 18,
-                                                                            color: Color(0xff3391FF),
+                                                                            size:
+                                                                                18,
+                                                                            color:
+                                                                                Color(0xff3391FF),
                                                                           )
                                                                         ],
                                                                       ),
@@ -333,15 +385,16 @@ class _FeedScreenState extends State<FeedScreen> {
                                             SizedBox(height: 38),
                                           ],
                                         )
-                                            
                                     ],
                                   ),
                                 );
                               }
                             }),
                       ),
-                    if (login_type == 'gmail' || login_type == 'apple') 
-                      Center(child: Text("Voce nao pode acessar essa pagina"),)
+                    if (login_type == 'gmail')
+                      Center(
+                        child: Text("Voce nao pode acessar essa pagina"),
+                      )
                   ],
                 ),
               ),

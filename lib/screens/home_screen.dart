@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/widgets/custom_modal.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late Future<String> _fullNameFuture;
   String? _jwt;
 
-
   @override
   void initState() {
     super.initState();
@@ -56,19 +56,21 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if (login_type == 'apple') {
       _userData = Jwt.parseJwt(jwt);
-      var document = await FirebaseFirestore.instance.collection('users').doc(_userData['user_id']).get();
+      var document = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userData['user_id'])
+          .get();
 
       Map<String, dynamic>? data = document.data();
 
       if ((data!['given_name'].contains("DSA") ||
-        data['given_name'].contains("IATec")) &&
-        data['given_name'].split(" ").length > 3) {
-          return "${data['given_name'].split(" ")[2]} ${data['given_name'].split(" ")[3]}";
-        } else {
-          return "${data['given_name'].split(" ")[0]}";
-        }
-    }
-    else if (login_type == "outlook") {
+              data['given_name'].contains("IATec")) &&
+          data['given_name'].split(" ").length > 3) {
+        return "${data['given_name'].split(" ")[2]} ${data['given_name'].split(" ")[3]}";
+      } else {
+        return "${data['given_name'].split(" ")[0]}";
+      }
+    } else if (login_type == "outlook") {
       try {
         _userData = Jwt.parseJwt(jwt);
         if ((_userData['name'].contains("DSA") ||
@@ -81,30 +83,30 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       } catch (e) {
         print("Error parsing JWT: $e");
         return "";
-    }} else {
-        final response = await http.get(
-          Uri.parse('https://www.googleapis.com/oauth2/v1/userinfo?alt=json'),
-          headers: {'Authorization': 'Bearer $jwt'},
-        );
-        
-        if (response.statusCode == 200) {
-          try {
-            _userData = json.decode(response.body);
-            if ((_userData['name'].contains("DSA") ||
-            _userData['name'].contains("IATec")) &&
-            _userData['name'].split(" ").length > 3) {
-              return "${_userData['name'].split(" ")[2]} ${_userData['name'].split(" ")[3]}";
-            } else {
-              return "${_userData['name'].split(" ")[0]} ${_userData['name'].split(" ")[1]}";
-            }
-          } catch(e) {
-            print(e);
+      }
+    } else {
+      final response = await http.get(
+        Uri.parse('https://www.googleapis.com/oauth2/v1/userinfo?alt=json'),
+        headers: {'Authorization': 'Bearer $jwt'},
+      );
+
+      if (response.statusCode == 200) {
+        try {
+          _userData = json.decode(response.body);
+          if ((_userData['name'].contains("DSA") ||
+                  _userData['name'].contains("IATec")) &&
+              _userData['name'].split(" ").length > 3) {
+            return "${_userData['name'].split(" ")[2]} ${_userData['name'].split(" ")[3]}";
+          } else {
+            return "${_userData['name'].split(" ")[0]} ${_userData['name'].split(" ")[1]}";
           }
-          return "";
+        } catch (e) {
+          print(e);
         }
-        else {
-          return "Usuário";
-        }
+        return "";
+      } else {
+        return "Usuário";
+      }
     }
   }
 
@@ -184,42 +186,59 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       ),
                       Column(
                         children: [
-                        Padding(padding: const EdgeInsets.only(left: 30,),
-                        child: ListTile(
-                          onTap: () {
-                            showDialog(context: context, builder: (BuildContext build) {
-                              return AlertDialog(
-                                title: const Text('Excluir conta!'),
-                                content: Text("Você tem certeza que quer excluir sua conta?"),
-                                actions: [
-                                  TextButton(onPressed: () {
-                                    _logout(context);
-                                  }, child: Text("Sim")),
-                                  TextButton(onPressed: () {
-                                    Navigator.pop(context);
-                                  }, child: Text("Não")),
-                                ],
-                              );
-                            });
-                          },
-                          leading: Icon(CupertinoIcons.clear_circled_solid, color: Colors.white,),
-                          title: Text("Excluir conta",
-                              style: Styles.titleMedium.merge(
-                                  TextStyle(color: MainColors.primary03))),
-                        ),),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30, bottom: 30),
-                        child: ListTile(
-                          onTap: () {
-                            _logout(context);
-                          },
-                          leading: SvgPicture.asset('assets/svgs/logout.svg',
-                              height: 24, color: Colors.white),
-                          title: Text("Sair da conta",
-                              style: Styles.titleMedium.merge(
-                                  TextStyle(color: MainColors.primary03))),
-                        ),
-                      )
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 30,
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext build) {
+                                      return AlertDialog(
+                                        title: const Text('Excluir conta!'),
+                                        content: Text(
+                                            "Você tem certeza que quer excluir sua conta?"),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                _logout(context);
+                                              },
+                                              child: Text("Sim")),
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text("Não")),
+                                        ],
+                                      );
+                                    });
+                              },
+                              leading: Icon(
+                                CupertinoIcons.clear_circled_solid,
+                                color: Colors.white,
+                              ),
+                              title: Text("Excluir conta",
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                            ),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 30, bottom: 30),
+                            child: ListTile(
+                              onTap: () {
+                                _logout(context);
+                              },
+                              leading: SvgPicture.asset(
+                                  'assets/svgs/logout.svg',
+                                  height: 24,
+                                  color: Colors.white),
+                              title: Text("Sair da conta",
+                                  style: Styles.titleMedium.merge(
+                                      TextStyle(color: MainColors.primary03))),
+                            ),
+                          )
                         ],
                       )
                     ],
@@ -235,66 +254,69 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           SECTION - Body
       
           */
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            decoration: BoxDecoration(
-                gradient:
-                    Provider.of<ThemeProvider>(context).themeData == darkMode
-                        ? LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                                MainColors.primary03,
-                                FoundationColors.foundationSecondaryDarkest
-                              ])
-                        : LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [Colors.white, MainColors.primary02])),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 26),
-                    child: Column(
-                      children: [
-                        SafeArea(
-                            child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Builder(builder: (context) {
-                              return IconButton(
-                                onPressed: () {
-                                  Scaffold.of(context).openDrawer();
-                                },
-                                icon: Icon(Icons.menu),
-                                iconSize: 35,
-                              );
-                            })
-                          ],
-                        )),
-                        FutureBuilder(
-                            future: _loadUserData(),
-                            builder: ((context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.connectionState ==
-                                  ConnectionState.done) {
-                                fullName = snapshot.data ?? "";
-                                return Padding(
-                                  padding: const EdgeInsets.only(top: 44.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    children: [
-                                      Text(fullName != "" ? "Olá, " : "Olá!",
-                                        style: AppTextStyles.largeTitle.merge(
-                                            TextStyle(
-                                                color: TailwindColors
-                                                    .tailwindBlack)),
-                                      ),
-                                      if (fullName != "")
+          body: Banner(
+            message: F.env,
+            location: BannerLocation.topEnd,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  gradient:
+                      Provider.of<ThemeProvider>(context).themeData == darkMode
+                          ? LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                  MainColors.primary03,
+                                  FoundationColors.foundationSecondaryDarkest
+                                ])
+                          : LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.white, MainColors.primary02])),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      child: Column(
+                        children: [
+                          SafeArea(
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Builder(builder: (context) {
+                                return IconButton(
+                                  onPressed: () {
+                                    Scaffold.of(context).openDrawer();
+                                  },
+                                  icon: Icon(Icons.menu),
+                                  iconSize: 35,
+                                );
+                              })
+                            ],
+                          )),
+                          FutureBuilder(
+                              future: _loadUserData(),
+                              builder: ((context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  fullName = snapshot.data ?? "";
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 44.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Olá, ",
+                                          style: AppTextStyles.largeTitle.merge(
+                                              TextStyle(
+                                                  color: TailwindColors
+                                                      .tailwindBlack)),
+                                        ),
                                         Text(
                                           "${fullName.split(" ")[0]}",
                                           style: DesktopTextStyles.headlineH4
@@ -302,89 +324,94 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   color: TailwindColors
                                                       .tailwindBlack)),
                                         ),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return Text("Eita");
-                              }
-                            })),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 28.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
-                            },
-                            child: Container(
-                            padding: EdgeInsets.all(10),
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: ShadeColors.shadeLight.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(Icons.search),
-                                Padding(padding: EdgeInsets.only(left: 12), child: Text("Pesquise por um conteudo..."),)
-                              ],
-                            ),
-                            ),
-                          ),
-                        ),
-                        /*
-                                      
-                            The section below contains 3 buttons that
-                            can change the content of the cards on the section below
-                            this one.
-                                      
-                            */
-          
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 33.0),
-                              child: HomeListViewWidget(),
-                            ),
-                            /*
-                            Padding(
-                              padding: EdgeInsets.only(top: 33),
-                              child: Text(
-                                "Acompanhe aqui as sua",
-                                style: AppTextStyles.boldCaption1.merge(
-                                    TextStyle(
-                                        color: FoundationColors
-                                            .foundationPrimaryDarkest)),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return Text("Eita");
+                                }
+                              })),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 28.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                width: double.infinity,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    color: ShadeColors.shadeLight
+                                        .withOpacity(0.05),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.search),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 12),
+                                      child:
+                                          Text("Pesquise por um conteudo..."),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            Text(
-                              "últimas atualizações",
-                              style: Styles.titleSmall.merge(TextStyle(
-                                  color: Theme.of(context).primaryColor)),
-                            ),
-                            Divider(
-                              color: TextColors.text5,
-                              height: 10,
-                              thickness: 2,
-                            ),
-                            LastUpdatesButtonsWidgets(),
-                            /*
-                                    
-                                The section below contains a
-                                Column with cards. The cards shown will be 
-                                static content, and soon their contents will change
-                                turning them dynamic.
-                                                      
-                                */
-                            LastUpdatesWidget()*/
-                          ],
-                        ),
-                      ],
+                          ),
+                          /*
+                                        
+                              The section below contains 3 buttons that
+                              can change the content of the cards on the section below
+                              this one.
+                                        
+                              */
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 33.0),
+                                child: HomeListViewWidget(),
+                              ),
+                              /*
+                              Padding(
+                                padding: EdgeInsets.only(top: 33),
+                                child: Text(
+                                  "Acompanhe aqui as sua",
+                                  style: AppTextStyles.boldCaption1.merge(
+                                      TextStyle(
+                                          color: FoundationColors
+                                              .foundationPrimaryDarkest)),
+                                ),
+                              ),
+                              Text(
+                                "últimas atualizações",
+                                style: Styles.titleSmall.merge(TextStyle(
+                                    color: Theme.of(context).primaryColor)),
+                              ),
+                              Divider(
+                                color: TextColors.text5,
+                                height: 10,
+                                thickness: 2,
+                              ),
+                              LastUpdatesButtonsWidgets(),
+                              /*
+                                      
+                                  The section below contains a
+                                  Column with cards. The cards shown will be 
+                                  static content, and soon their contents will change
+                                  turning them dynamic.
+                                                        
+                                  */
+                              LastUpdatesWidget()*/
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           )),

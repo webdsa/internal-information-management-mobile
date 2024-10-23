@@ -106,17 +106,17 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     }
   }
 
-  
   void _handleSignIn(String type) async {
     if (type == "google") {
       final GoogleSignIn _googleSignIn = GoogleSignIn();
       try {
         final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-        final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+        final GoogleSignInAuthentication? googleAuth =
+            await googleUser?.authentication;
 
         if (googleAuth != null) {
           final String? accessToken = googleAuth.accessToken;
- 
+
           await _setJwt(accessToken!, _isChecked, "gmail");
           // Use o token de acesso para obter informações do perfil
           if (accessToken != "") {
@@ -149,8 +149,9 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
     try {
       final appleIdCredential = await SignInWithApple.getAppleIDCredential(
         webAuthenticationOptions: WebAuthenticationOptions(
-          clientId: 'adventistas.org.internalinformationmanagement.prod', 
-          redirectUri: Uri.parse('https://iatech-83ac9.firebaseapp.com/__/auth/handler')),
+            clientId: 'adventistas.org.internalinformationmanagement.prod',
+            redirectUri: Uri.parse(
+                'https://iatech-83ac9.firebaseapp.com/__/auth/handler')),
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
@@ -220,24 +221,24 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${e.toString()}"))
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${e.toString()}")));
     }
   }
 
-  Future<UserCredential?> _loginUserWithCredential(OAuthCredential credential) async {
+  Future<UserCredential?> _loginUserWithCredential(
+      OAuthCredential credential) async {
     try {
-      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       return userCredential;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("${e.toString()}"))
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("${e.toString()}")));
     }
     return null;
   }
-  
+
   void _loginAd() async {
     try {
       final microsoftProvider = OAuthProvider('microsoft.com');
@@ -611,10 +612,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       return Colors.transparent;
     }
 
-    return Form(
-      key: _formKey,
-      child: formButtonsWidget()
-    );
+    return Form(key: _formKey, child: formButtonsWidget());
   }
 
   /*
@@ -632,7 +630,6 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
       }
       return Colors.transparent;
     }
-
 
     return Padding(
       padding: const EdgeInsets.only(top: 24.0),
@@ -749,9 +746,13 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                     children: [
                       Text(
                         'Login com ',
-                        style: Styles.buttonSmall.merge(TextStyle(color: Colors.black)),
+                        style: Styles.buttonSmall
+                            .merge(TextStyle(color: Colors.black)),
                       ),
-                      Icon(FontAwesomeIcons.apple, color: Colors.black,)
+                      Icon(
+                        FontAwesomeIcons.apple,
+                        color: Colors.black,
+                      )
                     ],
                   ),
                 ),
@@ -770,15 +771,10 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
                       borderRadius: BorderRadius.circular(4),
                       border: _isChecked
                           ? Border.all(
-                              width: 2,
-                              color:
-                                  Theme.of(context).primaryColor)
-                          : Border.all(
-                              width: 2, color: TextColors.text2)),
+                              width: 2, color: Theme.of(context).primaryColor)
+                          : Border.all(width: 2, color: TextColors.text2)),
                   child: Checkbox(
-                      fillColor:
-                          WidgetStateProperty.resolveWith(
-                              getColor),
+                      fillColor: MaterialStateProperty.resolveWith(getColor),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4)),
                       checkColor: Theme.of(context).primaryColor,
@@ -792,8 +788,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget>
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
-                child: Text("Lembrar minha conta",
-                    style: Styles.caption),
+                child: Text("Lembrar minha conta", style: Styles.caption),
               ),
             ],
           ),
