@@ -34,89 +34,150 @@ class _SummaryScreenState extends State<SummaryScreen> {
     login_type = prefs.getString('login_type');
   }
 
+  final String mockJson = '''
+  {
+    "data": [
+      {
+        "name": "Sessão 1",
+        "subTopics": [
+          {
+            "name": "Subtópico 1.1",
+            "content": "Conteúdo detalhado do subtópico 1.1."
+          },
+          {
+            "name": "Subtópico 1.2",
+            "content": "Conteúdo detalhado do subtópico 1.2."
+          }
+        ]
+      },
+      {
+        "name": "Sessão 2",
+        "subTopics": [
+          {
+            "name": "Subtópico 2.1",
+            "content": "Conteúdo detalhado do subtópico 2.1."
+          },
+          {
+            "name": "Subtópico 2.2",
+            "content": "Conteúdo detalhado do subtópico 2.2."
+          }
+        ]
+      }
+    ]
+  }
+  ''';
+
   @override
   Widget build(BuildContext context) {
+    final sessionData = jsonDecode(mockJson);
+
     return Scaffold(
-      body: Banner(
-        location: BannerLocation.topEnd,
-        message: F.env,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.white, MainColors.primary02]),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, MainColors.primary02]),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 50, left: 20),
+                  child: IconButton(
+                    icon: Icon(Icons.close_rounded,
+                        size: 35, color: MainColors.primary04),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ),
+              ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      itemCount: sessionData['data'].length,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          title: Text(
+            "${sessionData['data'][index]['name']}",
+            style: AppTextStyles.boldHeadline,
           ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 50, left: 20),
-                    child: IconButton(
-                      icon: Icon(Icons.close_rounded,
-                          size: 35, color: MainColors.primary04),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+          children: [
+            for (var item in sessionData['data'][index]['subTopics'])
+              ListTile(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContentScreen(
+                      title: sessionData['data'][index]['name'],
+                      description: item['name'],
+                      text: item['content'],
                     ),
                   ),
                 ),
-                  FutureBuilder(
-                    future: apiService.fetchTopics(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        print("Entrou no primeiro if");
-                        return Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else if (snapshot.hasError || login_type == 'gmail') {
-                        return Center(
-                          child: Text('Não foi possível recuperar os dados'),
-                        );
-                      } else {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data['data'].length,
-                          itemBuilder: (context, index) {
-                            sessionData = snapshot.data;
-                            return ExpansionTile(
-                              title: Text(
-                                "${sessionData['data'][index]['name']}",
-                                style: AppTextStyles.boldHeadline,
-                              ),
-                              children: [
-                                for (var item in sessionData['data'][index]['subTopics'])
-                                  ListTile(
-                                    onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ContentScreen(
-                                          title: sessionData['data'][index]['name'],
-                                          description: item['name'],
-                                          text: item['content'],
-                                        ),
-                                      ),
-                                    ),
-                                    title: Text(
-                                      "${item['name']}",
-                                      style: AppTextStyles.footnote,
-                                    ),
-                                  )
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                  ),
-              ]),
-            ),
+                title: Text(
+                  "${item['name']}",
+                  style: AppTextStyles.footnote,
+                ),
+              )
+          ],
+        );
+                //FutureBuilder(
+                //  future: apiService.fetchTopics(),
+                //  builder: (context, snapshot) {
+                //    if (snapshot.connectionState == ConnectionState.waiting) {
+                //      print("Entrou no primeiro if");
+                //      return Center(
+                //        child: CircularProgressIndicator(),
+                //      );
+                //    } else if (snapshot.hasError || login_type == 'gmail') {
+                //      return Center(
+                //        child: Text('Não foi possível recuperar os dados'),
+                //      );
+                //    } else {
+                //      return ListView.builder(
+                //        shrinkWrap: true,
+                //        scrollDirection: Axis.vertical,
+                //        itemCount: snapshot.data['data'].length,
+                //        itemBuilder: (context, index) {
+                //          sessionData = snapshot.data;
+                //          return ExpansionTile(
+                //            title: Text(
+                //              "${sessionData['data'][index]['name']}",
+                //              style: AppTextStyles.boldHeadline,
+                //            ),
+                //            children: [
+                //              for (var item in sessionData['data'][index]['subTopics'])
+                //                ListTile(
+                //                  onTap: () => Navigator.push(
+                //                    context,
+                //                    MaterialPageRoute(
+                //                      builder: (context) => ContentScreen(
+                //                        title: sessionData['data'][index]['name'],
+                //                        description: item['name'],
+                //                        text: item['content'],
+                //                      ),
+                //                    ),
+                //                  ),
+                //                  title: Text(
+                //                    "${item['name']}",
+                //                    style: AppTextStyles.footnote,
+                //                  ),
+                //                )
+                //            ],
+                //          );
+                //        },
+                //      );
+                //    }
+                //  },
+                //),
+        })]),
           ),
         ),
       ),

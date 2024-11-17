@@ -8,14 +8,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:internalinformationmanagement/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final prefs = await SharedPreferences.getInstance();
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp(
       navigatorKey: _navigatorKey,
+      prefs: prefs,
     ));
 
     // Verify that our counter starts at 0.

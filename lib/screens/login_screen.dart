@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:internalinformationmanagement/flavors.dart';
 import 'package:internalinformationmanagement/widgets/Login/login_screen_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-
-  const LoginScreen({super.key, required this.navigatorKey});
+  final SharedPreferences prefs;
+  const LoginScreen({super.key, required this.navigatorKey, required this.prefs});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -18,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: Banner(message: F.env, location: BannerLocation.topEnd,
-        child: LoginScreenWidget()));
+        body: LoginScreenWidget(preferences: widget.prefs,));
   }
 }

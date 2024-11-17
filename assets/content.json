@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "name": "Salário",
+      "subTopics": [
+        {
+          "name": "Dias de pagamento",
+          "description": "Informações sobre a frequência e dias de pagamento.",
+          "content": "O pagamento dos salários ocorre de acordo com um calendário fixo, respeitando as datas definidas pela empresa. Geralmente, o pagamento é realizado mensalmente no último dia útil do mês ou no quinto dia útil do mês seguinte. Este subtópico abrange também os procedimentos em caso de feriados e finais de semana."
+        },
+        {
+          "name": "FGTS",
+          "description": "Entenda o funcionamento e os direitos referentes ao FGTS.",
+          "content": "O Fundo de Garantia do Tempo de Serviço (FGTS) é um benefício garantido por lei para todos os trabalhadores com carteira assinada. A empresa é responsável por depositar mensalmente um percentual do salário do funcionário em uma conta vinculada ao FGTS. Este benefício pode ser utilizado pelo trabalhador em casos de demissão sem justa causa, compra de imóvel, entre outras situações específicas."
+        }
+      ]
+    },
+    {
+      "name": "Viagens",
+      "subTopics": [
+        {
+          "name": "Viagens institucionais",
+          "description": "Regulamentação e requisitos para viagens a serviço da instituição.",
+          "content": "As viagens institucionais são autorizadas para compromissos e eventos externos, representando a empresa em atividades profissionais. São cobertos os custos básicos, como transporte, hospedagem e alimentação, mediante aprovação prévia e preenchimento de formulários específicos. O colaborador deve apresentar relatórios de atividades realizadas durante a viagem."
+        },
+        {
+          "name": "Auxilios",
+          "description": "Benefícios e auxílios disponíveis para viagens a trabalho.",
+          "content": "Os colaboradores que viajam a trabalho podem ter direito a auxílios financeiros para cobrir despesas adicionais, como transporte local e refeições. Esses auxílios são calculados com base na duração da viagem e nas políticas da empresa, sendo necessário prestar contas com comprovantes das despesas."
+        },
+        {
+          "name": "Meios de transporte",
+          "description": "Opções e condições para escolha de meios de transporte em viagens corporativas.",
+          "content": "A empresa oferece diversas opções de transporte para deslocamento em viagens a trabalho, como passagens aéreas, veículos próprios ou alugados. A escolha do meio de transporte considera fatores como custo, urgência e conforto para o colaborador. Em alguns casos, o uso de aplicativos de transporte também é permitido e reembolsado conforme os critérios da empresa."
+        }
+      ]
+    },
+    {
+      "name": "Férias",
+      "subTopics": [
+        {
+          "name": "Auxilios",
+          "description": "Benefícios adicionais disponíveis para os colaboradores durante as férias.",
+          "content": "Durante o período de férias, o colaborador pode ter acesso a auxílios específicos, como o abono de férias, que é um adicional de 1/3 sobre o salário mensal. Esse benefício é garantido pela legislação trabalhista e visa proporcionar um período de descanso remunerado mais confortável para o colaborador. Outras assistências podem estar disponíveis dependendo da política da empresa."
+        }
+      ]
+    }
+  ]
+}

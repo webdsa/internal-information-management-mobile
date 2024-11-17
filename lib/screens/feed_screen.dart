@@ -30,6 +30,50 @@ class _FeedScreenState extends State<FeedScreen> {
   Future<dynamic>? _topicsFuture;
   String? login_type;
 
+    final String mockJson = '''
+  {
+    "data": [
+      {
+        "name": "Sessão 1",
+        "subTopics": [
+          {
+            "name": "Subtópico 1.1",
+            "description": "Descrição breve do subtópico 1.1.",
+            "content": "Conteúdo detalhado do subtópico 1.1."
+          },
+          {
+            "name": "Subtópico 1.2",
+            "description": "Descrição breve do subtópico 1.2.",
+            "content": "Conteúdo detalhado do subtópico 1.2."
+          }
+        ]
+      },
+      {
+        "name": "Sessão 2",
+        "subTopics": [
+          {
+            "name": "Subtópico 2.1",
+            "description": "Descrição breve do subtópico 2.1.",
+            "content": "Conteúdo detalhado do subtópico 2.1."
+          },
+          {
+            "name": "Subtópico 2.2",
+            "description": "Descrição breve do subtópico 2.2.",
+            "content": "Conteúdo detalhado do subtópico 2.2."
+          },
+          {
+            "name": "Subtópico 2.3",
+            "description": "Descrição breve do subtópico 2.3.",
+            "content": "Conteúdo detalhado do subtópico 2.3."
+          }
+        ]
+      }
+    ]
+  }
+  ''';
+
+
+
   @override
   void initState() {
     super.initState();
@@ -68,6 +112,9 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = jsonDecode(mockJson);
+
+
     return PopScope(
       canPop: false,
       child: Scaffold(
@@ -107,36 +154,6 @@ class _FeedScreenState extends State<FeedScreen> {
                         )
                       ],
                     )),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 28.0),
-                      child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SearchScreen(
-                                          wasPreviousScreenFeed: true,
-                                        )));
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                                color: ShadeColors.shadeLight.withOpacity(0.05),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(Icons.search),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 12),
-                                  child: Text("Pesquise por um conteudo..."),
-                                )
-                              ],
-                            ),
-                          )),
-                    ),
                     Padding(
                       padding: const EdgeInsets.only(top: 50.0),
                       child: RichText(
@@ -216,180 +233,303 @@ class _FeedScreenState extends State<FeedScreen> {
                     if (login_type != 'gmail' && login_type != 'apple')
                       Padding(
                         padding: const EdgeInsets.only(top: 28.0),
-                        child: FutureBuilder(
-                            future: apiService.fetchTopics(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                return Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      for (var session in snapshot.data['data'])
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${session['name']}",
-                                              style: AppTextStyles.boldTitle2
-                                                  .merge(
-                                                TextStyle(
-                                                    color:
-                                                        MainColors.primary04),
-                                              ),
+                        child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            for (var session in data['data'])
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${session['name']}",
+                    style: AppTextStyles.boldTitle2.merge(
+                      TextStyle(color: MainColors.primary04),
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Container(
+                    height: 175,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          for (var subTopic in session['subTopics'])
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ContentScreen(
+                                        title: session['name'],
+                                        description: subTopic['name'],
+                                        text: subTopic['content'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 4,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Color(0xFF328FFB).withOpacity(0.2),
+                                          Colors.white.withOpacity(0.7),
+                                        ],
+                                      ),
+                                    ),
+                                    width: 300.0,
+                                    padding: EdgeInsets.all(4.0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 10,
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${subTopic['name']}',
+                                            style: AppTextStyles.boldSubhead
+                                                .merge(
+                                              TextStyle(
+                                                  color: MainColors.primary04),
                                             ),
-                                            SizedBox(height: 12),
-                                            Container(
-                                              height: 175,
-                                              child: SingleChildScrollView(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                child: Row(
-                                                  children: [
-                                                    for (var subTopic
-                                                        in session['subTopics'])
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                                right: 8.0),
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ContentScreen(
-                                                                  title: session[
-                                                                      'name'],
-                                                                  description:
-                                                                      subTopic[
-                                                                          'name'],
-                                                                  text: subTopic[
-                                                                      'content'],
-                                                                ),
-                                                              ),
-                                                            );
-                                                          },
-                                                          child: Card(
-                                                            elevation: 4,
-                                                            child: Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                gradient:
-                                                                    LinearGradient(
-                                                                  begin: Alignment
-                                                                      .topLeft,
-                                                                  end: Alignment
-                                                                      .bottomRight,
-                                                                  colors: [
-                                                                    Color(0xFF328FFB)
-                                                                        .withOpacity(
-                                                                            0.2),
-                                                                    Colors.white
-                                                                        .withOpacity(
-                                                                            0.7)
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              width: 300.0,
-                                                              padding:
-                                                                  EdgeInsets
-                                                                      .all(4.0),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                  horizontal:
-                                                                      16,
-                                                                  vertical: 10,
-                                                                ),
-                                                                child: Column(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceEvenly,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
-                                                                  children: [
-                                                                    Text(
-                                                                      '${subTopic['name']}',
-                                                                      style: AppTextStyles
-                                                                          .boldSubhead
-                                                                          .merge(
-                                                                        TextStyle(
-                                                                            color:
-                                                                                MainColors.primary04),
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      '${subTopic['description']}',
-                                                                      style: AppTextStyles
-                                                                          .footnote,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .clip,
-                                                                    ),
-                                                                    Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          top:
-                                                                              12.0),
-                                                                      child:
-                                                                          Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.end,
-                                                                        children: [
-                                                                          Padding(
-                                                                            padding:
-                                                                                const EdgeInsets.only(right: 6.0),
-                                                                            child:
-                                                                                Text(
-                                                                              "Ver Mais",
-                                                                              style: AppTextStyles.footnote.merge(
-                                                                                TextStyle(color: MainColors.primary03),
-                                                                              ),
-                                                                            ),
-                                                                          ),
-                                                                          Icon(
-                                                                            Icons.arrow_forward_rounded,
-                                                                            size:
-                                                                                18,
-                                                                            color:
-                                                                                Color(0xff3391FF),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                  ],
+                                          ),
+                                          Text(
+                                            '${subTopic['description']}',
+                                            style: AppTextStyles.footnote,
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 12.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 6.0),
+                                                  child: Text(
+                                                    "Ver Mais",
+                                                    style: AppTextStyles
+                                                        .footnote
+                                                        .merge(
+                                                      TextStyle(
+                                                          color: MainColors
+                                                              .primary03),
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
+                                                Icon(
+                                                  Icons.arrow_forward_rounded,
+                                                  size: 18,
+                                                  color: Color(0xff3391FF),
+                                                ),
+                                              ],
                                             ),
-                                            SizedBox(height: 38),
-                                          ],
-                                        )
-                                    ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                );
-                              }
-                            }),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 38),
+                ],
+              ),
+          ],
+        ),),
+                        //FutureBuilder(
+                        //    future: apiService.fetchTopics(),
+                        //    builder: (context, snapshot) {
+                        //      if (snapshot.connectionState ==
+                        //          ConnectionState.waiting) {
+                        //        return Center(
+                        //          child: CircularProgressIndicator(),
+                        //        );
+                        //      } else if (snapshot.hasError) {
+                        //        return Text('Error: ${snapshot.error}');
+                        //      } else {
+                        //        return Align(
+                        //          alignment: Alignment.centerLeft,
+                        //          child: Column(
+                        //            crossAxisAlignment:
+                        //                CrossAxisAlignment.start,
+                        //            children: [
+                        //              for (var session in snapshot.data['data'])
+                        //                Column(
+                        //                  crossAxisAlignment:
+                        //                      CrossAxisAlignment.start,
+                        //                  children: [
+                        //                    Text(
+                        //                      "${session['name']}",
+                        //                      style: AppTextStyles.boldTitle2
+                        //                          .merge(
+                        //                        TextStyle(
+                        //                            color:
+                        //                                MainColors.primary04),
+                        //                      ),
+                        //                    ),
+                        //                    SizedBox(height: 12),
+                        //                    Container(
+                        //                      height: 175,
+                        //                      child: SingleChildScrollView(
+                        //                        scrollDirection:
+                        //                            Axis.horizontal,
+                        //                        child: Row(
+                        //                          children: [
+                        //                            for (var subTopic
+                        //                                in session['subTopics'])
+                        //                              Padding(
+                        //                                padding:
+                        //                                    const EdgeInsets
+                        //                                        .only(
+                        //                                        right: 8.0),
+                        //                                child: GestureDetector(
+                        //                                  onTap: () {
+                        //                                    Navigator.push(
+                        //                                      context,
+                        //                                      MaterialPageRoute(
+                        //                                        builder:
+                        //                                            (context) =>
+                        //                                                ContentScreen(
+                        //                                          title: session[
+                        //                                              'name'],
+                        //                                          description:
+                        //                                              subTopic[
+                        //                                                  'name'],
+                        //                                          text: subTopic[
+                        //                                              'content'],
+                        //                                        ),
+                        //                                      ),
+                        //                                    );
+                        //                                  },
+                        //                                  child: Card(
+                        //                                    elevation: 4,
+                        //                                    child: Container(
+                        //                                      decoration:
+                        //                                          BoxDecoration(
+                        //                                        gradient:
+                        //                                            LinearGradient(
+                        //                                          begin: Alignment
+                        //                                              .topLeft,
+                        //                                          end: Alignment
+                        //                                              .bottomRight,
+                        //                                          colors: [
+                        //                                            Color(0xFF328FFB)
+                        //                                                .withOpacity(
+                        //                                                    0.2),
+                        //                                            Colors.white
+                        //                                                .withOpacity(
+                        //                                                    0.7)
+                        //                                          ],
+                        //                                        ),
+                        //                                      ),
+                        //                                      width: 300.0,
+                        //                                      padding:
+                        //                                          EdgeInsets
+                        //                                              .all(4.0),
+                        //                                      child: Padding(
+                        //                                        padding:
+                        //                                            const EdgeInsets
+                        //                                                .symmetric(
+                        //                                          horizontal:
+                        //                                              16,
+                        //                                          vertical: 10,
+                        //                                        ),
+                        //                                        child: Column(
+                        //                                          mainAxisAlignment:
+                        //                                              MainAxisAlignment
+                        //                                                  .spaceEvenly,
+                        //                                          crossAxisAlignment:
+                        //                                              CrossAxisAlignment
+                        //                                                  .start,
+                        //                                          children: [
+                        //                                            Text(
+                        //                                              '${subTopic['name']}',
+                        //                                              style: AppTextStyles
+                        //                                                  .boldSubhead
+                        //                                                  .merge(
+                        //                                                TextStyle(
+                        //                                                    color:
+                        //                                                        MainColors.primary04),
+                        //                                              ),
+                        //                                            ),
+                        //                                            Text(
+                        //                                              '${subTopic['description']}',
+                        //                                              style: AppTextStyles
+                        //                                                  .footnote,
+                        //                                              overflow:
+                        //                                                  TextOverflow
+                        //                                                      .clip,
+                        //                                            ),
+                        //                                            Padding(
+                        //                                              padding: const EdgeInsets
+                        //                                                  .only(
+                        //                                                  top:
+                        //                                                      12.0),
+                        //                                              child:
+                        //                                                  Row(
+                        //                                                mainAxisAlignment:
+                        //                                                    MainAxisAlignment.end,
+                        //                                                children: [
+                        //                                                  Padding(
+                        //                                                    padding:
+                        //                                                        const EdgeInsets.only(right: 6.0),
+                        //                                                    child:
+                        //                                                        Text(
+                        //                                                      "Ver Mais",
+                        //                                                      style: AppTextStyles.footnote.merge(
+                        //                                                        TextStyle(color: MainColors.primary03),
+                        //                                                      ),
+                        //                                                    ),
+                        //                                                  ),
+                        //                                                  Icon(
+                        //                                                    Icons.arrow_forward_rounded,
+                        //                                                    size:
+                        //                                                        18,
+                        //                                                    color:
+                        //                                                        Color(0xff3391FF),
+                        //                                                  )
+                        //                                                ],
+                        //                                              ),
+                        //                                            )
+                        //                                          ],
+                        //                                        ),
+                        //                                      ),
+                        //                                    ),
+                        //                                  ),
+                        //                                ),
+                        //                              )
+                        //                          ],
+                        //                        ),
+                        //                      ),
+                        //                    ),
+                        //                    SizedBox(height: 38),
+                        //                  ],
+                        //                )
+                        //            ],
+                        //          ),
+                        //        );
+                        //      }
+                        //    }),
                       ),
                     if (login_type == 'gmail')
                       Center(

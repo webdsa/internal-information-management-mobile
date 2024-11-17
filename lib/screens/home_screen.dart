@@ -254,164 +254,160 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           SECTION - Body
       
           */
-          body: Banner(
-            message: F.env,
-            location: BannerLocation.topEnd,
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                  gradient:
-                      Provider.of<ThemeProvider>(context).themeData == darkMode
-                          ? LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                  MainColors.primary03,
-                                  FoundationColors.foundationSecondaryDarkest
-                                ])
-                          : LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [Colors.white, MainColors.primary02])),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 26),
-                      child: Column(
-                        children: [
-                          SafeArea(
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Builder(builder: (context) {
-                                return IconButton(
-                                  onPressed: () {
-                                    Scaffold.of(context).openDrawer();
-                                  },
-                                  icon: Icon(Icons.menu),
-                                  iconSize: 35,
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+                gradient:
+                    Provider.of<ThemeProvider>(context).themeData == darkMode
+                        ? LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                                MainColors.primary03,
+                                FoundationColors.foundationSecondaryDarkest
+                              ])
+                        : LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.white, MainColors.primary02])),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 26),
+                    child: Column(
+                      children: [
+                        SafeArea(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Builder(builder: (context) {
+                              return IconButton(
+                                onPressed: () {
+                                  Scaffold.of(context).openDrawer();
+                                },
+                                icon: Icon(Icons.menu),
+                                iconSize: 35,
+                              );
+                            })
+                          ],
+                        )),
+                        FutureBuilder(
+                            future: _loadUserData(),
+                            builder: ((context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return CircularProgressIndicator();
+                              } else if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                fullName = snapshot.data ?? "";
+                                return Padding(
+                                  padding: const EdgeInsets.only(top: 44.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Olá, ",
+                                        style: AppTextStyles.largeTitle.merge(
+                                            TextStyle(
+                                                color: TailwindColors
+                                                    .tailwindBlack)),
+                                      ),
+                                      Text(
+                                        "${fullName.split(" ")[0]}",
+                                        style: DesktopTextStyles.headlineH4
+                                            .merge(TextStyle(
+                                                color: TailwindColors
+                                                    .tailwindBlack)),
+                                      ),
+                                    ],
+                                  ),
                                 );
-                              })
-                            ],
-                          )),
-                          FutureBuilder(
-                              future: _loadUserData(),
-                              builder: ((context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  fullName = snapshot.data ?? "";
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 44.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Olá, ",
-                                          style: AppTextStyles.largeTitle.merge(
-                                              TextStyle(
-                                                  color: TailwindColors
-                                                      .tailwindBlack)),
-                                        ),
-                                        Text(
-                                          "${fullName.split(" ")[0]}",
-                                          style: DesktopTextStyles.headlineH4
-                                              .merge(TextStyle(
-                                                  color: TailwindColors
-                                                      .tailwindBlack)),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                } else {
-                                  return Text("Eita");
-                                }
-                              })),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 28.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                width: double.infinity,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    color: ShadeColors.shadeLight
-                                        .withOpacity(0.05),
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Icon(Icons.search),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 12),
-                                      child:
-                                          Text("Pesquise por um conteudo..."),
-                                    )
-                                  ],
-                                ),
+                              } else {
+                                return Text("Eita");
+                              }
+                            })),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 28.0),
+                          child: GestureDetector(
+                            onTap: () {
+                              //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              width: double.infinity,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                  color: ShadeColors.shadeLight
+                                      .withOpacity(0.05),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.search),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 12),
+                                    child:
+                                        Text("Pesquise por um conteudo..."),
+                                  )
+                                ],
                               ),
                             ),
                           ),
-                          /*
-                                        
-                              The section below contains 3 buttons that
-                              can change the content of the cards on the section below
-                              this one.
-                                        
-                              */
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(top: 33.0),
-                                child: HomeListViewWidget(),
-                              ),
-                              /*
-                              Padding(
-                                padding: EdgeInsets.only(top: 33),
-                                child: Text(
-                                  "Acompanhe aqui as sua",
-                                  style: AppTextStyles.boldCaption1.merge(
-                                      TextStyle(
-                                          color: FoundationColors
-                                              .foundationPrimaryDarkest)),
-                                ),
-                              ),
-                              Text(
-                                "últimas atualizações",
-                                style: Styles.titleSmall.merge(TextStyle(
-                                    color: Theme.of(context).primaryColor)),
-                              ),
-                              Divider(
-                                color: TextColors.text5,
-                                height: 10,
-                                thickness: 2,
-                              ),
-                              LastUpdatesButtonsWidgets(),
-                              /*
+                        ),
+                        /*
                                       
-                                  The section below contains a
-                                  Column with cards. The cards shown will be 
-                                  static content, and soon their contents will change
-                                  turning them dynamic.
-                                                        
-                                  */
-                              LastUpdatesWidget()*/
-                            ],
-                          ),
-                        ],
-                      ),
+                            The section below contains 3 buttons that
+                            can change the content of the cards on the section below
+                            this one.
+                                      
+                            */
+          
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 33.0),
+                              child: HomeListViewWidget(),
+                            ),
+                            /*
+                            Padding(
+                              padding: EdgeInsets.only(top: 33),
+                              child: Text(
+                                "Acompanhe aqui as sua",
+                                style: AppTextStyles.boldCaption1.merge(
+                                    TextStyle(
+                                        color: FoundationColors
+                                            .foundationPrimaryDarkest)),
+                              ),
+                            ),
+                            Text(
+                              "últimas atualizações",
+                              style: Styles.titleSmall.merge(TextStyle(
+                                  color: Theme.of(context).primaryColor)),
+                            ),
+                            Divider(
+                              color: TextColors.text5,
+                              height: 10,
+                              thickness: 2,
+                            ),
+                            LastUpdatesButtonsWidgets(),
+                            /*
+                                    
+                                The section below contains a
+                                Column with cards. The cards shown will be 
+                                static content, and soon their contents will change
+                                turning them dynamic.
+                                                      
+                                */
+                            LastUpdatesWidget()*/
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           )),

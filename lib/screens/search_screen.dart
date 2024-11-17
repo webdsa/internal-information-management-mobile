@@ -88,99 +88,95 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Banner(
-        location: BannerLocation.topEnd,
-        message: F.env,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.white, MainColors.primary02]),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 26),
-            child: Column(
-              children: [
-                if (widget.wasPreviousScreenFeed)
-                  SafeArea(
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(Icons.close, size: 35),
-                        )
-                      ],
-                    ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.white, MainColors.primary02]),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 26),
+          child: Column(
+            children: [
+              if (widget.wasPreviousScreenFeed)
+                SafeArea(
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.close, size: 35),
+                      )
+                    ],
                   ),
-                if (widget.wasPreviousScreenFeed == false)
-                  SafeArea(child: SizedBox()),
-                if (login_type != 'gmail')
-                  Padding(
-                    padding: const EdgeInsets.only(top: 24.0),
-                    child: TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
-                        filled: true,
-                        fillColor: ShadeColors.shadeLight.withOpacity(0.05),
-                        label: Text("Pesquise por um conteudo..."),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                ),
+              if (widget.wasPreviousScreenFeed == false)
+                SafeArea(child: SizedBox()),
+              if (login_type != 'gmail')
+                Padding(
+                  padding: const EdgeInsets.only(top: 24.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      filled: true,
+                      fillColor: ShadeColors.shadeLight.withOpacity(0.05),
+                      label: Text("Pesquise por um conteudo..."),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
-                if (login_type != 'gmail')
-                  Expanded(
-                    child: FutureBuilder(
-                      future: apiService.fetchTopics(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        } else {
-                          return ListView.builder(
-                              itemCount: _filteredSubTopics.length,
-                              itemBuilder: (context, index) {
-                                var subTopic = _filteredSubTopics[index];
-                                return ListTile(
-                                  title: Text(
-                                    subTopic['name'],
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(subTopic['topicName'] ?? ''),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ContentScreen(
-                                          title: subTopic['topicName'],
-                                          description: subTopic['name'],
-                                          text: subTopic['content'],
-                                        ),
+                ),
+              if (login_type != 'gmail')
+                Expanded(
+                  child: FutureBuilder(
+                    future: apiService.fetchTopics(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else {
+                        return ListView.builder(
+                            itemCount: _filteredSubTopics.length,
+                            itemBuilder: (context, index) {
+                              var subTopic = _filteredSubTopics[index];
+                              return ListTile(
+                                title: Text(
+                                  subTopic['name'],
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Text(subTopic['topicName'] ?? ''),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ContentScreen(
+                                        title: subTopic['topicName'],
+                                        description: subTopic['name'],
+                                        text: subTopic['content'],
                                       ),
-                                    );
-                                  },
-                                );
-                              });
-                        }
-                      },
-                    ),
+                                    ),
+                                  );
+                                },
+                              );
+                            });
+                      }
+                    },
                   ),
-                if (login_type == 'gmail')
-                  Center(
-                    child: Text("Voce nao pode acessar essa pagina"),
-                  )
-              ],
-            ),
+                ),
+              if (login_type == 'gmail')
+                Center(
+                  child: Text("Voce nao pode acessar essa pagina"),
+                )
+            ],
           ),
         ),
       ),
