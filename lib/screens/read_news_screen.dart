@@ -251,21 +251,6 @@ class _ReadNewsScreenState extends State<ReadNewsScreen> {
                     child: SvgPicture.asset('assets/svgs/nav_home.svg'),
                   ),
                 ),
-                GestureDetector(
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_search.svg'),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_newspaper.svg'),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_user.svg'),
-                  ),
-                ),
               ],
             ),
           )
