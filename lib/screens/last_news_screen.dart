@@ -25,19 +25,13 @@ class LastNewsScreen extends StatefulWidget {
 }
 
 class _LastNewsScreenState extends State<LastNewsScreen> {
-  final FocusNode focusNode = FocusNode();
   List<NewsModel> listNewsFakeSearch = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  late SharedPreferences preferences;
 
   @override
   void initState() {
     super.initState();
     listNewsFakeSearch = listNewsFake;
-  }
-
-  initPrefs() async {
-    preferences = await SharedPreferences.getInstance();
   }
 
   searchNews(String text) {
@@ -65,7 +59,6 @@ class _LastNewsScreenState extends State<LastNewsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    initPrefs();
     return Scaffold(
       drawer: Drawer(
             shape: RoundedRectangleBorder(
@@ -80,7 +73,7 @@ class _LastNewsScreenState extends State<LastNewsScreen> {
             child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      if (preferences.getBool("is_logged_in") == false)
+                      if (widget.prefs.getBool("is_logged_in") == false)
                          DrawerHeader(
                                 child: 
                                 Padding(
@@ -89,7 +82,7 @@ class _LastNewsScreenState extends State<LastNewsScreen> {
                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx) => LoginScreen(navigatorKey: _navigatorKey, prefs: widget.prefs,)));
                                   },),),
                                 )),
-                      if (preferences.getBool("is_logged_in") == true)
+                      if (widget.prefs.getBool("is_logged_in") == true)
                         Column(
                           children: [
                             DrawerHeader(
@@ -291,24 +284,6 @@ class _LastNewsScreenState extends State<LastNewsScreen> {
                   child: Container(
                     height: 53,
                     child: SvgPicture.asset('assets/svgs/nav_home.svg'),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    focusNode.requestFocus();
-                  },
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_search.svg'),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_newspaper.svg'),
-                  ),
-                ),
-                GestureDetector(
-                  child: Container(
-                    child: SvgPicture.asset('assets/svgs/nav_user.svg'),
                   ),
                 ),
               ],
