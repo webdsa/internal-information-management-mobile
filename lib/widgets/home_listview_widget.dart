@@ -28,6 +28,13 @@ class HomeListViewWidget extends StatelessWidget {
         padding: EdgeInsets.all(16),
         margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
           borderRadius: BorderRadius.circular(10),
           color: FoundationColors.foundationPrimaryLightActive,
         ),

@@ -273,6 +273,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             })
                           ],
                         )),
+                        Image.asset("assets/imgs/Reading list-rafiki 1.png", height: 325, fit: BoxFit.contain,),
                         FutureBuilder(
                             future: _loadUserData(),
                             builder: ((context, snapshot) {
@@ -309,37 +310,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 return Text("Eita");
                               }
                             })),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 28.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              //Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
-                            },
-                            child: Container(
-                            padding: EdgeInsets.all(10),
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: ShadeColors.shadeLight.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Icon(Icons.search),
-                                Padding(padding: EdgeInsets.only(left: 12), child: Text("Pesquise por um conteudo..."),)
-                              ],
-                            ),
-                            ),
-                          ),
-                        ),
-                        /*
-                                      
-                            The section below contains 3 buttons that
-                            can change the content of the cards on the section below
-                            this one.
-                                      
-                            */
           
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -348,37 +318,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               padding: const EdgeInsets.only(top: 33.0),
                               child: HomeListViewWidget(),
                             ),
-                            /*
-                            Padding(
-                              padding: EdgeInsets.only(top: 33),
-                              child: Text(
-                                "Acompanhe aqui as sua",
-                                style: AppTextStyles.boldCaption1.merge(
-                                    TextStyle(
-                                        color: FoundationColors
-                                            .foundationPrimaryDarkest)),
-                              ),
-                            ),
-                            Text(
-                              "últimas atualizações",
-                              style: Styles.titleSmall.merge(TextStyle(
-                                  color: Theme.of(context).primaryColor)),
-                            ),
-                            Divider(
-                              color: TextColors.text5,
-                              height: 10,
-                              thickness: 2,
-                            ),
-                            LastUpdatesButtonsWidgets(),
-                            /*
-                                    
-                                The section below contains a
-                                Column with cards. The cards shown will be 
-                                static content, and soon their contents will change
-                                turning them dynamic.
-                                                      
-                                */
-                            LastUpdatesWidget()*/
+
                           ],
                         ),
                       ],
