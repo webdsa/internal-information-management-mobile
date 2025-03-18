@@ -14,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1044529716444-e5ukqtn2pqvuma8q440orickkp14snts.apps.googleusercontent.com",
+          "client_id": "1044529716444-nlseqb51du74tm19bas3931e3gkivcgn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "adventistas.org.internalinformationmanagement",
-            "certificate_hash": "4688f076e998743ce36ce0309d9084e187218f5d"
+            "certificate_hash": "a894c0db32a98fc59741bacb68b1ba5b0c89ee8b"
           }
         },
         {
@@ -102,11 +102,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "1044529716444-g7crlk26gtkb3gk6ef7242t0edvnt1bh.apps.googleusercontent.com",
+          "client_id": "1044529716444-472uegtmtonva8kobjfledtk06ulirm6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "adventistas.org.internalinformationmanagement.prod",
-            "certificate_hash": "2387950369b76d3f903e029c6c812b51ac6aab06"
+            "certificate_hash": "4a36dcc1f520fa6ad089f988ed4d5b10dbca523c"
+          }
+        },
+        {
+          "client_id": "1044529716444-is6on3akmh87m78ve0lo1ukv77cccjo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "adventistas.org.internalinformationmanagement.prod",
+            "certificate_hash": "a894c0db32a98fc59741bacb68b1ba5b0c89ee8b"
           }
         },
         {

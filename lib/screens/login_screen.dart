@@ -7,8 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-  final SharedPreferences prefs;
-  const LoginScreen({super.key, required this.navigatorKey, required this.prefs});
+  const LoginScreen({super.key, required this.navigatorKey});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -19,6 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
-        body: LoginScreenWidget(preferences: widget.prefs,));
+        body: LoginScreenWidget());
   }
 }

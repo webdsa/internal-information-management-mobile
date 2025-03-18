@@ -18,6 +18,5 @@ FutureOr<void> main() async {
       create: (context) => ThemeProvider(),
       child: MyApp(
         navigatorKey: _navigatorKey,
-        prefs: prefs
       )));
 }

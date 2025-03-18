@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:internalinformationmanagement/screens/blog_screen.dart';
 import 'package:internalinformationmanagement/screens/feed_screen.dart';
 import 'package:internalinformationmanagement/screens/home_screen.dart';
 import 'package:internalinformationmanagement/screens/login_screen.dart';
@@ -16,8 +15,7 @@ import 'flavors.dart';
 
 class MyApp extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
-  final SharedPreferences prefs;
-  const MyApp({Key? key, required this.navigatorKey, required this.prefs}) : super(key: key);
+  const MyApp({Key? key, required this.navigatorKey}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -50,11 +48,9 @@ class _MyAppState extends State<MyApp> {
     final DateTime currentDateTime = DateTime.now();
 
     if (currentDateTime.difference(lastLoginDateTime).inHours >= 1) {
-      prefs.setBool('is_logged_in', false);
       return false;
     }
 
-    prefs.setBool('is_logged_in', true);
     return true;
   }
 
@@ -66,7 +62,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/summary': (context) => SummaryScreen(),
         '/feed': (context) => FeedScreen(),
-        '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey, prefs: widget.prefs,),
+        '/login': (context) => LoginScreen(navigatorKey: widget.navigatorKey),
       },
       home: FutureBuilder<bool>(
         future: _isLoggedIn(),
@@ -76,7 +72,7 @@ class _MyAppState extends State<MyApp> {
           } else if (snapshot.hasData && snapshot.data!) {
             return AppScreens();
           } else {
-            return BlogScreen(prefs: widget.prefs);
+            return LoginScreen(navigatorKey: widget.navigatorKey);
           }
         },
       ),
